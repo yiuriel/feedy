@@ -1,6 +1,10 @@
 FROM node:20-alpine
 
 WORKDIR /app
+
+# Create db directory
+RUN mkdir -p db
+
 COPY package*.json ./
 RUN npm install
 COPY . .
