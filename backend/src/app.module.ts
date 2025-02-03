@@ -6,11 +6,19 @@ import { databaseConfig } from './config/database.config';
 import { Organization } from './entities/organization.entity';
 import { FeedbackForm } from './entities/feedback-form.entity';
 import { FeedbackResponse } from './entities/feedback-response.entity';
+import { User } from './entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(databaseConfig),
-    TypeOrmModule.forFeature([Organization, FeedbackForm, FeedbackResponse]),
+    TypeOrmModule.forFeature([
+      Organization,
+      FeedbackForm,
+      FeedbackResponse,
+      User,
+    ]),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
