@@ -1,7 +1,5 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { firstValueFrom, Observable, map } from 'rxjs';
-import { AxiosResponse } from 'axios';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 
 @Injectable()
 export class LLMService implements OnModuleInit {
@@ -20,11 +18,9 @@ export class LLMService implements OnModuleInit {
   }
 
   private async pullModel() {
-    await firstValueFrom(
-      this.httpService.post(`${this.apiUrl}/pull`, {
-        name: this.model,
-      }),
-    );
+    await this.httpService.axiosRef.post(`${this.apiUrl}/pull`, {
+      name: this.model,
+    });
   }
 
   /**
@@ -38,67 +34,13 @@ export class LLMService implements OnModuleInit {
     goals: string,
   ): Promise<
     Array<{
-      type: 'text' | 'rating' | 'multipleChoice';
+      type: string;
       question: string;
-      required?: boolean;
+      required: boolean;
       options?: string[];
     }>
   > {
-    const prompt = `Generate 5 relevant feedback questions for a ${companyType}. 
-    Goals: ${goals}
-    
-    Format the response as a JSON array of objects with these fields:
-    - type: either "text", "rating", or "multipleChoice"
-    - question: the actual question text
-    - required: boolean indicating if it should be required
-    - options: array of strings (only for multipleChoice type)
-    
-    Make the questions specific to the company type and goals.
-    Include a mix of question types.
-    
-    Response must be valid JSON. Example format:
-    [
-      {
-        "type": "rating",
-        "question": "How would you rate our service?",
-        "required": true | false,
-        "options": ["1", "2", "3", "4", "5"]
-      }
-    ]`;
-
-    try {
-      const response = await firstValueFrom(
-        this.httpService.post(`${this.apiUrl}/generate`, {
-          model: this.model,
-          prompt,
-          stream: false,
-          options: {
-            temperature: 0.7,
-            top_p: 0.9,
-          },
-        }),
-      );
-
-      // Parse the response and ensure it's valid JSON
-      const generatedText = response.data.response;
-      try {
-        const questions = JSON.parse(generatedText);
-        return Array.isArray(questions) ? questions : [];
-      } catch (error) {
-        console.error('Failed to parse LLM response:', error);
-        return [];
-      }
-    } catch (error) {
-      console.error('Failed to generate questions:', error);
-      return [];
-    }
-  }
-
-  generateFeedbackQuestionsStream(
-    companyType: string,
-    goals: string,
-  ): Observable<any> {
-    const prompt = `You are a feedback form expert. Generate a list of relevant feedback questions for a ${companyType} that wants to ${goals}. 
+    const prompt = `You are a feedback form expert. Generate a list of 3 relevant feedback questions for a ${companyType} that wants to ${goals}. 
     Return ONLY a JSON array of questions, where each question object has these properties:
     - type: one of "text", "rating", "choice", "boolean"
     - question: the actual question text
@@ -107,19 +49,23 @@ export class LLMService implements OnModuleInit {
 
     Format the response as a valid JSON array.`;
 
-    return this.httpService
-      .post(
-        `${this.apiUrl}/generate`,
-        {
-          model: this.model,
-          prompt,
-          stream: true,
+    const response = await this.httpService.axiosRef.post(
+      `${this.apiUrl}/generate`,
+      {
+        model: this.model,
+        prompt,
+        stream: false,
+        options: {
+          temperature: 0.7,
+          top_p: 0.9,
         },
-        {
-          responseType: 'stream',
-        },
-      )
-      .pipe(map((response: AxiosResponse) => response.data));
+      },
+      {
+        timeout: 60000,
+      },
+    );
+
+    return JSON.parse(response.data.response);
   }
 
   /**
@@ -138,6 +84,11 @@ export class LLMService implements OnModuleInit {
       {
         model: this.model,
         prompt,
+        stream: false,
+        options: {
+          temperature: 0.7,
+          top_p: 0.9,
+        },
       },
     );
 
