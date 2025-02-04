@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable, map } from 'rxjs';
+import { AxiosResponse } from 'axios';
 
 @Injectable()
 export class LLMService implements OnModuleInit {
@@ -60,7 +61,8 @@ export class LLMService implements OnModuleInit {
       {
         "type": "rating",
         "question": "How would you rate our service?",
-        "required": true
+        "required": true | false,
+        "options": ["1", "2", "3", "4", "5"]
       }
     ]`;
 
@@ -92,31 +94,53 @@ export class LLMService implements OnModuleInit {
     }
   }
 
+  generateFeedbackQuestionsStream(
+    companyType: string,
+    goals: string,
+  ): Observable<any> {
+    const prompt = `You are a feedback form expert. Generate a list of relevant feedback questions for a ${companyType} that wants to ${goals}. 
+    Return ONLY a JSON array of questions, where each question object has these properties:
+    - type: one of "text", "rating", "choice", "boolean"
+    - question: the actual question text
+    - required: boolean
+    - options: array of strings (only for rating and choice types)
+
+    Format the response as a valid JSON array.`;
+
+    return this.httpService
+      .post(
+        `${this.apiUrl}/generate`,
+        {
+          model: this.model,
+          prompt,
+          stream: true,
+        },
+        {
+          responseType: 'stream',
+        },
+      )
+      .pipe(map((response: AxiosResponse) => response.data));
+  }
+
   /**
    * Generate a thank you message for after form submission
    * @param companyName Name of the company
    * @returns Generated thank you message
    */
-  async generateThankYouMessage(companyName: string): Promise<string> {
-    const prompt = `Generate a brief, friendly thank you message for customers who just submitted feedback for ${companyName}. 
-    Keep it professional but warm. Don't make it longer than two sentences.`;
+  async generateThankYouMessage(
+    companyName: string,
+    responseType: string,
+  ): Promise<string> {
+    const prompt = `Generate a thank you message for a customer who just submitted ${responseType} feedback for ${companyName}. Keep it short and professional.`;
 
-    try {
-      const response = await firstValueFrom(
-        this.httpService.post(`${this.apiUrl}/generate`, {
-          model: this.model,
-          prompt,
-          stream: false,
-          options: {
-            temperature: 0.7,
-          },
-        }),
-      );
+    const response = await this.httpService.axiosRef.post(
+      `${this.apiUrl}/generate`,
+      {
+        model: this.model,
+        prompt,
+      },
+    );
 
-      return response.data.response.trim();
-    } catch (error) {
-      console.error('Failed to generate thank you message:', error);
-      return 'Thank you for your feedback! We appreciate your time and input.';
-    }
+    return response.data.response.trim();
   }
 }

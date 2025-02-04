@@ -4,9 +4,13 @@ import {
   Body,
   UseGuards,
   BadRequestException,
+  Sse,
+  MessageEvent,
+  Query,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { LLMService } from '../services/llm.service';
+import { Observable, map } from 'rxjs';
 
 interface GenerateQuestionsDto {
   companyType: string;
@@ -15,12 +19,30 @@ interface GenerateQuestionsDto {
 
 interface GenerateThankYouDto {
   companyName: string;
+  responseType: string;
 }
 
 @Controller('llm')
-@UseGuards(JwtAuthGuard) // Protect all endpoints with JWT auth
+// @UseGuards(JwtAuthGuard) // Protect all endpoints with JWT auth
 export class LLMController {
   constructor(private readonly llmService: LLMService) {}
+
+  @Sse('generate-questions/stream')
+  generateQuestionsStream(
+    @Query('companyType') companyType: string,
+    @Query('goals') goals: string,
+  ): Observable<MessageEvent> {
+    return this.llmService
+      .generateFeedbackQuestionsStream(companyType, goals)
+      .pipe(
+        map((data) => ({
+          data,
+          id: new Date().toISOString(),
+          type: 'message',
+          retry: 15000,
+        })),
+      );
+  }
 
   @Post('generate-questions')
   async generateQuestions(@Body() dto: GenerateQuestionsDto) {
@@ -47,6 +69,7 @@ export class LLMController {
 
     const message = await this.llmService.generateThankYouMessage(
       dto.companyName,
+      dto.responseType,
     );
 
     return {

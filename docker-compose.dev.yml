@@ -26,8 +26,25 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=feedy
+      - DB_PASSWORD=feedy123
+      - DB_DATABASE=feedy
     depends_on:
+      - postgres
       - llm-service
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=feedy
+      - POSTGRES_PASSWORD=feedy123
+      - POSTGRES_DB=feedy
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   llm-service:
     build:
@@ -50,4 +67,5 @@ services:
       retries: 3
 
 volumes:
+  postgres_data:
   llm-models-dev:

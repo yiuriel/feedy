@@ -8,6 +8,7 @@ import { FeedbackForm } from './entities/feedback-form.entity';
 import { FeedbackResponse } from './entities/feedback-response.entity';
 import { User } from './entities/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { LLMModule } from './llm/llm.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AuthModule } from './auth/auth.module';
       User,
     ]),
     AuthModule,
+    LLMModule,
   ],
   controllers: [AppController],
   providers: [AppService],
