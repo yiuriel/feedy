@@ -39,12 +39,39 @@ export class FeedbackForm {
   @Column({ type: 'timestamp', nullable: true })
   expiresAt: Date;
 
+  @Column({ default: 0 })
+  responseCount: number;
+
+  @Column({ nullable: true })
+  password: string;
+
+  @Column({ nullable: true })
+  customThankYouPage: string;
+
+  @Column({ type: 'json', nullable: true })
+  theme: {
+    primaryColor?: string;
+    backgroundColor?: string;
+    fontFamily?: string;
+    customCss?: string;
+  };
+
+  @Column({ default: false })
+  allowEmbedding: boolean;
+
+  @Column({ type: 'json', nullable: true })
+  qrCodeSettings: {
+    enabled: boolean;
+    customLogo?: string;
+    foregroundColor?: string;
+  };
+
   @ManyToOne(() => Organization, (org) => org.feedbackForms, {
     onDelete: 'CASCADE',
   })
   organization: Organization;
 
-  @ManyToOne(() => User, { nullable: true })
+  @ManyToOne(() => User, (user) => user.id)
   createdBy: User;
 
   @OneToMany(() => FeedbackResponse, (response) => response.form)

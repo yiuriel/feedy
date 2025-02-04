@@ -3,11 +3,13 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
+  OneToOne,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { FeedbackForm } from './feedback-form.entity';
 import { User } from './user.entity';
+import { FeedbackForm } from './feedback-form.entity';
+import { Subscription } from './subscription.entity';
 
 @Entity()
 export class Organization {
@@ -22,6 +24,10 @@ export class Organization {
 
   @Column({ nullable: true })
   description: string;
+
+  // Organization's subscription
+  @OneToOne(() => Subscription, (subscription) => subscription.organization)
+  subscription: Subscription;
 
   @OneToMany(() => User, (user) => user.organization)
   users: User[];
