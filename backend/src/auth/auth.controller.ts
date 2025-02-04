@@ -1,6 +1,22 @@
 import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { SubscriptionPlan } from '../entities/subscription.entity';
+
+// Define the DTO for registration
+interface RegisterDto {
+  user: {
+    email: string;
+    password: string;
+    name: string;
+  };
+  organization: {
+    name: string;
+  };
+  subscription: {
+    plan: SubscriptionPlan;
+  };
+}
 
 @Controller('auth')
 export class AuthController {
@@ -13,20 +29,11 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(
-    @Body()
-    registerDto: {
-      email: string;
-      password: string;
-      name: string;
-      organizationId: string;
-    },
-  ) {
+  async register(@Body() registerDto: RegisterDto) {
     return this.authService.register(
-      registerDto.email,
-      registerDto.password,
-      registerDto.name,
-      registerDto.organizationId,
+      registerDto.user,
+      registerDto.organization,
+      registerDto.subscription,
     );
   }
 }
