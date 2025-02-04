@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import Features from "./components/Features";
+import Pricing from "./components/Pricing";
 import { useEffect } from "react";
 
 function App() {
@@ -97,6 +98,7 @@ function App() {
       </div>
 
       <Features />
+      <Pricing />
     </div>
   );
 }
