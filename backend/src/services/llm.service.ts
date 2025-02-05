@@ -40,14 +40,22 @@ export class LLMService implements OnModuleInit {
       options?: string[];
     }>
   > {
-    const prompt = `You are a feedback form expert. Generate a list of 3 relevant feedback questions for a ${companyType} that wants to ${goals}. 
-    Return ONLY a JSON array of questions, where each question object has these properties:
-    - type: one of "text", "rating", "choice", "boolean"
-    - question: the actual question text
-    - required: boolean
-    - options: array of strings (only for rating and choice types)
+    const prompt = `You are a feedback form expert. Generate 2 relevant feedback questions for a ${companyType} that wants to ${goals}.
+  For each question, provide these properties in a simple format:
+  - First line: question type (text, rating, choice, or boolean)
+  - Second line: the question itself
+  - Third line: required (yes/no)
+  - Fourth line (only for rating/choice): comma-separated options
 
-    Format the response as a valid JSON array.`;
+  Example format:
+  rating
+  How satisfied are you with our service?
+  yes
+  Very Dissatisfied, Dissatisfied, Neutral, Satisfied, Very Satisfied
+
+  text
+  What could we improve?
+  no`;
 
     const response = await this.httpService.axiosRef.post(
       `${this.apiUrl}/generate`,
@@ -56,8 +64,8 @@ export class LLMService implements OnModuleInit {
         prompt,
         stream: false,
         options: {
-          temperature: 0.7,
-          top_p: 0.9,
+          temperature: 0.5,
+          top_p: 0.7,
         },
       },
       {
@@ -65,7 +73,25 @@ export class LLMService implements OnModuleInit {
       },
     );
 
-    return JSON.parse(response.data.response);
+    // Parse the text response into our required format
+    const questions = response.data.response.trim().split('\n\n');
+    return questions.map((questionBlock) => {
+      const lines = questionBlock.trim().split('\n');
+      const type = lines[0].trim();
+      const question = lines[1].trim();
+      const required = lines[2].trim().toLowerCase() === 'yes';
+      const options =
+        (type === 'rating' || type === 'choice') && lines[3]
+          ? lines[3].split(',').map((opt) => opt.trim())
+          : undefined;
+
+      return {
+        type,
+        question,
+        required,
+        ...(options && { options }),
+      };
+    });
   }
 
   /**
