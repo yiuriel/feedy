@@ -1,83 +1,68 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
-import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../services/api";
 
-export default function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [orgName, setOrgName] = useState("");
-  const [error, setError] = useState("");
+interface OrganizationDetailsForm {
+  name: string;
+  description: string;
+  industry: string;
+  size: string;
+}
 
-  const location = useLocation();
+export function OrganizationDetails() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  
+  const [formData, setFormData] = useState<OrganizationDetailsForm>({
+    name: "",
+    description: "",
+    industry: "",
+    size: "",
+  });
 
-  // Get the plan from URL parameters (if any)
-  const searchParams = new URLSearchParams(location.search);
-  const selectedPlan = searchParams.get("plan") || "free";
-
-  const { mutate: register, isPending } = useMutation({
-    mutationFn: api.auth.register,
+  const { mutate: submitOrganization, isPending } = useMutation({
+    mutationFn: api.organization.submitDetails,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
       navigate("/dashboard");
-    },
-    onError: (error: Error) => {
-      setError(error.message);
     },
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    submitOrganization(formData);
+  };
 
-    register({
-      user: {
-        email,
-        password,
-        name,
-      },
-      organization: {
-        name: orgName || `${name}'s Organization`, // Use user's name if org name not provided
-      },
-      subscription: {
-        plan: selectedPlan as any, // TODO: Type this properly
-      },
-    });
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Create your account
+          Complete Your Organization Details
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Or{" "}
-          <Link
-            to="/login"
-            className="font-medium text-indigo-600 hover:text-indigo-500"
-          >
-            sign in to your account
-          </Link>
-        </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {error && (
-            <div className="mb-4 p-2 text-sm text-red-700 bg-red-100 rounded">
-              {error}
-            </div>
-          )}
-
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700"
               >
-                Name
+                Organization Name
               </label>
               <div className="mt-1">
                 <input
@@ -85,8 +70,8 @@ export default function Register() {
                   name="name"
                   type="text"
                   required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={formData.name}
+                  onChange={handleChange}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
@@ -94,20 +79,19 @@ export default function Register() {
 
             <div>
               <label
-                htmlFor="email"
+                htmlFor="description"
                 className="block text-sm font-medium text-gray-700"
               >
-                Email address
+                Description
               </label>
               <div className="mt-1">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                <textarea
+                  id="description"
+                  name="description"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formData.description}
+                  onChange={handleChange}
+                  rows={3}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
@@ -115,44 +99,53 @@ export default function Register() {
 
             <div>
               <label
-                htmlFor="password"
+                htmlFor="industry"
                 className="block text-sm font-medium text-gray-700"
               >
-                Password
+                Industry
               </label>
               <div className="mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="new-password"
+                <select
+                  id="industry"
+                  name="industry"
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formData.industry}
+                  onChange={handleChange}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
+                >
+                  <option value="">Select an industry</option>
+                  <option value="technology">Technology</option>
+                  <option value="healthcare">Healthcare</option>
+                  <option value="finance">Finance</option>
+                  <option value="education">Education</option>
+                  <option value="other">Other</option>
+                </select>
               </div>
             </div>
 
             <div>
               <label
-                htmlFor="orgName"
+                htmlFor="size"
                 className="block text-sm font-medium text-gray-700"
               >
-                Organization Name (optional)
+                Company Size
               </label>
               <div className="mt-1">
-                <input
-                  id="orgName"
-                  name="orgName"
-                  type="text"
-                  value={orgName}
-                  onChange={(e) => setOrgName(e.target.value)}
+                <select
+                  id="size"
+                  name="size"
+                  required
+                  value={formData.size}
+                  onChange={handleChange}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder={`${
-                    name ? `${name}'s Organization` : "Your Organization"
-                  }`}
-                />
+                >
+                  <option value="">Select company size</option>
+                  <option value="1-10">1-10 employees</option>
+                  <option value="11-50">11-50 employees</option>
+                  <option value="51-200">51-200 employees</option>
+                  <option value="201-500">201-500 employees</option>
+                  <option value="501+">501+ employees</option>
+                </select>
               </div>
             </div>
 
@@ -162,7 +155,7 @@ export default function Register() {
                 disabled={isPending}
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isPending ? "Creating Account..." : "Create Account"}
+                {isPending ? "Submitting..." : "Complete Setup"}
               </button>
             </div>
           </form>
