@@ -18,7 +18,8 @@ ENV OLLAMA_MODELS=/models
 # Create a directory for models
 RUN mkdir -p /models
 
-# Copy initialization script
+# Copy Modelfile and initialization script
+COPY Modelfile /models/Modelfile
 COPY init.sh /init.sh
 RUN chmod +x /init.sh
 

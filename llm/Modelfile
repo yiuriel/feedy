@@ -1,0 +1,224 @@
+FROM phi
+
+# Set parameters for faster responses
+PARAMETER temperature 0.5
+PARAMETER top_p 0.7
+PARAMETER num_ctx 2048
+
+# Set system prompt
+SYSTEM You are a professional feedback specialist who creates consistent, high-quality feedback forms and thank you messages. For feedback questions, use rating (1-5 scale), choice (multiple options), or text format. Keep thank you messages concise and personalized.
+
+# Core feedback question examples (essential patterns)
+TEMPLATE Generate 2 relevant feedback questions for a service
+MESSAGE user Generate 2 relevant feedback questions for a restaurant that wants to improve food quality
+MESSAGE assistant rating How would you rate the taste and presentation of your meal? yes Poor, Below Average, Good, Very Good, Exceptional text Which dish would you like us to improve and why? yes
+
+TEMPLATE Generate 2 relevant feedback questions for a software product
+MESSAGE user Generate 2 relevant feedback questions for a software company that wants to improve user interface
+MESSAGE assistant rating How intuitive was our software interface to navigate? yes Very Difficult, Somewhat Difficult, Neutral, Easy, Very Easy choice Which interface element needs the most improvement? yes Navigation Menu, Search Function, Dashboard Layout, Button Placement
+
+TEMPLATE Generate 2 relevant feedback questions for a facility
+MESSAGE user Generate 2 relevant feedback questions for a hotel that wants to evaluate cleanliness
+MESSAGE assistant rating How satisfied were you with the cleanliness of your room? yes Very Unsatisfied, Unsatisfied, Neutral, Satisfied, Very Satisfied choice Which areas need more attention to cleanliness? yes Bathroom, Bedroom, Common Areas, Pool Area
+
+TEMPLATE Generate 2 relevant feedback questions for a restaurant that wants to improve food quality
+MESSAGE user Generate 2 relevant feedback questions for a restaurant that wants to improve food quality
+MESSAGE assistant rating How would you rate the taste and presentation of your meal? yes Poor, Below Average, Good, Very Good, Exceptional text Which dish would you like us to improve and why? yes
+
+TEMPLATE Generate 2 relevant feedback questions for a software company that wants to improve user interface
+MESSAGE user Generate 2 relevant feedback questions for a software company that wants to improve user interface
+MESSAGE assistant rating How intuitive was our software interface to navigate? yes Very Difficult, Somewhat Difficult, Neutral, Easy, Very Easy choice Which interface element needs the most improvement? yes Navigation Menu, Search Function, Dashboard Layout, Button Placement
+
+TEMPLATE Generate 2 relevant feedback questions for a hotel that wants to evaluate cleanliness
+MESSAGE user Generate 2 relevant feedback questions for a hotel that wants to evaluate cleanliness
+MESSAGE assistant rating How satisfied were you with the cleanliness of your room? yes Very Unsatisfied, Unsatisfied, Neutral, Satisfied, Very Satisfied choice Which areas need more attention to cleanliness? yes Bathroom, Bedroom, Common Areas, Pool Area
+
+TEMPLATE Generate 2 relevant feedback questions for an online store that wants to improve checkout process
+MESSAGE user Generate 2 relevant feedback questions for an online store that wants to improve checkout process
+MESSAGE assistant rating How smooth was your checkout experience? yes Very Problematic, Somewhat Problematic, Neutral, Smooth, Very Smooth text What specific part of the checkout process could be improved? yes
+
+TEMPLATE Generate 2 relevant feedback questions for a gym that wants to improve member satisfaction
+MESSAGE user Generate 2 relevant feedback questions for a gym that wants to improve member satisfaction
+MESSAGE assistant rating How satisfied are you with our equipment maintenance? yes Very Unsatisfied, Unsatisfied, Neutral, Satisfied, Very Satisfied choice Which facility aspect needs the most attention? yes Equipment Variety, Cleanliness, Staff Assistance, Class Schedule
+
+TEMPLATE Generate 2 relevant feedback questions for a bank that wants to improve mobile app
+MESSAGE user Generate 2 relevant feedback questions for a bank that wants to improve mobile app
+MESSAGE assistant rating How easy was it to complete your banking tasks on our mobile app? yes Very Difficult, Difficult, Neutral, Easy, Very Easy text Which features would you like to see added to our mobile app? yes
+
+TEMPLATE Generate 2 relevant feedback questions for a dental clinic that wants to improve patient experience
+MESSAGE user Generate 2 relevant feedback questions for a dental clinic that wants to improve patient experience
+MESSAGE assistant rating How comfortable were you during your dental procedure? yes Very Uncomfortable, Uncomfortable, Neutral, Comfortable, Very Comfortable choice What aspect of our service could be improved? yes Wait Times, Staff Communication, Treatment Explanation, Follow-up Care
+
+TEMPLATE Generate 2 relevant feedback questions for an airline that wants to improve in-flight service
+MESSAGE user Generate 2 relevant feedback questions for an airline that wants to improve in-flight service
+MESSAGE assistant rating How would you rate our cabin crew's service? yes Poor, Fair, Good, Very Good, Excellent text What could we do to make your flight more comfortable? yes
+
+TEMPLATE Generate 2 relevant feedback questions for a car dealership that wants to improve sales process
+MESSAGE user Generate 2 relevant feedback questions for a car dealership that wants to improve sales process
+MESSAGE assistant rating How satisfied were you with your car buying experience? yes Very Unsatisfied, Unsatisfied, Neutral, Satisfied, Very Satisfied choice Which part of the sales process needs improvement? yes Initial Contact, Test Drive, Price Negotiation, Paperwork
+
+TEMPLATE Generate 2 relevant feedback questions for a streaming service that wants to improve content recommendations
+MESSAGE user Generate 2 relevant feedback questions for a streaming service that wants to improve content recommendations
+MESSAGE assistant rating How relevant are our content recommendations to your interests? yes Not at all Relevant, Slightly Relevant, Somewhat Relevant, Very Relevant, Extremely Relevant text What types of content would you like to see more of? yes
+
+TEMPLATE Generate 2 relevant feedback questions for a coffee shop that wants to improve service speed
+MESSAGE user Generate 2 relevant feedback questions for a coffee shop that wants to improve service speed
+MESSAGE assistant rating How satisfied were you with your wait time? yes Very Unsatisfied, Unsatisfied, Neutral, Satisfied, Very Satisfied choice Which service aspect needs the most improvement? yes Order Taking, Drink Preparation, Payment Process, Pick-up System
+
+TEMPLATE Generate 2 relevant feedback questions for an online learning platform that wants to improve course quality
+MESSAGE user Generate 2 relevant feedback questions for an online learning platform that wants to improve course quality
+MESSAGE assistant rating How engaging was the course content? yes Not at all Engaging, Slightly Engaging, Moderately Engaging, Very Engaging, Extremely Engaging text What would make the learning experience more effective? yes
+
+TEMPLATE Generate 2 relevant feedback questions for a fitness app that wants to improve user engagement
+MESSAGE user Generate 2 relevant feedback questions for a fitness app that wants to improve user engagement
+MESSAGE assistant rating How motivating are our workout programs? yes Not at all Motivating, Slightly Motivating, Moderately Motivating, Very Motivating, Extremely Motivating choice Which feature would you like us to enhance? yes Workout Tracking, Progress Visualization, Social Features, Personalization
+
+TEMPLATE Generate 2 relevant feedback questions for a grocery delivery service that wants to improve order accuracy
+MESSAGE user Generate 2 relevant feedback questions for a grocery delivery service that wants to improve order accuracy
+MESSAGE assistant rating How accurate was your delivered order? yes Very Inaccurate, Somewhat Inaccurate, Mostly Accurate, Very Accurate, Perfect text What could we do to improve our order accuracy? yes
+
+TEMPLATE Generate 2 relevant feedback questions for a real estate agency that wants to improve property viewings
+MESSAGE user Generate 2 relevant feedback questions for a real estate agency that wants to improve property viewings
+MESSAGE assistant rating How satisfied were you with the property viewing experience? yes Very Unsatisfied, Unsatisfied, Neutral, Satisfied, Very Satisfied choice Which aspect of the viewing process needs improvement? yes Scheduling, Agent Knowledge, Property Information, Follow-up
+
+TEMPLATE Generate 2 relevant feedback questions for a pet grooming service that wants to improve customer satisfaction
+MESSAGE user Generate 2 relevant feedback questions for a pet grooming service that wants to improve customer satisfaction
+MESSAGE assistant rating How satisfied are you with your pet's grooming results? yes Very Unsatisfied, Unsatisfied, Neutral, Satisfied, Very Satisfied text What could we do to make your pet's grooming experience better? yes
+
+TEMPLATE Generate 2 relevant feedback questions for a moving company that wants to improve service quality
+MESSAGE user Generate 2 relevant feedback questions for a moving company that wants to improve service quality
+MESSAGE assistant rating How would you rate our moving crew's professionalism? yes Poor, Fair, Good, Very Good, Excellent choice Which aspect of our service needs the most improvement? yes Punctuality, Careful Handling, Communication, Pricing Transparency
+
+# Core thank you message examples (essential patterns)
+TEMPLATE Generate a thank you message for a service company
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for TechCorp
+MESSAGE assistant Thank you for sharing your feedback with TechCorp! Your insights help us improve our services and better serve our customers.
+
+TEMPLATE Generate a thank you message for a retail company
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for FoodDelight
+MESSAGE assistant We appreciate you taking the time to provide feedback to FoodDelight. Your opinion matters to us and helps shape our future improvements.
+
+TEMPLATE Generate a thank you message for a healthcare provider
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for HealthFirst Clinic
+MESSAGE assistant We appreciate your feedback to HealthFirst Clinic. Your input helps us provide better healthcare services to our community.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for StyleStore
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for StyleStore
+MESSAGE assistant Thank you for your valuable feedback to StyleStore. We're committed to using your insights to enhance your shopping experience.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for CloudServices
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for CloudServices
+MESSAGE assistant Thank you for providing feedback to CloudServices. Your input helps us deliver better cloud solutions for our customers.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for GreenGrocer
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for GreenGrocer
+MESSAGE assistant Thank you for sharing your thoughts with GreenGrocer. Your feedback helps us improve our fresh produce selection and service.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for AutoCare
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for AutoCare
+MESSAGE assistant We value your feedback to AutoCare. Your insights help us maintain the highest standards in automotive service.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for EduLearn
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for EduLearn
+MESSAGE assistant Thank you for your feedback to EduLearn. Your input helps us create better learning experiences for our students.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for PetPals
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for PetPals
+MESSAGE assistant We appreciate your feedback to PetPals. Your insights help us provide better care for your beloved pets.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for HomeStyle
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for HomeStyle
+MESSAGE assistant Thank you for sharing your experience with HomeStyle. Your feedback helps us improve our home furnishing solutions.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for FitZone
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for FitZone
+MESSAGE assistant We value your feedback to FitZone. Your input helps us create a better fitness environment for all our members.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for CityBank
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for CityBank
+MESSAGE assistant Thank you for providing feedback to CityBank. Your insights help us improve our banking services and customer experience.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for TravelWise
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for TravelWise
+MESSAGE assistant We appreciate your feedback to TravelWise. Your input helps us create better travel experiences for our customers.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for BeautySpot
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for BeautySpot
+MESSAGE assistant Thank you for sharing your thoughts with BeautySpot. Your feedback helps us enhance our beauty services.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for GameHub
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for GameHub
+MESSAGE assistant We value your feedback to GameHub. Your insights help us create better gaming experiences for our community.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for CleanPro
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for CleanPro
+MESSAGE assistant Thank you for your feedback to CleanPro. Your input helps us maintain the highest standards in cleaning services.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for DentalCare
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for DentalCare
+MESSAGE assistant We appreciate your feedback to DentalCare. Your insights help us provide better dental care services.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for WorkSpace
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for WorkSpace
+MESSAGE assistant Thank you for sharing your experience with WorkSpace. Your feedback helps us improve our coworking environment.
+
+# Additional examples
+TEMPLATE Generate 2 relevant feedback questions for a music streaming service that wants to improve playlist recommendations
+MESSAGE user Generate 2 relevant feedback questions for a music streaming service that wants to improve playlist recommendations
+MESSAGE assistant rating How satisfied are you with our personalized playlist recommendations? yes Very Unsatisfied, Unsatisfied, Neutral, Satisfied, Very Satisfied choice Which aspect of our music recommendations needs improvement? yes Genre Variety, Song Freshness, Artist Discovery, Mood Matching
+
+TEMPLATE Generate 2 relevant feedback questions for a coworking space that wants to improve facilities
+MESSAGE user Generate 2 relevant feedback questions for a coworking space that wants to improve facilities
+MESSAGE assistant rating How would you rate the comfort and functionality of our workspace? yes Poor, Below Average, Good, Very Good, Excellent text What additional amenities would enhance your coworking experience? yes
+
+TEMPLATE Generate 2 relevant feedback questions for a mobile game developer that wants to improve user experience
+MESSAGE user Generate 2 relevant feedback questions for a mobile game developer that wants to improve user experience
+MESSAGE assistant rating How engaging do you find the game mechanics? yes Not at all Engaging, Slightly Engaging, Moderately Engaging, Very Engaging, Extremely Engaging choice Which aspect needs the most improvement? yes Controls, Graphics, Performance, Game Balance
+
+TEMPLATE Generate 2 relevant feedback questions for a language learning app that wants to improve lesson effectiveness
+MESSAGE user Generate 2 relevant feedback questions for a language learning app that wants to improve lesson effectiveness
+MESSAGE assistant rating How effective are our lessons in helping you learn the language? yes Not Effective, Somewhat Effective, Moderately Effective, Very Effective, Extremely Effective text What could we add to make the lessons more effective for you? yes
+
+TEMPLATE Generate 2 relevant feedback questions for a smart home device company that wants to improve product usability
+MESSAGE user Generate 2 relevant feedback questions for a smart home device company that wants to improve product usability
+MESSAGE assistant rating How easy is it to set up and use our smart home devices? yes Very Difficult, Difficult, Moderate, Easy, Very Easy choice Which feature needs the most improvement? yes Setup Process, App Interface, Device Connectivity, Voice Commands
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for SmartTech
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for SmartTech
+MESSAGE assistant Thank you for taking the time to share your experience with SmartTech. Your feedback helps us make our smart home solutions more intuitive and user-friendly.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for MusicFlow
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for MusicFlow
+MESSAGE assistant We appreciate your valuable feedback to MusicFlow. Your insights help us create better music discovery experiences for our listeners.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for CoWork Hub
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for CoWork Hub
+MESSAGE assistant Thank you for providing feedback to CoWork Hub. Your input helps us create a more productive and comfortable workspace environment.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for GameMaster
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for GameMaster
+MESSAGE assistant We value your feedback to GameMaster. Your insights are crucial in helping us create more engaging and enjoyable gaming experiences.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for LangLearn
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for LangLearn
+MESSAGE assistant Thank you for sharing your thoughts with LangLearn. Your feedback helps us improve our language learning platform and better support your learning journey.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for DataCloud
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for DataCloud
+MESSAGE assistant We appreciate your feedback to DataCloud. Your input helps us enhance our cloud storage solutions and better protect your data.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for FreshMart
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for FreshMart
+MESSAGE assistant Thank you for your feedback to FreshMart. Your insights help us improve our grocery delivery service and provide fresher products.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for BikeShare
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for BikeShare
+MESSAGE assistant We value your feedback to BikeShare. Your input helps us improve our bike-sharing service and make urban mobility more convenient.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for PetCare Plus
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for PetCare Plus
+MESSAGE assistant Thank you for sharing your experience with PetCare Plus. Your feedback helps us provide better veterinary care and services for your pets.
+
+TEMPLATE Generate a thank you message for a customer who just submitted feedback for HomeSecure
+MESSAGE user Generate a thank you message for a customer who just submitted feedback for HomeSecure
+MESSAGE assistant We appreciate your feedback to HomeSecure. Your insights help us enhance our security systems and keep your home safer.

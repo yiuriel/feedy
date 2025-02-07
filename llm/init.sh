@@ -34,6 +34,12 @@ curl -X POST http://localhost:11434/api/pull \
   -H "Content-Type: application/json" \
   -d '{"name": "phi"}'
 
+# Create fine-tuned model
+# echo "Creating fine-tuned feedback model..."
+# cd /models && ollama create feedback -f Modelfile
+
+# echo "Fine-tuned model created successfully!"
+
 # Wait for Ollama process to exit
 echo "Monitoring Ollama process..."
 wait $OLLAMA_PID

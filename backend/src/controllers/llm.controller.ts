@@ -35,15 +35,12 @@ export class LLMController {
 
   @Post('generate-thank-you')
   async generateThankYou(@Body() dto: GenerateThankYouDto) {
-    if (!dto.companyName || !dto.responseType) {
-      throw new BadRequestException(
-        'Company name and response type are required',
-      );
+    if (!dto.companyName) {
+      throw new BadRequestException('Company name is reqired');
     }
 
     const message = await this.llmService.generateThankYouMessage(
       dto.companyName,
-      dto.responseType,
     );
 
     return {

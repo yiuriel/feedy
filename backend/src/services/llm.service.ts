@@ -4,7 +4,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 @Injectable()
 export class LLMService implements OnModuleInit {
   private readonly apiUrl = 'http://llm-service:11434/api';
-  private readonly model = 'phi'; // Using Microsoft's Phi-2 model
+  private readonly model = 'phi'; // Using our fine-tuned model
 
   constructor(private readonly httpService: HttpService) {}
 
@@ -64,8 +64,8 @@ export class LLMService implements OnModuleInit {
         prompt,
         stream: false,
         options: {
-          temperature: 0.5,
-          top_p: 0.7,
+          temperature: 0.6,
+          top_p: 0.8,
         },
       },
       {
@@ -99,11 +99,8 @@ export class LLMService implements OnModuleInit {
    * @param companyName Name of the company
    * @returns Generated thank you message
    */
-  async generateThankYouMessage(
-    companyName: string,
-    responseType: string,
-  ): Promise<string> {
-    const prompt = `Generate a thank you message for a customer who just submitted ${responseType} feedback for ${companyName}. Keep it short and professional.`;
+  async generateThankYouMessage(companyName: string): Promise<string> {
+    const prompt = `Generate a thank you message for a customer who just submitted feedback for ${companyName}. Keep it short and professional. max 4 lines.`;
 
     const response = await this.httpService.axiosRef.post(
       `${this.apiUrl}/generate`,
@@ -112,9 +109,12 @@ export class LLMService implements OnModuleInit {
         prompt,
         stream: false,
         options: {
-          temperature: 0.7,
-          top_p: 0.9,
+          temperature: 0.6,
+          top_p: 0.8,
         },
+      },
+      {
+        timeout: 60000,
       },
     );
 
