@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { OrganizationDetails } from "../components/OrganizationDetails";
 import { api } from "../services/api";
 import { Loading } from "../components/Loading";
+import { StatsCard } from "../components/Card/StatsCard";
 
 export default function Dashboard() {
   const { data: user, isLoading: isLoadingUser } = useQuery({
@@ -46,39 +47,21 @@ export default function Dashboard() {
 
           <div className="mt-8">
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-              {/* Stats cards */}
-              <div className="bg-white overflow-hidden shadow rounded-lg">
-                <div className="px-4 py-5 sm:p-6">
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Total Feeds
-                  </dt>
-                  <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                    {isLoadingStats ? "..." : stats?.totalFeeds}
-                  </dd>
-                </div>
-              </div>
-
-              <div className="bg-white overflow-hidden shadow rounded-lg">
-                <div className="px-4 py-5 sm:p-6">
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Active Subscriptions
-                  </dt>
-                  <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                    {isLoadingStats ? "..." : stats?.activeSubscriptions}
-                  </dd>
-                </div>
-              </div>
-
-              <div className="bg-white overflow-hidden shadow rounded-lg">
-                <div className="px-4 py-5 sm:p-6">
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Total Articles
-                  </dt>
-                  <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                    {isLoadingStats ? "..." : stats?.totalArticles}
-                  </dd>
-                </div>
-              </div>
+              <StatsCard
+                title="Active Forms"
+                value={stats?.activeForms || 0}
+                isLoading={isLoadingStats}
+              />
+              <StatsCard
+                title="Total Forms"
+                value={stats?.totalForms || 0}
+                isLoading={isLoadingStats}
+              />
+              <StatsCard
+                title="Total Responses"
+                value={stats?.totalResponses || 0}
+                isLoading={isLoadingStats}
+              />
             </div>
           </div>
 

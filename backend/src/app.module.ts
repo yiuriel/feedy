@@ -11,6 +11,7 @@ import { LLMModule } from './llm/llm.module';
 import { OrganizationModule } from './organization/organization.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { UserModule } from './user/user.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UserModule } from './user/user.module';
     LLMModule,
     UserModule,
     OrganizationModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

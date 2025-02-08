@@ -14,9 +14,9 @@ export interface Organization {
 }
 
 export interface DashboardStats {
-  totalFeeds: number;
-  activeSubscriptions: number;
-  totalArticles: number;
+  activeForms: number;
+  totalForms: number;
+  totalResponses: number;
 }
 
 export interface OrganizationDetailsForm {
