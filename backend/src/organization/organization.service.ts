@@ -12,7 +12,29 @@ export class OrganizationService {
   ) {}
 
   async updateOrganization(id: string, updateDto: UpdateOrganizationDto) {
-    await this.organizationRepository.update(id, updateDto);
+    console.log(updateDto, id);
+
+    await this.organizationRepository.update(id, {
+      name: updateDto.name,
+      description: updateDto.description,
+      industry: updateDto.industry,
+      size: updateDto.size,
+    });
     return this.organizationRepository.findOne({ where: { id } });
+  }
+
+  async getOrganization(id: string) {
+    return this.organizationRepository.findOne({ where: { id } });
+  }
+
+  async orgNeedsDetails(id: string) {
+    const organization = await this.getOrganization(id);
+
+    return (
+      !organization ||
+      !organization.name ||
+      !organization.industry ||
+      !organization.size
+    );
   }
 }

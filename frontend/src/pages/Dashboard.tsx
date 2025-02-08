@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { OrganizationDetails } from "../components/OrganizationDetails";
 import { api } from "../services/api";
+import { Loading } from "../components/Loading";
 
 export default function Dashboard() {
   const { data: user, isLoading: isLoadingUser } = useQuery({
@@ -8,18 +9,19 @@ export default function Dashboard() {
     queryFn: api.user.getCurrentUser,
   });
 
+  const { data: needsDetails, isLoading: isLoadingNeedsDetails } = useQuery({
+    queryKey: ["orgNeedsDetails"],
+    queryFn: api.organization.orgNeedsDetails,
+  });
+
   const { data: stats, isLoading: isLoadingStats } = useQuery({
     queryKey: ["dashboardStats"],
     queryFn: api.dashboard.getStats,
-    enabled: !!user?.hasCompletedOrgSetup,
+    enabled: !isLoadingNeedsDetails && !needsDetails,
   });
 
-  if (isLoadingUser) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-      </div>
-    );
+  if (isLoadingUser || isLoadingNeedsDetails) {
+    return <Loading />;
   }
 
   if (!user) {
@@ -30,7 +32,7 @@ export default function Dashboard() {
     );
   }
 
-  if (!user.hasCompletedOrgSetup) {
+  if (needsDetails) {
     return <OrganizationDetails />;
   }
 

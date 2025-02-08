@@ -3,7 +3,14 @@ export type SubscriptionPlan = "free" | "pro";
 export interface User {
   id: string;
   email: string;
-  hasCompletedOrgSetup: boolean;
+}
+
+export interface Organization {
+  id: string;
+  name: string;
+  industry: string;
+  size: string;
+  description: string;
 }
 
 export interface DashboardStats {

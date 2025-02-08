@@ -138,6 +138,7 @@ export class AuthService {
       role: 'admin', // First user is always admin
     });
     organization.users = [user];
+    user.organization = organization;
     await this.userRepository.save(user);
 
     // Generate JWT token

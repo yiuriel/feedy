@@ -2,6 +2,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { api } from "../services/api";
+import { useAuthUser } from "../hooks/useAuthUser";
+import { Loading } from "../components/Loading";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -9,6 +11,8 @@ export default function Login() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+
+  const { isLoadingUser } = useAuthUser();
 
   const { mutate: login, isPending } = useMutation({
     mutationFn: api.auth.login,
@@ -24,6 +28,10 @@ export default function Login() {
     e.preventDefault();
     login({ email, password });
   };
+
+  if (isLoadingUser) {
+    return <Loading />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

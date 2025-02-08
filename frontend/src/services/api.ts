@@ -4,6 +4,7 @@ import {
   User,
   OrganizationDetailsForm,
   DashboardStats,
+  Organization,
 } from "./api.types";
 import axios from "./axios";
 
@@ -27,8 +28,14 @@ export const api = {
     },
   },
   organization: {
+    orgNeedsDetails: async (): Promise<boolean> => {
+      return axios.get("/organization/need-details");
+    },
     submitDetails: async (data: OrganizationDetailsForm) => {
       return axios.post("/organization/details", data);
+    },
+    getOrganization: async (): Promise<Organization> => {
+      return axios.get("/organization");
     },
   },
   dashboard: {

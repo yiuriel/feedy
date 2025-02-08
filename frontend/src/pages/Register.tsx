@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
-import { useMutation } from "@tanstack/react-query";
 import { api } from "../services/api";
+import { useAuthUser } from "../hooks/useAuthUser";
+import { Loading } from "../components/Loading";
+import { useMutation } from "@tanstack/react-query";
+import { SubscriptionPlan } from "../services/api.types";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -10,10 +13,10 @@ export default function Register() {
   const [orgName, setOrgName] = useState("");
   const [error, setError] = useState("");
 
-  const location = useLocation();
   const navigate = useNavigate();
+  const { isLoadingUser } = useAuthUser();
 
-  // Get the plan from URL parameters (if any)
+  const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const selectedPlan = searchParams.get("plan") || "free";
 
@@ -41,10 +44,14 @@ export default function Register() {
         name: orgName || `${name}'s Organization`, // Use user's name if org name not provided
       },
       subscription: {
-        plan: selectedPlan as any, // TODO: Type this properly
+        plan: selectedPlan as SubscriptionPlan, // TODO: Type this properly
       },
     });
   };
+
+  if (isLoadingUser) {
+    return <Loading />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
