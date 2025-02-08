@@ -1,46 +1,11 @@
+import {
+  HealthCheckResponse,
+  RegisterData,
+  User,
+  OrganizationDetailsForm,
+  DashboardStats,
+} from "./api.types";
 import axios from "./axios";
-
-type SubscriptionPlan = "free" | "pro";
-
-interface User {
-  id: string;
-  email: string;
-  hasCompletedOrgSetup: boolean;
-}
-
-interface DashboardStats {
-  totalFeeds: number;
-  activeSubscriptions: number;
-  totalArticles: number;
-}
-
-interface OrganizationDetailsForm {
-  name: string;
-  description: string;
-  industry: string;
-  size: string;
-}
-
-interface RegisterData {
-  user: {
-    email: string;
-    password: string;
-    name: string;
-  };
-  organization: {
-    name: string;
-  };
-  subscription: {
-    plan: SubscriptionPlan;
-  };
-}
-
-interface HealthCheckResponse {
-  status: string;
-  timestamp: string;
-  version: string;
-  environment: string;
-}
 
 export const api = {
   health: {
