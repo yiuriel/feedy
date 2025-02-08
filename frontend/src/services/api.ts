@@ -21,6 +21,12 @@ export const api = {
     login: async (credentials: { email: string; password: string }) => {
       return axios.post("/auth/login", credentials);
     },
+    verify: async () => {
+      return axios.get("/auth/verify");
+    },
+    logout: async () => {
+      return axios.post("/auth/logout");
+    },
   },
   user: {
     getCurrentUser: async (): Promise<User> => {

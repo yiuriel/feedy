@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Organization } from './organization.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -20,6 +21,7 @@ export class User {
   email: string;
 
   @Column()
+  @Exclude()
   hashedPassword: string;
 
   @Column({ default: 'admin' })

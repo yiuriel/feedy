@@ -161,10 +161,14 @@ export class AuthService {
     };
   }
 
+  async logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('access_token');
+  }
+
   private createPayload(user: User | Omit<User, 'hashedPassword'>): Payload {
     return {
       email: user.email,
-      sub: user.id,
+      id: user.id,
       organizationId: user.organization.id,
     };
   }

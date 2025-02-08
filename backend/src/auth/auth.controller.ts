@@ -1,7 +1,7 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { AuthService } from './auth.service';
 import { RegisterDto } from '../dtos/register.dto';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
@@ -27,5 +27,19 @@ export class AuthController {
       res,
     );
     return result;
+  }
+
+  @Get('verify')
+  verifyToken(@Request() req: any) {
+    return this.authService.verifyToken(req);
+  }
+
+  @Post('logout')
+  logout(@Res({ passthrough: true }) res: Response) {
+    this.authService.logout(res);
+
+    return {
+      success: true,
+    };
   }
 }
