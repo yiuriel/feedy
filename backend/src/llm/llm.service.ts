@@ -45,13 +45,21 @@ export class LLMService implements OnModuleInit {
   - First line: question type (text, rating, choice, or boolean)
   - Second line: the question itself
   - Third line: required (yes/no)
-  - Fourth line (only for rating/choice): comma-separated options
+  - Fourth line (only for rating or choice): comma-separated options
 
   Example format:
   rating
   How satisfied are you with our service?
   yes
   Very Dissatisfied, Dissatisfied, Neutral, Satisfied, Very Satisfied
+
+  choice
+  Which areas need more attention to cleanliness?
+  yes
+  Bathroom, Bedroom, Common Areas, Pool Area
+  
+  boolean
+  Do you recommend our service to your friends?
 
   text
   What could we improve?

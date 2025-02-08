@@ -12,8 +12,6 @@ export class OrganizationService {
   ) {}
 
   async updateOrganization(id: string, updateDto: UpdateOrganizationDto) {
-    console.log(updateDto, id);
-
     await this.organizationRepository.update(id, {
       name: updateDto.name,
       description: updateDto.description,

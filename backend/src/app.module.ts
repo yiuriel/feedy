@@ -12,17 +12,24 @@ import { OrganizationModule } from './organization/organization.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { UserModule } from './user/user.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { QuestionModule } from './question/question.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(databaseConfig),
     TypeOrmModule.forFeature([FeedbackForm, FeedbackResponse, User]),
+    EventEmitterModule.forRoot({
+      delimiter: '.',
+      verboseMemoryLeak: true,
+    }),
     SubscriptionModule,
     AuthModule,
     LLMModule,
     UserModule,
     OrganizationModule,
     DashboardModule,
+    QuestionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

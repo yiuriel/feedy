@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
-import { LLMService } from '../services/llm.service';
-import { LLMController } from '../controllers/llm.controller';
+import { LLMService } from './llm.service';
+import { LLMController } from './llm.controller';
 
 @Module({
   imports: [

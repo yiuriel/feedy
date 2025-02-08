@@ -33,6 +33,12 @@ function App() {
             </Link>
             <Link
               to="/register"
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Register
+            </Link>
+            <Link
+              to="/register"
               className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Get started
@@ -63,9 +69,9 @@ function App() {
                 </h1>
                 <div className="mt-10 max-w-xl text-lg leading-8 text-gray-600 mx-auto">
                   <p>
-                    Feedy helps you gather, organize, and analyze user feedback to
-                    build better products. Integrate with your existing tools and
-                    get insights that matter.
+                    Feedy helps you gather, organize, and analyze user feedback
+                    to build better products. Integrate with your existing tools
+                    and get insights that matter.
                   </p>
                 </div>
                 <div className="mt-10 flex items-center justify-center gap-x-6">

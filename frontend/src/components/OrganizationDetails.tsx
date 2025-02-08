@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { queryKeys } from "../lib/queryKeys";
 import { api } from "../services/api";
 
 interface OrganizationDetailsForm {
@@ -11,9 +11,9 @@ interface OrganizationDetailsForm {
 }
 
 export function OrganizationDetails() {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const [disableName, setDisableName] = useState(false);
   const [formData, setFormData] = useState<OrganizationDetailsForm>({
     name: "",
     description: "",
@@ -28,9 +28,14 @@ export function OrganizationDetails() {
 
   const { mutate: submitOrganization, isPending } = useMutation({
     mutationFn: api.organization.submitDetails,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-      navigate("/dashboard");
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [
+          ...queryKeys.organization.needsDetails,
+          ...queryKeys.auth.verify,
+        ],
+      });
+      location.reload();
     },
   });
 
@@ -53,6 +58,8 @@ export function OrganizationDetails() {
 
   useEffect(() => {
     if (organization) {
+      if (organization.name) setDisableName(true);
+
       setFormData({
         name: organization.name,
         description: organization.description,
@@ -63,14 +70,12 @@ export function OrganizationDetails() {
   }, [organization]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Complete Your Organization Details
-        </h2>
-      </div>
+    <div className="flex flex-col pt-12 w-full">
+      <h2 className="text-center text-3xl font-extrabold text-gray-900">
+        Complete Your Organization Details
+      </h2>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="mt-8 max-w-xl w-full mx-auto">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
@@ -88,7 +93,7 @@ export function OrganizationDetails() {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  disabled
+                  disabled={disableName}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>

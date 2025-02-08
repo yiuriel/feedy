@@ -7,6 +7,7 @@ import { User } from '../entities/user.entity';
 import { SubscriptionModule } from '../subscription/subscription.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AuthService } from './auth.service';
       signOptions: { expiresIn: authConfig.jwtExpiresIn },
     }),
     SubscriptionModule,
+    EventEmitterModule.forRoot(),
   ],
   providers: [AuthService],
   controllers: [AuthController],

@@ -1,5 +1,5 @@
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
-import { LLMService } from '../services/llm.service';
+import { LLMService } from './llm.service';
 import { GenerateQuestionsDto } from '../dtos/generate-questions.dto';
 import { GenerateThankYouDto } from '../dtos/generate-thank-you.dto';
 

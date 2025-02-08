@@ -11,8 +11,9 @@ export function AppRouter() {
       <Route path="/" element={<App />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route element={<PrivateAppLayout />}>
-        <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="app" element={<PrivateAppLayout />}>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="profile" element={<div>profile</div>} />
       </Route>
     </Routes>
   );

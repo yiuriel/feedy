@@ -4,7 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { Organization } from '../entities/organization.entity';
-import { SubscriptionService } from '../services/subscription.service';
+import { SubscriptionService } from '../subscription/subscription.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import * as argon2 from 'argon2';
 import { generateUniqueSlug } from '../utils/slug.utils';
 import { Response, Request } from 'express';
@@ -13,6 +14,7 @@ import { RegisterUserDto } from '../dtos/register-user.dto';
 import { RegisterOrgDto } from '../dtos/register-org.dto';
 import { RegisterSubscriptionDto } from '../dtos/register-subscription.dto';
 import { noop } from 'src/utils/noop';
+import { OrganizationCreatedEvent } from 'src/organization/events/organization.created';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +25,7 @@ export class AuthService {
     private organizationRepository: Repository<Organization>,
     private jwtService: JwtService,
     private subscriptionService: SubscriptionService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async verifyToken(req: Request) {
@@ -120,6 +123,12 @@ export class AuthService {
     });
 
     await this.organizationRepository.save(organization);
+    console.log({ organization });
+
+    this.eventEmitter.emit(
+      'organization.created',
+      new OrganizationCreatedEvent(organization.id),
+    );
 
     // Create the subscription for the organization
     await this.subscriptionService.createSubscription(
@@ -129,6 +138,8 @@ export class AuthService {
 
     // Create the user and associate it with the organization
     const hashedPassword = await argon2.hash(userDto.password);
+
+    console.log({ hashedPassword });
 
     const user = this.userRepository.create({
       email: userDto.email,

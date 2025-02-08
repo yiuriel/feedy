@@ -23,7 +23,7 @@ export default function Register() {
   const { mutate: register, isPending } = useMutation({
     mutationFn: api.auth.register,
     onSuccess: () => {
-      navigate("/dashboard");
+      navigate("/app/dashboard");
     },
     onError: (error: Error) => {
       setError(error.message);
