@@ -50,13 +50,14 @@ export class QuestionService {
     await Promise.all([generateAndSaveQuestion(), generateAndSaveQuestion()]);
   }
 
-  async getQuestionsByOrganization() // organizationId: string,
-  : Promise<Question[]> {
+  async getQuestionsByOrganization(
+    organizationId: string,
+  ): Promise<Question[]> {
     return this.questionRepository.find({
-      // where: {
-      //   organizationId,
-      //   isActive: true,
-      // },
+      where: {
+        organizationId,
+        isActive: true,
+      },
       order: {
         createdAt: 'DESC',
       },

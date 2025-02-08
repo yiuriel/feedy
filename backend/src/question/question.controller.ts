@@ -12,6 +12,6 @@ export class QuestionController {
   async getQuestionsByOrganization(
     @GetUserPayload() user: Payload,
   ): Promise<Question[]> {
-    return this.questionService.getQuestionsByOrganization();
+    return this.questionService.getQuestionsByOrganization(user.organizationId);
   }
 }
