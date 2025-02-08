@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Res, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -6,20 +6,13 @@ import { User } from '../entities/user.entity';
 import { Organization } from '../entities/organization.entity';
 import { SubscriptionService } from '../services/subscription.service';
 import * as argon2 from 'argon2';
-
-interface RegisterUserDto {
-  email: string;
-  password: string;
-  name: string;
-}
-
-interface RegisterOrgDto {
-  name: string;
-}
-
-interface RegisterSubscriptionDto {
-  plan: 'free' | 'pro';
-}
+import { generateUniqueSlug } from '../utils/slug.utils';
+import { Response, Request } from 'express';
+import { Payload } from './types/payload.type';
+import { RegisterUserDto } from '../dtos/register-user.dto';
+import { RegisterOrgDto } from '../dtos/register-org.dto';
+import { RegisterSubscriptionDto } from '../dtos/register-subscription.dto';
+import { noop } from 'src/utils/noop';
 
 @Injectable()
 export class AuthService {
@@ -32,19 +25,70 @@ export class AuthService {
     private subscriptionService: SubscriptionService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.userRepository.findOne({ where: { email } });
-    if (user && (await argon2.verify(user.hashedPassword, password))) {
+  async verifyToken(req: Request) {
+    try {
+      const accessTokenCookie = req.headers.cookie
+        ?.split(';')
+        .find((c: string) => c.trim().startsWith('access_token='));
+      const token = accessTokenCookie?.split('=')?.[1];
+
+      const payload = this.jwtService.verify(token);
+      if (!payload) {
+        throw new UnauthorizedException('Invalid token');
+      }
+      return { message: 'Token is valid', id: payload.id };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token', error);
+    }
+  }
+
+  async validateUser(
+    email: string,
+    password: string,
+  ): Promise<Omit<User, 'hashedPassword'> | null> {
+    const user = await this.userRepository.findOne({
+      where: { email },
+      relations: ['organization'],
+    });
+    if (!user) {
+      return null;
+    }
+
+    const verifyResult = await Promise.race([
+      argon2.verify(user.hashedPassword, password),
+      new Promise((_, reject) =>
+        setTimeout(
+          () => reject(new Error('Password verification timeout')),
+          5000,
+        ),
+      ),
+    ]);
+
+    if (verifyResult) {
       const { hashedPassword, ...result } = user;
+      noop(hashedPassword);
       return result;
     }
+
     return null;
   }
 
-  async login(user: User) {
-    const payload = { email: user.email, sub: user.id };
+  async login(
+    loginData: { email: string; password: string },
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const user = await this.validateUser(loginData.email, loginData.password);
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const accessToken = this.jwtService.sign(this.createPayload(user));
+
+    this.setAccessTokenCookie(res, accessToken);
+
     return {
-      access_token: this.jwtService.sign(payload),
+      success: true,
     };
   }
 
@@ -52,6 +96,7 @@ export class AuthService {
     userDto: RegisterUserDto,
     orgDto: RegisterOrgDto,
     subscriptionDto: RegisterSubscriptionDto,
+    @Res({ passthrough: true }) res: Response,
   ) {
     const existingUser = await this.userRepository.findOne({
       where: { email: userDto.email },
@@ -65,6 +110,15 @@ export class AuthService {
     const organization = this.organizationRepository.create({
       name: orgDto.name,
     });
+
+    // Generate a unique slug for the organization
+    organization.slug = await generateUniqueSlug(orgDto.name, async (slug) => {
+      const existingOrg = await this.organizationRepository.findOne({
+        where: { slug },
+      });
+      return !!existingOrg;
+    });
+
     await this.organizationRepository.save(organization);
 
     // Create the subscription for the organization
@@ -75,6 +129,7 @@ export class AuthService {
 
     // Create the user and associate it with the organization
     const hashedPassword = await argon2.hash(userDto.password);
+
     const user = this.userRepository.create({
       email: userDto.email,
       hashedPassword,
@@ -82,12 +137,16 @@ export class AuthService {
       organization,
       role: 'admin', // First user is always admin
     });
+    organization.users = [user];
     await this.userRepository.save(user);
 
     // Generate JWT token
-    const payload = { email: user.email, sub: user.id };
+    const accessToken = this.jwtService.sign(this.createPayload(user));
+
+    // Set the JWT token as a cookie
+    this.setAccessTokenCookie(res, accessToken);
+
     return {
-      access_token: this.jwtService.sign(payload),
       user: {
         id: user.id,
         email: user.email,
@@ -99,5 +158,20 @@ export class AuthService {
         name: organization.name,
       },
     };
+  }
+
+  private createPayload(user: User | Omit<User, 'hashedPassword'>): Payload {
+    return {
+      email: user.email,
+      sub: user.id,
+      organizationId: user.organization.id,
+    };
+  }
+
+  private setAccessTokenCookie(res: Response, accessToken: string) {
+    res.cookie('access_token', accessToken, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+    });
   }
 }

@@ -1,26 +1,26 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 import { databaseConfig } from './config/database.config';
-import { Organization } from './entities/organization.entity';
 import { FeedbackForm } from './entities/feedback-form.entity';
 import { FeedbackResponse } from './entities/feedback-response.entity';
 import { User } from './entities/user.entity';
-import { AuthModule } from './auth/auth.module';
 import { LLMModule } from './llm/llm.module';
+import { OrganizationModule } from './organization/organization.module';
+import { SubscriptionModule } from './subscription/subscription.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(databaseConfig),
-    TypeOrmModule.forFeature([
-      Organization,
-      FeedbackForm,
-      FeedbackResponse,
-      User,
-    ]),
+    TypeOrmModule.forFeature([FeedbackForm, FeedbackResponse, User]),
+    SubscriptionModule,
     AuthModule,
     LLMModule,
+    UserModule,
+    OrganizationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

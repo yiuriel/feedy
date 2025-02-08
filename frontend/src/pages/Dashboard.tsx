@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { Navigate } from "react-router";
 import { OrganizationDetails } from "../components/OrganizationDetails";
 import { api } from "../services/api";
 
@@ -24,7 +23,11 @@ export default function Dashboard() {
   }
 
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return (
+      <>
+        {JSON.stringify(user, null, 2)} {JSON.stringify(stats, null, 2)}
+      </>
+    );
   }
 
   if (!user.hasCompletedOrgSetup) {

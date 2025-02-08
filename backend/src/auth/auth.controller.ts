@@ -1,39 +1,31 @@
-import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards/local-auth.guard';
-import { SubscriptionPlan } from '../entities/subscription.entity';
-
-// Define the DTO for registration
-interface RegisterDto {
-  user: {
-    email: string;
-    password: string;
-    name: string;
-  };
-  organization: {
-    name: string;
-  };
-  subscription: {
-    plan: SubscriptionPlan;
-  };
-}
+import { RegisterDto } from '../dtos/register.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  @UseGuards(LocalAuthGuard)
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  async login(
+    @Body() loginData: { email: string; password: string },
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return await this.authService.login(loginData, res);
   }
 
   @Post('register')
-  async register(@Body() registerDto: RegisterDto) {
-    return this.authService.register(
+  async register(
+    @Body() registerDto: RegisterDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.authService.register(
       registerDto.user,
       registerDto.organization,
       registerDto.subscription,
+      res,
     );
+    return result;
   }
 }

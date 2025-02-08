@@ -63,7 +63,7 @@ export const api = {
   },
   organization: {
     submitDetails: async (data: OrganizationDetailsForm) => {
-      return axios.post("/organization", data);
+      return axios.post("/organization/details", data);
     },
   },
   dashboard: {

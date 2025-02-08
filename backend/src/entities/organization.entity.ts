@@ -25,6 +25,12 @@ export class Organization {
   @Column({ nullable: true })
   description: string;
 
+  @Column({ nullable: true })
+  industry: string;
+
+  @Column({ nullable: true })
+  size: string;
+
   // Organization's subscription
   @OneToOne(() => Subscription, (subscription) => subscription.organization)
   subscription: Subscription;

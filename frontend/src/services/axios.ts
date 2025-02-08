@@ -9,16 +9,13 @@ const axiosInstance = axios.create({
   },
   // Add reasonable timeout
   timeout: 10000,
+  withCredentials: true,
 });
 
 // Add a request interceptor for handling loading states and auth tokens
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Get the token from localStorage if it exists
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    config.withCredentials = true;
     return config;
   },
   (error) => {
@@ -35,8 +32,7 @@ axiosInstance.interceptors.response.use(
       // that falls out of the range of 2xx
       if (error.response.status === 401) {
         // Handle unauthorized access
-        localStorage.removeItem("token");
-        window.location.href = "/login";
+        return Promise.reject(error);
       }
       throw new Error(error.response.data.message || "An error occurred");
     } else if (error.request) {

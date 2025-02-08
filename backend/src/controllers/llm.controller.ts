@@ -1,15 +1,7 @@
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { LLMService } from '../services/llm.service';
-
-interface GenerateQuestionsDto {
-  companyType: string;
-  goals: string;
-}
-
-interface GenerateThankYouDto {
-  companyName: string;
-  responseType: string;
-}
+import { GenerateQuestionsDto } from '../dtos/generate-questions.dto';
+import { GenerateThankYouDto } from '../dtos/generate-thank-you.dto';
 
 @Controller('llm')
 // @UseGuards(JwtAuthGuard) // Protect all endpoints with JWT auth
@@ -36,7 +28,7 @@ export class LLMController {
   @Post('generate-thank-you')
   async generateThankYou(@Body() dto: GenerateThankYouDto) {
     if (!dto.companyName) {
-      throw new BadRequestException('Company name is reqired');
+      throw new BadRequestException('Company name is required');
     }
 
     const message = await this.llmService.generateThankYouMessage(

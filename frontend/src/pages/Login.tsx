@@ -1,13 +1,28 @@
-import { useState } from 'react';
-import { Link } from 'react-router';
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { api } from "../services/api";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  const { mutate: login, isPending } = useMutation({
+    mutationFn: api.auth.login,
+    onSuccess: () => {
+      navigate("/dashboard");
+    },
+    onError: (error: Error) => {
+      setError(error.message);
+    },
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement login logic
+    login({ email, password });
   };
 
   return (
@@ -18,14 +33,15 @@ export default function Login() {
             Sign in to your account
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Or{' '}
-            <Link 
-              to="/register" 
+            Or{" "}
+            <Link
+              to="/register"
               className="font-medium text-indigo-600 hover:text-indigo-500 hover-transition"
             >
               create a new account
             </Link>
           </p>
+          {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
@@ -67,8 +83,32 @@ export default function Login() {
             <button
               type="submit"
               className="group relative w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 ease-in-out"
+              disabled={isPending}
             >
-              Sign in
+              {isPending ? (
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+              ) : (
+                "Sign in"
+              )}
             </button>
           </div>
         </form>
