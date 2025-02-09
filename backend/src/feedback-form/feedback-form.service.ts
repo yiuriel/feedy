@@ -44,7 +44,8 @@ export class FeedbackFormService {
 
       const settings = await queryRunner.manager.create(FeedbackFormSettings, {
         shareType: 'link',
-        allowMultipleResponses: false,
+        allowMultipleResponses: data.settings?.allowMultipleResponses,
+        stepped: data.settings?.stepped,
       });
 
       await queryRunner.manager.save(FeedbackFormSettings, settings);
@@ -57,6 +58,8 @@ export class FeedbackFormService {
         questions: feedbackFormQuestions,
         formSettings: settings,
         accessToken: this.createFeedbackFormAccessToken(),
+        password: data.password,
+        customThankYouPage: data.customThankYouPage,
       });
 
       const savedForm = await queryRunner.manager.save(
@@ -89,7 +92,7 @@ export class FeedbackFormService {
         isActive: true,
         organization: { id: organizationId },
       },
-      relations: ['questions'],
+      relations: ['questions', 'formSettings'],
     });
 
     if (!form) {

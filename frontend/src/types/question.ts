@@ -20,4 +20,10 @@ export interface FeedbackFormState {
   title: string;
   description?: string;
   questions: FeedbackFormQuestionState[];
+  password?: string;
+  customThankYouPage?: string;
+  settings?: {
+    stepped?: boolean;
+    allowMultipleResponses?: boolean;
+  };
 }

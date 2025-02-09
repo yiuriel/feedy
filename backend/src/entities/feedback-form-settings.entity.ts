@@ -6,12 +6,14 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { FeedbackForm } from './feedback-form.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class FeedbackFormSettings {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Exclude()
   @Column()
   shareType: 'link' | 'email';
 
@@ -21,9 +23,11 @@ export class FeedbackFormSettings {
   @Column()
   allowMultipleResponses: boolean;
 
+  @Exclude()
   @Column({ nullable: true })
   emailDomainRestriction: string;
 
+  @Exclude()
   @Column('simple-array', { nullable: true })
   invitedEmails: string[];
 

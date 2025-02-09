@@ -52,6 +52,12 @@ export interface CreateFeedbackForm {
   title: string;
   description?: string;
   questions: CreateFeedbackFormQuestion[];
+  password?: string;
+  customThankYouPage?: string;
+  settings?: {
+    stepped?: boolean;
+    allowMultipleResponses?: boolean;
+  };
 }
 
 export interface CreateFeedbackFormQuestion {
@@ -78,4 +84,9 @@ export interface FeedbackForm {
   title: string;
   description?: string;
   questions: FeedbackFormQuestion[];
+  customThankYouPage?: string;
+  formSettings?: {
+    stepped?: boolean;
+    allowMultipleResponses?: boolean;
+  };
 }

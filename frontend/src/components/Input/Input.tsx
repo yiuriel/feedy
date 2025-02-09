@@ -29,7 +29,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           className={`block w-full rounded-lg border-0 py-2 px-3 shadow-sm ring-1 ring-inset transition-colors
             bg-white text-gray-900 placeholder:text-gray-400
-            ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-500
+            ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-500
             ${error ? "ring-red-500 focus:ring-red-500" : ""}
             ${className || ""}`}
           aria-invalid={error ? "true" : "false"}

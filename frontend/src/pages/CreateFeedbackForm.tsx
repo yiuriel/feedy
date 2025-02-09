@@ -12,6 +12,7 @@ import {
   FeedbackFormState,
   QuestionType,
 } from "../types/question";
+import { Switch } from "../components/Switch/Switch";
 
 export const CreateFeedbackForm: React.FC = () => {
   const navigate = useNavigate();
@@ -20,6 +21,12 @@ export const CreateFeedbackForm: React.FC = () => {
     title: "",
     description: "",
     questions: [],
+    password: "",
+    customThankYouPage: "",
+    settings: {
+      stepped: false,
+      allowMultipleResponses: false,
+    },
   });
 
   const {
@@ -70,6 +77,12 @@ export const CreateFeedbackForm: React.FC = () => {
       title: form.title,
       description: form.description,
       questions: formattedQuestions,
+      password: form.password,
+      customThankYouPage: form.customThankYouPage,
+      settings: {
+        allowMultipleResponses: form.settings?.allowMultipleResponses,
+        stepped: form.settings?.stepped,
+      },
     });
   };
 
@@ -100,6 +113,83 @@ export const CreateFeedbackForm: React.FC = () => {
                 label="Form Title"
                 error={error?.message}
               />
+
+              <Input
+                id="password"
+                name="password"
+                type="text"
+                value={form.password}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, password: e.target.value }))
+                }
+                label="Password (Optional)"
+                error={error?.message}
+              />
+
+              <Input
+                id="customThankYouPage"
+                name="customThankYouPage"
+                type="text"
+                value={form.customThankYouPage}
+                onChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    customThankYouPage: e.target.value,
+                  }))
+                }
+                label="Custom Thank You Page (Optional)"
+                error={error?.message}
+              />
+
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="allowMultipleResponses"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Allow multiple responses
+                  <p className="text-xs text-gray-500">
+                    If enabled, users can submit the form multiple times.
+                  </p>
+                </label>
+                <Switch
+                  id="allowMultipleResponses"
+                  checked={Boolean(form.settings?.allowMultipleResponses)}
+                  onChange={(checked) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      settings: {
+                        ...prev.settings,
+                        allowMultipleResponses: checked,
+                      },
+                    }))
+                  }
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="stepped"
+                  className="block text-sm font-medium text-gray-700 pr-2"
+                >
+                  Make form Stepped
+                  <p className="text-xs text-gray-500">
+                    If enabled, users will see one question at a time.
+                  </p>
+                </label>
+                <Switch
+                  id="stepped"
+                  checked={Boolean(form.settings?.stepped)}
+                  onChange={(checked) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      settings: {
+                        ...prev.settings,
+                        stepped: checked,
+                      },
+                    }))
+                  }
+                />
+              </div>
 
               <div>
                 <Textarea

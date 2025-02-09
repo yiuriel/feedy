@@ -35,6 +35,12 @@ export const FeedbackFormStepper: FC<{ id: string }> = ({ id }) => {
     return null;
   }
 
+  const isStepped = data.formSettings?.stepped;
+
+  if (!isStepped) {
+    return <Button disabled={unansweredQuestions}>Submit</Button>;
+  }
+
   return (
     <div className="container mx-auto flex justify-between items-center">
       {step > 1 && step <= maxStep && (
