@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { QuestionBuilder } from "../components/QuestionBuilder";
 import { Input } from "../components/Input/Input";
-import { Question, FeedbackForm, QuestionType } from "../types/question";
+import {
+  FeedbackFormQuestionState,
+  FeedbackFormState,
+  QuestionType,
+} from "../types/question";
 import { Textarea } from "../components/Textarea/Textarea";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "../services/api";
@@ -10,7 +14,7 @@ import { CreateFeedbackFormQuestion } from "../services/api.types";
 
 export const CreateFeedbackForm: React.FC = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState<FeedbackForm>({
+  const [form, setForm] = useState<FeedbackFormState>({
     title: "",
     description: "",
     questions: [],
@@ -27,7 +31,7 @@ export const CreateFeedbackForm: React.FC = () => {
     },
   });
 
-  const handleAddQuestion = (question: Question) => {
+  const handleAddQuestion = (question: FeedbackFormQuestionState) => {
     setForm((prev) => ({
       ...prev,
       questions: [...prev.questions, question],

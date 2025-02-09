@@ -1,11 +1,12 @@
 import {
+  CreateFeedbackForm,
+  DashboardStats,
+  FeedbackForm,
   HealthCheckResponse,
+  Organization,
+  OrganizationDetailsForm,
   RegisterData,
   User,
-  OrganizationDetailsForm,
-  DashboardStats,
-  Organization,
-  CreateFeedbackForm,
 } from "./api.types";
 import axios from "./axios";
 
@@ -57,30 +58,8 @@ export const api = {
     getAll: async () => {
       return axios.get("/feedback-forms");
     },
-    getOne: async (id: string) => {
-      return axios.get(`/feedback-forms/${id}`);
-    },
-    update: async (
-      id: string,
-      data: Partial<{
-        title: string;
-        description: string;
-        questions: {
-          id: string;
-          type: "text" | "rating" | "choice" | "boolean";
-          question: string;
-          required: boolean;
-          options?: string[];
-          minRating?: number;
-          maxRating?: number;
-        }[];
-        isActive: boolean;
-      }>
-    ) => {
-      return axios.patch(`/feedback-forms/${id}`, data);
-    },
-    delete: async (id: string) => {
-      return axios.delete(`/feedback-forms/${id}`);
+    getOne: async (accessToken: string): Promise<FeedbackForm> => {
+      return axios.get(`/feedback-forms/${accessToken}`);
     },
   },
 };

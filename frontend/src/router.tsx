@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import { PrivateAppLayout } from "./components/PrivateAppLayout/PrivateAppLayout";
 import { CreateFeedbackForm } from "./pages/CreateFeedbackForm";
+import { AnswerFeedbackForm } from "./pages/AnswerFeedbackForm";
 
 export function AppRouter() {
   return (
@@ -12,6 +13,7 @@ export function AppRouter() {
       <Route path="/" element={<App />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/form/:id" element={<AnswerFeedbackForm />} />
       <Route path="app" element={<PrivateAppLayout />}>
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="profile" element={<div>profile</div>} />

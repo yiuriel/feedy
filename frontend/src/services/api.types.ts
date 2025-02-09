@@ -62,3 +62,20 @@ export interface CreateFeedbackFormQuestion {
   minRating?: number;
   maxRating?: number;
 }
+
+export interface FeedbackFormQuestion {
+  id: string;
+  type: "text" | "rating" | "multipleChoice" | "checkbox";
+  question: string;
+  required: boolean;
+  options?: string[];
+  minRating?: number;
+  maxRating?: number;
+}
+
+export interface FeedbackForm {
+  id: string;
+  title: string;
+  description?: string;
+  questions: FeedbackFormQuestion[];
+}

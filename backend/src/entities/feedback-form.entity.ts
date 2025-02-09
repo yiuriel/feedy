@@ -13,6 +13,7 @@ import { FeedbackResponse } from './feedback-response.entity';
 import { User } from './user.entity';
 import { FeedbackQuestion } from './feedback-question.entity';
 import { FeedbackFormSettings } from './feedback-form-settings.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class FeedbackForm {
@@ -25,12 +26,15 @@ export class FeedbackForm {
   @Column({ nullable: true })
   description: string;
 
+  @Exclude()
   @Column({ default: true })
   isActive: boolean;
 
+  @Exclude()
   @Column({ default: 0 })
   responseCount: number;
 
+  @Exclude()
   @Column({ nullable: true })
   password: string;
 
@@ -39,12 +43,15 @@ export class FeedbackForm {
 
   // TODO: Add theme-related fields back later
 
+  @Exclude()
   @Column({ default: false })
   allowEmbedding: boolean;
 
+  @Exclude()
   @ManyToOne(() => Organization, (org) => org.feedbackForms)
   organization: Organization;
 
+  @Exclude()
   @ManyToOne(() => User, (user) => user.id)
   createdBy: User;
 
@@ -57,12 +64,15 @@ export class FeedbackForm {
   @OneToOne(() => FeedbackFormSettings, (settings) => settings.form)
   formSettings: FeedbackFormSettings;
 
+  // @Exclude()
   @Column({ unique: true })
   accessToken: string;
 
+  @Exclude()
   @CreateDateColumn()
   createdAt: Date;
 
+  @Exclude()
   @UpdateDateColumn()
   updatedAt: Date;
 }

@@ -38,7 +38,13 @@ export class FeedbackFormController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.feedbackFormService.findOne(id);
+  findOne(
+    @Param('id') accessToken: string,
+    @GetUserPayload() payload: Payload,
+  ) {
+    return this.feedbackFormService.findOne(
+      accessToken,
+      payload.organizationId,
+    );
   }
 }

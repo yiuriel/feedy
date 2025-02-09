@@ -82,9 +82,14 @@ export class FeedbackFormService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(accessToken: string, organizationId: string) {
     const form = await this.feedbackFormRepository.findOne({
-      where: { id, isActive: true },
+      where: {
+        accessToken,
+        isActive: true,
+        organization: { id: organizationId },
+      },
+      relations: ['questions'],
     });
 
     if (!form) {

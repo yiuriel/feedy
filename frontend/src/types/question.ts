@@ -1,11 +1,11 @@
 export enum QuestionType {
-  TEXT = 'text',
-  RATING = 'rating',
-  CHOICE = 'choice',
-  BOOLEAN = 'boolean',
+  TEXT = "text",
+  RATING = "rating",
+  CHOICE = "choice",
+  BOOLEAN = "boolean",
 }
 
-export interface Question {
+export interface FeedbackFormQuestionState {
   id?: string;
   type: QuestionType;
   text: string;
@@ -15,9 +15,9 @@ export interface Question {
   maxRating?: number;
 }
 
-export interface FeedbackForm {
+export interface FeedbackFormState {
   id?: string;
   title: string;
   description?: string;
-  questions: Question[];
+  questions: FeedbackFormQuestionState[];
 }
