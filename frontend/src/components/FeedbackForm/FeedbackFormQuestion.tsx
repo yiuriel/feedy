@@ -3,6 +3,7 @@ import { FeedbackFormQuestion } from "../../services/api.types";
 import { MultipleChoiceAnswer } from "../QuestionAnswers/MultipleChoiceAnswer";
 import { RatingAnswer } from "../QuestionAnswers/RatingAnswer";
 import { TextAnswer } from "../QuestionAnswers/TextAnswer";
+import { CheckboxAnswer } from "../QuestionAnswers/CheckboxAnswer";
 
 export const FormQuestion: FC<{ question: FeedbackFormQuestion }> = ({
   question,
@@ -27,16 +28,23 @@ export const FormQuestion: FC<{ question: FeedbackFormQuestion }> = ({
         required={question.required}
       />
     );
-  } else if (
-    (questionType === "multiple_choice" || questionType === "checkbox") &&
-    question.options
-  ) {
+  } else if (questionType === "multiple_choice" && question.options) {
     return (
       <MultipleChoiceAnswer
         question={question.question}
         options={question.options}
         onChange={() => {}}
         required={question.required}
+      />
+    );
+  } else if (questionType === "checkbox" && question.options) {
+    return (
+      <CheckboxAnswer
+        question={question.question}
+        options={question.options}
+        onChange={() => {}}
+        required={question.required}
+        value={[]}
       />
     );
   }

@@ -1,19 +1,21 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import { QuestionBuilder } from "../components/QuestionBuilder";
 import { Input } from "../components/Input/Input";
+import { QuestionBuilder } from "../components/QuestionBuilder";
+import { Textarea } from "../components/Textarea/Textarea";
+import { queryKeys } from "../lib/queryKeys";
+import { api } from "../services/api";
+import { CreateFeedbackFormQuestion } from "../services/api.types";
 import {
   FeedbackFormQuestionState,
   FeedbackFormState,
   QuestionType,
 } from "../types/question";
-import { Textarea } from "../components/Textarea/Textarea";
-import { useMutation } from "@tanstack/react-query";
-import { api } from "../services/api";
-import { CreateFeedbackFormQuestion } from "../services/api.types";
 
 export const CreateFeedbackForm: React.FC = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [form, setForm] = useState<FeedbackFormState>({
     title: "",
     description: "",
@@ -27,6 +29,7 @@ export const CreateFeedbackForm: React.FC = () => {
   } = useMutation({
     mutationFn: api.feedbackForm.create,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.dashboard.stats] });
       navigate("/app/dashboard");
     },
   });
@@ -54,7 +57,10 @@ export const CreateFeedbackForm: React.FC = () => {
         question: q.text,
         required: q.required,
         options:
-          q.type === QuestionType.MULTIPLE_CHOICE ? q.options : undefined,
+          q.type === QuestionType.MULTIPLE_CHOICE ||
+          q.type === QuestionType.CHECKBOX
+            ? q.options
+            : undefined,
         minRating: q.type === QuestionType.RATING ? q.minRating : undefined,
         maxRating: q.type === QuestionType.RATING ? q.maxRating : undefined,
       })
@@ -92,7 +98,7 @@ export const CreateFeedbackForm: React.FC = () => {
                   setForm((prev) => ({ ...prev, title: e.target.value }))
                 }
                 label="Form Title"
-                error={error?.response?.data?.message}
+                error={error?.message}
               />
 
               <div>

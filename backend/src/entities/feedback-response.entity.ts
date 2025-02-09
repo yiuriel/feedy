@@ -1,11 +1,14 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  Column,
   ManyToOne,
   CreateDateColumn,
+  OneToMany,
+  OneToOne,
 } from 'typeorm';
 import { FeedbackForm } from './feedback-form.entity';
+import { FeedbackResponseAnswer } from './feedback-response-answer.entity';
+import { FeedbackResponseMetadata } from './feedback-response-metadata.entity';
 
 @Entity()
 export class FeedbackResponse {
@@ -17,18 +20,15 @@ export class FeedbackResponse {
   })
   form: FeedbackForm;
 
-  @Column({ type: 'json' })
-  answers: {
-    questionId: string;
-    answer: string | number | string[]; // Can be text, rating number, or selected options
-  }[];
+  @OneToMany(() => FeedbackResponseAnswer, (answer) => answer.response, {
+    cascade: true,
+  })
+  answers: FeedbackResponseAnswer[];
 
-  @Column({ type: 'json', nullable: true })
-  metadata: {
-    userAgent?: string;
-    ipAddress?: string;
-    // We can add more metadata if needed, but being careful not to store identifying information
-  };
+  @OneToOne(() => FeedbackResponseMetadata, (metadata) => metadata.response, {
+    cascade: true,
+  })
+  metadata: FeedbackResponseMetadata;
 
   @CreateDateColumn()
   submittedAt: Date;
