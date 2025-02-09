@@ -3,10 +3,12 @@ import { OrganizationDetails } from "../components/OrganizationDetails";
 import { api } from "../services/api";
 import { Loading } from "../components/Loading";
 import { StatsCard } from "../components/Card/StatsCard";
-import { Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { queryKeys } from "../lib/queryKeys";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+
   const { data: user } = useQuery({
     queryKey: queryKeys.auth.verify,
     queryFn: api.auth.verify,
@@ -69,6 +71,7 @@ export default function Dashboard() {
             <button
               type="button"
               className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              onClick={() => navigate("/app/create-feedback-form")}
             >
               <svg
                 className="mx-auto h-12 w-12 text-gray-400"
@@ -92,6 +95,7 @@ export default function Dashboard() {
             <button
               type="button"
               className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              onClick={() => navigate("/app/create-feedback-form")}
             >
               <svg
                 className="mx-auto h-12 w-12 text-gray-400"

@@ -17,7 +17,7 @@ export default function Login() {
   const { mutate: login, isPending } = useMutation({
     mutationFn: api.auth.login,
     onSuccess: () => {
-      navigate("/dashboard");
+      navigate("/app/dashboard");
     },
     onError: (error: Error) => {
       setError(error.message);
