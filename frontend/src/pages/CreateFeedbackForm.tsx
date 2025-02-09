@@ -120,7 +120,9 @@ export const CreateFeedbackForm: React.FC = () => {
 
           <div className="sm:rounded-lg md:col-span-2">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <QuestionBuilder onSave={handleAddQuestion} />
+              <div className="col-span-2">
+                <QuestionBuilder onSave={handleAddQuestion} />
+              </div>
 
               {form.questions.map((question, index) => (
                 <div key={index} className="bg-white shadow sm:rounded-lg p-6">

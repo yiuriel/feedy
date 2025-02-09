@@ -57,7 +57,7 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({ onSave }) => {
   };
 
   return (
-    <div className="bg-white shadow sm:rounded-lg p-6">
+    <div className="bg-white shadow border-2 border-solid border-indigo-400 sm:rounded-lg p-6">
       <div className="space-y-4">
         <div>
           <Select

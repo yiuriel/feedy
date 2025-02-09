@@ -15,6 +15,9 @@ export class FeedbackFormSettings {
   @Column()
   shareType: 'link' | 'email';
 
+  @Column({ nullable: true })
+  stepped: boolean;
+
   @Column()
   allowMultipleResponses: boolean;
 
