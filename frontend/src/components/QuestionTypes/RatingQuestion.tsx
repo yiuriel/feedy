@@ -17,7 +17,7 @@ export const RatingQuestion: React.FC<RatingQuestionProps> = ({
 }) => {
   return (
     <div className="mb-4">
-      <label className="block text-sm font-medium text-gray-700">
+      <label className="block text-sm font-medium text-gray-200">
         {question} {required && <span className="text-red-500">*</span>}
       </label>
       <div className="mt-2 flex gap-4">
@@ -27,7 +27,7 @@ export const RatingQuestion: React.FC<RatingQuestionProps> = ({
               key={rating}
               type="button"
               onClick={() => onChange(rating)}
-              className="rounded-full w-10 h-10 flex items-center justify-center border border-gray-300 hover:border-indigo-500 hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="rounded-full w-10 h-10 flex items-center justify-center border border-gray-700 text-gray-200 bg-gray-800 hover:border-indigo-500 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               {rating}
             </button>

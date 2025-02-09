@@ -15,7 +15,7 @@ export const ChoiceQuestion: React.FC<ChoiceQuestionProps> = ({
 }) => {
   return (
     <div className="mb-4">
-      <label className="block text-sm font-medium text-gray-700">
+      <label className="block text-sm font-medium text-gray-200">
         {question} {required && <span className="text-red-500">*</span>}
       </label>
       <div className="mt-2 space-y-2">
@@ -26,10 +26,10 @@ export const ChoiceQuestion: React.FC<ChoiceQuestionProps> = ({
               name={question}
               value={option}
               onChange={(e) => onChange(e.target.value)}
-              className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              className="h-4 w-4 border-gray-700 text-indigo-600 focus:ring-indigo-500 bg-gray-800"
               required={required}
             />
-            <label className="ml-3 block text-sm font-medium text-gray-700">
+            <label className="ml-3 block text-sm font-medium text-gray-200">
               {option}
             </label>
           </div>

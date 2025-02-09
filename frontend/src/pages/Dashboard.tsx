@@ -88,7 +88,7 @@ export default function Dashboard() {
                 />
               </svg>
               <span className="mt-2 block text-sm font-medium text-gray-900">
-                Add New Feed
+                Add New Feedback Form
               </span>
             </button>
 

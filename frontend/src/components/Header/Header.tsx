@@ -9,7 +9,7 @@ export const Header = () => {
     <header className="bg-white shadow-sm z-10 p-2">
       <div className="container mx-auto flex justify-between items-center">
         <h1
-          className="text-2xl font-bold text-indigo-600"
+          className="text-2xl font-bold text-indigo-600 cursor-pointer"
           onClick={() => navigate("/app/dashboard")}
         >
           Feedy

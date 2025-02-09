@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { QuestionBuilder } from "../components/QuestionBuilder";
+import { Input } from "../components/Input/Input";
 import { Question, FeedbackForm } from "../types/question";
+import { Textarea } from "../components/Textarea/Textarea";
 
 export const CreateFeedbackForm: React.FC = () => {
   const navigate = useNavigate();
@@ -50,33 +52,21 @@ export const CreateFeedbackForm: React.FC = () => {
         >
           <div className="bg-white shadow sm:rounded-lg p-6 md:col-span-1">
             <div className="space-y-4">
-              <div>
-                <label
-                  htmlFor="title"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Form Title
-                </label>
-                <input
-                  type="text"
-                  id="title"
-                  value={form.title}
-                  onChange={(e) =>
-                    setForm((prev) => ({ ...prev, title: e.target.value }))
-                  }
-                  required
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-              </div>
+              <Input
+                id="title"
+                name="title"
+                type="text"
+                required
+                value={form.title}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, title: e.target.value }))
+                }
+                label="Form Title"
+              />
 
               <div>
-                <label
-                  htmlFor="description"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Description (Optional)
-                </label>
-                <textarea
+                <Textarea
+                  label="Description (Optional)"
                   id="description"
                   value={form.description}
                   onChange={(e) =>
@@ -86,14 +76,15 @@ export const CreateFeedbackForm: React.FC = () => {
                     }))
                   }
                   rows={3}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
             </div>
           </div>
 
-          <div className="bg-white shadow sm:rounded-lg p-6 md:col-span-2">
+          <div className="sm:rounded-lg md:col-span-2">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <QuestionBuilder onSave={handleAddQuestion} />
+
               {form.questions.map((question, index) => (
                 <div key={index} className="bg-white shadow sm:rounded-lg p-6">
                   <div className="flex justify-between items-start">
@@ -123,19 +114,17 @@ export const CreateFeedbackForm: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleRemoveQuestion(index)}
-                      className="text-red-600 hover:text-red-800"
+                      className="text-red-600 hover:bg-red-50 border border-red-600 rounded-md border-solid px-1"
                     >
                       Remove
                     </button>
                   </div>
                 </div>
               ))}
-
-              <QuestionBuilder onSave={handleAddQuestion} />
             </div>
           </div>
 
-          <div className="flex justify-end md:col-start-2 md:col-span-1">
+          <div className="flex justify-center md:col-start-2 md:col-span-1">
             <button
               type="submit"
               disabled={!form.title || form.questions.length === 0}

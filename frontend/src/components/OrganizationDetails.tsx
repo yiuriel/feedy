@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { queryKeys } from "../lib/queryKeys";
 import { api } from "../services/api";
+import { Select } from "./Select/Select";
 
 interface OrganizationDetailsForm {
   name: string;
@@ -120,55 +121,39 @@ export function OrganizationDetails() {
             </div>
 
             <div>
-              <label
-                htmlFor="industry"
-                className="block text-sm font-medium text-gray-700"
+              <Select
+                id="industry"
+                name="industry"
+                required
+                label="Industry"
+                value={formData.industry}
+                onChange={handleChange}
               >
-                Industry
-              </label>
-              <div className="mt-1">
-                <select
-                  id="industry"
-                  name="industry"
-                  required
-                  value={formData.industry}
-                  onChange={handleChange}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                >
-                  <option value="">Select an industry</option>
-                  <option value="technology">Technology</option>
-                  <option value="healthcare">Healthcare</option>
-                  <option value="finance">Finance</option>
-                  <option value="education">Education</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
+                <option value="">Select an industry</option>
+                <option value="technology">Technology</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="finance">Finance</option>
+                <option value="education">Education</option>
+                <option value="other">Other</option>
+              </Select>
             </div>
 
             <div>
-              <label
-                htmlFor="size"
-                className="block text-sm font-medium text-gray-700"
+              <Select
+                id="size"
+                name="size"
+                required
+                label="Company Size"
+                value={formData.size}
+                onChange={handleChange}
               >
-                Company Size
-              </label>
-              <div className="mt-1">
-                <select
-                  id="size"
-                  name="size"
-                  required
-                  value={formData.size}
-                  onChange={handleChange}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                >
-                  <option value="">Select company size</option>
-                  <option value="1-10">1-10 employees</option>
-                  <option value="11-50">11-50 employees</option>
-                  <option value="51-200">51-200 employees</option>
-                  <option value="201-500">201-500 employees</option>
-                  <option value="501+">501+ employees</option>
-                </select>
-              </div>
+                <option value="">Select company size</option>
+                <option value="1-10">1-10 employees</option>
+                <option value="11-50">11-50 employees</option>
+                <option value="51-200">51-200 employees</option>
+                <option value="201-500">201-500 employees</option>
+                <option value="501+">501+ employees</option>
+              </Select>
             </div>
 
             <div>
