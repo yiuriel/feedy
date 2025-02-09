@@ -123,7 +123,6 @@ export class AuthService {
     });
 
     await this.organizationRepository.save(organization);
-    console.log({ organization });
 
     this.eventEmitter.emit(
       'organization.created',
@@ -138,8 +137,6 @@ export class AuthService {
 
     // Create the user and associate it with the organization
     const hashedPassword = await argon2.hash(userDto.password);
-
-    console.log({ hashedPassword });
 
     const user = this.userRepository.create({
       email: userDto.email,

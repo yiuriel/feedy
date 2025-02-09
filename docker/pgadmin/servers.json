@@ -1,0 +1,16 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "Feedy Database",
+            "Group": "Servers",
+            "Host": "postgres",
+            "Port": 5432,
+            "MaintenanceDB": "feedy",
+            "Username": "feedy",
+            "Password": "feedy123",
+            "SSLMode": "disable",
+            "SavePassword": true,
+            "ConnectTimeout": 10
+        }
+    }
+}

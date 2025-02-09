@@ -47,3 +47,18 @@ export interface HealthCheckResponse {
   version: string;
   environment: string;
 }
+
+export interface CreateFeedbackForm {
+  title: string;
+  description?: string;
+  questions: CreateFeedbackFormQuestion[];
+}
+
+export interface CreateFeedbackFormQuestion {
+  type: "text" | "rating" | "multipleChoice" | "checkbox";
+  question: string;
+  required: boolean;
+  options?: string[];
+  minRating?: number;
+  maxRating?: number;
+}

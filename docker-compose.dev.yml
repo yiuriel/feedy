@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   frontend:
     build:
@@ -36,6 +34,21 @@ services:
     depends_on:
       - postgres
       - llm-service
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=feedy@example.com
+      - PGADMIN_DEFAULT_PASSWORD=feedy123
+      - PGADMIN_CONFIG_SERVER_MODE=False
+      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
+    volumes:
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      - postgres
+      - backend
 
   postgres:
     image: postgres:16-alpine

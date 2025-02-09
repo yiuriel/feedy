@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { QuestionBuilder } from "../components/QuestionBuilder";
 import { Input } from "../components/Input/Input";
-import { Question, FeedbackForm } from "../types/question";
+import { Question, FeedbackForm, QuestionType } from "../types/question";
 import { Textarea } from "../components/Textarea/Textarea";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "../services/api";
+import { CreateFeedbackFormQuestion } from "../services/api.types";
 
 export const CreateFeedbackForm: React.FC = () => {
   const navigate = useNavigate();
@@ -11,6 +14,17 @@ export const CreateFeedbackForm: React.FC = () => {
     title: "",
     description: "",
     questions: [],
+  });
+
+  const {
+    mutate: createForm,
+    error,
+    isPending,
+  } = useMutation({
+    mutationFn: api.feedbackForm.create,
+    onSuccess: () => {
+      navigate("/app/dashboard");
+    },
   });
 
   const handleAddQuestion = (question: Question) => {
@@ -29,12 +43,23 @@ export const CreateFeedbackForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      // TODO: Add API call to save the form
-      navigate("/app/dashboard");
-    } catch (error) {
-      console.error("Error creating feedback form:", error);
-    }
+
+    const formattedQuestions = form.questions.map<CreateFeedbackFormQuestion>(
+      (q) => ({
+        type: q.type.toLowerCase() as CreateFeedbackFormQuestion["type"],
+        question: q.text,
+        required: q.required,
+        options: q.type === QuestionType.CHOICE ? q.options : undefined,
+        minRating: q.type === QuestionType.RATING ? q.minRating : undefined,
+        maxRating: q.type === QuestionType.RATING ? q.maxRating : undefined,
+      })
+    );
+
+    createForm({
+      title: form.title,
+      description: form.description,
+      questions: formattedQuestions,
+    });
   };
 
   return (
@@ -62,6 +87,7 @@ export const CreateFeedbackForm: React.FC = () => {
                   setForm((prev) => ({ ...prev, title: e.target.value }))
                 }
                 label="Form Title"
+                error={error?.response?.data?.message}
               />
 
               <div>
@@ -127,10 +153,10 @@ export const CreateFeedbackForm: React.FC = () => {
           <div className="flex justify-center md:col-start-2 md:col-span-1">
             <button
               type="submit"
-              disabled={!form.title || form.questions.length === 0}
+              disabled={!form.title || form.questions.length === 0 || isPending}
               className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400"
             >
-              Create Form
+              {isPending ? "Creating..." : "Create Form"}
             </button>
           </div>
         </form>

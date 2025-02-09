@@ -5,6 +5,7 @@ import {
   OrganizationDetailsForm,
   DashboardStats,
   Organization,
+  CreateFeedbackForm,
 } from "./api.types";
 import axios from "./axios";
 
@@ -47,6 +48,39 @@ export const api = {
   dashboard: {
     getStats: async (): Promise<DashboardStats> => {
       return axios.get("/dashboard/stats");
+    },
+  },
+  feedbackForm: {
+    create: async (data: CreateFeedbackForm) => {
+      return axios.post("/feedback-forms", data);
+    },
+    getAll: async () => {
+      return axios.get("/feedback-forms");
+    },
+    getOne: async (id: string) => {
+      return axios.get(`/feedback-forms/${id}`);
+    },
+    update: async (
+      id: string,
+      data: Partial<{
+        title: string;
+        description: string;
+        questions: {
+          id: string;
+          type: "text" | "rating" | "choice" | "boolean";
+          question: string;
+          required: boolean;
+          options?: string[];
+          minRating?: number;
+          maxRating?: number;
+        }[];
+        isActive: boolean;
+      }>
+    ) => {
+      return axios.patch(`/feedback-forms/${id}`, data);
+    },
+    delete: async (id: string) => {
+      return axios.delete(`/feedback-forms/${id}`);
     },
   },
 };

@@ -9,7 +9,7 @@ export const databaseConfig: TypeOrmModuleOptions = {
   password: process.env.DB_PASSWORD || 'feedy123',
   database: process.env.DB_DATABASE || 'feedy',
   entities: [join(__dirname, '..', '**', '*.entity.{ts,js}')],
-  synchronize: process.env.NODE_ENV !== 'production', // Disable in production
+  // synchronize: process.env.NODE_ENV !== 'production', // Disable in production
   // dropSchema: process.env.NODE_ENV !== 'production', // Disable in production
-  logging: process.env.NODE_ENV !== 'production',
+  logging: process.env.NODE_ENV !== 'production' ? 'all' : false,
 };
