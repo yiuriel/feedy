@@ -4,28 +4,40 @@ import { MultipleChoiceAnswer } from "../QuestionAnswers/MultipleChoiceAnswer";
 import { RatingAnswer } from "../QuestionAnswers/RatingAnswer";
 import { TextAnswer } from "../QuestionAnswers/TextAnswer";
 import { CheckboxAnswer } from "../QuestionAnswers/CheckboxAnswer";
+import { useFeedbackFormStore } from "../../stores/feedbackFormStore";
 
 export const FormQuestion: FC<{ question: FeedbackFormQuestion }> = ({
   question,
 }) => {
   const questionType = question.type;
 
+  const { answers, setAnswer } = useFeedbackFormStore();
+  const value = answers[question.id] || "";
+
+  const handleAnswerChange = (value: string | number | string[]) => {
+    const parsedValue = typeof value === "number" ? String(value) : value;
+
+    setAnswer(question.id, parsedValue);
+  };
+
   if (questionType === "text") {
     return (
       <TextAnswer
         question={question.question}
-        onChange={() => {}}
+        onChange={handleAnswerChange}
         required={question.required}
+        value={String(value)}
       />
     );
   } else if (questionType === "rating") {
     return (
       <RatingAnswer
         question={question.question}
-        onChange={() => {}}
+        onChange={handleAnswerChange}
         minRating={question.minRating}
         maxRating={question.maxRating}
         required={question.required}
+        value={Number(value)}
       />
     );
   } else if (questionType === "multiple_choice" && question.options) {
@@ -33,8 +45,9 @@ export const FormQuestion: FC<{ question: FeedbackFormQuestion }> = ({
       <MultipleChoiceAnswer
         question={question.question}
         options={question.options}
-        onChange={() => {}}
+        onChange={handleAnswerChange}
         required={question.required}
+        value={String(value)}
       />
     );
   } else if (questionType === "checkbox" && question.options) {
@@ -42,12 +55,14 @@ export const FormQuestion: FC<{ question: FeedbackFormQuestion }> = ({
       <CheckboxAnswer
         question={question.question}
         options={question.options}
-        onChange={() => {}}
+        onChange={handleAnswerChange}
         required={question.required}
-        value={[]}
+        value={
+          typeof value === "string" ? (value ? value.split(",") : []) : value
+        }
       />
     );
   }
 
-  return <div>FeedbackFormQuestion</div>;
+  return null;
 };
