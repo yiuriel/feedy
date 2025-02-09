@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface ChoiceAnswerProps {
+interface MultipleChoiceAnswerProps {
   question: string;
   options: string[];
   onChange: (value: string) => void;
@@ -8,7 +8,7 @@ interface ChoiceAnswerProps {
   value: string;
 }
 
-export const ChoiceAnswer: React.FC<ChoiceAnswerProps> = ({
+export const MultipleChoiceAnswer: React.FC<MultipleChoiceAnswerProps> = ({
   question,
   options,
   onChange,

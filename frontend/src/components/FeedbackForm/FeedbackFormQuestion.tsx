@@ -1,9 +1,8 @@
 import { FC } from "react";
 import { FeedbackFormQuestion } from "../../services/api.types";
-import { TextQuestion } from "../QuestionTypes/TextQuestion";
-import { RatingQuestion } from "../QuestionTypes/RatingQuestion";
-import { ChoiceQuestion } from "../QuestionTypes/ChoiceQuestion";
-import { BooleanQuestion } from "../QuestionTypes/BooleanQuestion";
+import { MultipleChoiceAnswer } from "../QuestionAnswers/MultipleChoiceAnswer";
+import { RatingAnswer } from "../QuestionAnswers/RatingAnswer";
+import { TextAnswer } from "../QuestionAnswers/TextAnswer";
 
 export const FormQuestion: FC<{ question: FeedbackFormQuestion }> = ({
   question,
@@ -12,7 +11,7 @@ export const FormQuestion: FC<{ question: FeedbackFormQuestion }> = ({
 
   if (questionType === "text") {
     return (
-      <TextQuestion
+      <TextAnswer
         question={question.question}
         onChange={() => {}}
         required={question.required}
@@ -20,7 +19,7 @@ export const FormQuestion: FC<{ question: FeedbackFormQuestion }> = ({
     );
   } else if (questionType === "rating") {
     return (
-      <RatingQuestion
+      <RatingAnswer
         question={question.question}
         onChange={() => {}}
         minRating={question.minRating}
@@ -28,19 +27,14 @@ export const FormQuestion: FC<{ question: FeedbackFormQuestion }> = ({
         required={question.required}
       />
     );
-  } else if (questionType === "multipleChoice" && question.options) {
+  } else if (
+    (questionType === "multipleChoice" || questionType === "checkbox") &&
+    question.options
+  ) {
     return (
-      <ChoiceQuestion
+      <MultipleChoiceAnswer
         question={question.question}
         options={question.options}
-        onChange={() => {}}
-        required={question.required}
-      />
-    );
-  } else if (questionType === "checkbox") {
-    return (
-      <BooleanQuestion
-        question={question.question}
         onChange={() => {}}
         required={question.required}
       />

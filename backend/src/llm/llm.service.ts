@@ -42,10 +42,10 @@ export class LLMService implements OnModuleInit {
   > {
     const prompt = `You are a feedback form expert. Generate 2 relevant feedback questions for a ${companyType} that wants to ${goals}.
   For each question, provide these properties in a simple format:
-  - First line: question type (text, rating, choice, or boolean)
+  - First line: question type (text, rating, multiple_choice, checkbox)
   - Second line: the question itself
   - Third line: required (yes/no)
-  - Fourth line (only for rating or choice): comma-separated options
+  - Fourth line (only for rating or multiple_choice or checkbox): comma-separated options
 
   Example format:
   rating
@@ -53,13 +53,13 @@ export class LLMService implements OnModuleInit {
   yes
   Very Dissatisfied, Dissatisfied, Neutral, Satisfied, Very Satisfied
 
-  choice
+  multiple_choice
   Which areas need more attention to cleanliness?
-  yes
   Bathroom, Bedroom, Common Areas, Pool Area
   
-  boolean
-  Do you recommend our service to your friends?
+  checkbox
+  Which services do you use the most?
+  Cleaning, Dining, Entertaining, Event Planning, Food Preparation, Laundry, Party Planning
 
   text
   What could we improve?
@@ -89,7 +89,10 @@ export class LLMService implements OnModuleInit {
       const question = lines[1].trim();
       const required = lines[2].trim().toLowerCase() === 'yes';
       const options =
-        (type === 'rating' || type === 'choice') && lines[3]
+        (type === 'rating' ||
+          type === 'multiple_choice' ||
+          type === 'checkbox') &&
+        lines[3]
           ? lines[3].split(',').map((opt) => opt.trim())
           : undefined;
 

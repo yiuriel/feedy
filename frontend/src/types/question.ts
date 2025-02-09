@@ -1,8 +1,8 @@
 export enum QuestionType {
   TEXT = "text",
   RATING = "rating",
-  CHOICE = "choice",
-  BOOLEAN = "boolean",
+  MULTIPLE_CHOICE = "multipleChoice",
+  CHECKBOX = "checkbox",
 }
 
 export interface FeedbackFormQuestionState {

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { QuestionType } from '../types/question';
-import { Input } from './Input/Input';
-import { Select } from './Select/Select';
+import React, { useState } from "react";
+import { QuestionType } from "../types/question";
+import { Input } from "./Input/Input";
+import { Select } from "./Select/Select";
 
 interface QuestionBuilderProps {
   onSave: (question: {
@@ -16,14 +16,14 @@ interface QuestionBuilderProps {
 
 export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({ onSave }) => {
   const [type, setType] = useState<QuestionType>(QuestionType.TEXT);
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [required, setRequired] = useState(false);
-  const [options, setOptions] = useState<string[]>(['']);
+  const [options, setOptions] = useState<string[]>([""]);
   const [minRating, setMinRating] = useState(1);
   const [maxRating, setMaxRating] = useState(5);
 
   const handleAddOption = () => {
-    setOptions([...options, '']);
+    setOptions([...options, ""]);
   };
 
   const handleOptionChange = (index: number, value: string) => {
@@ -37,17 +37,22 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({ onSave }) => {
     setOptions(newOptions);
   };
 
+  const hasOptions =
+    type === QuestionType.MULTIPLE_CHOICE || type === QuestionType.CHECKBOX;
+
   const handleSave = () => {
     const questionData = {
       type,
       text,
       required,
-      ...(type === QuestionType.CHOICE && { options: options.filter(Boolean) }),
+      ...(hasOptions && {
+        options: options.filter(Boolean),
+      }),
       ...(type === QuestionType.RATING && { minRating, maxRating }),
     };
     onSave(questionData);
-    setText('');
-    setOptions(['']);
+    setText("");
+    setOptions([""]);
     setRequired(false);
   };
 
@@ -75,9 +80,11 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({ onSave }) => {
           placeholder="Enter your question"
         />
 
-        {type === QuestionType.CHOICE && (
+        {hasOptions ? (
           <div>
-            <label className="block text-sm font-medium text-gray-700">Options</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Options
+            </label>
             <div className="space-y-2">
               {options.map((option, index) => (
                 <div key={index} className="flex gap-2">
@@ -104,7 +111,7 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({ onSave }) => {
               </button>
             </div>
           </div>
-        )}
+        ) : null}
 
         {type === QuestionType.RATING && (
           <div className="grid grid-cols-2 gap-4">
@@ -140,7 +147,12 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({ onSave }) => {
           <button
             type="button"
             onClick={handleSave}
-            disabled={!text.trim()}
+            disabled={
+              !text.trim() ||
+              (hasOptions &&
+                options.length > 1 &&
+                options.some((o) => o === ""))
+            }
             className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400"
           >
             Add Question

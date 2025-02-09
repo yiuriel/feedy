@@ -9,10 +9,10 @@ import {
 import { Organization } from './organization.entity';
 
 export enum QuestionType {
-  CHOICE = 'choice',
   TEXT = 'text',
   RATING = 'rating',
-  BOOLEAN = 'boolean',
+  MULTIPLE_CHOICE = 'multiple_choice',
+  CHECKBOX = 'checkbox',
 }
 
 @Entity()

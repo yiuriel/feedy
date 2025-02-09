@@ -53,7 +53,8 @@ export const CreateFeedbackForm: React.FC = () => {
         type: q.type.toLowerCase() as CreateFeedbackFormQuestion["type"],
         question: q.text,
         required: q.required,
-        options: q.type === QuestionType.CHOICE ? q.options : undefined,
+        options:
+          q.type === QuestionType.MULTIPLE_CHOICE ? q.options : undefined,
         minRating: q.type === QuestionType.RATING ? q.minRating : undefined,
         maxRating: q.type === QuestionType.RATING ? q.maxRating : undefined,
       })
