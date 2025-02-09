@@ -7,7 +7,7 @@ export class FeedbackQuestion {
   id: string;
 
   @Column()
-  type: 'text' | 'rating' | 'multipleChoice' | 'checkbox';
+  type: 'text' | 'rating' | 'multiple_choice' | 'checkbox';
 
   @Column()
   question: string;

@@ -55,7 +55,7 @@ export interface CreateFeedbackForm {
 }
 
 export interface CreateFeedbackFormQuestion {
-  type: "text" | "rating" | "multipleChoice" | "checkbox";
+  type: "text" | "rating" | "multiple_choice" | "checkbox";
   question: string;
   required: boolean;
   options?: string[];
@@ -65,7 +65,7 @@ export interface CreateFeedbackFormQuestion {
 
 export interface FeedbackFormQuestion {
   id: string;
-  type: "text" | "rating" | "multipleChoice" | "checkbox";
+  type: "text" | "rating" | "multiple_choice" | "checkbox";
   question: string;
   required: boolean;
   options?: string[];

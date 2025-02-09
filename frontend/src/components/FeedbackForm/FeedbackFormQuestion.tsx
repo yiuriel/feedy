@@ -28,7 +28,7 @@ export const FormQuestion: FC<{ question: FeedbackFormQuestion }> = ({
       />
     );
   } else if (
-    (questionType === "multipleChoice" || questionType === "checkbox") &&
+    (questionType === "multiple_choice" || questionType === "checkbox") &&
     question.options
   ) {
     return (

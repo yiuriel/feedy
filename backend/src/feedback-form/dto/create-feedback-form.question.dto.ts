@@ -1,5 +1,5 @@
 export type CreateFeedbackFormQuestionDto = {
-  type: 'text' | 'rating' | 'multipleChoice' | 'checkbox';
+  type: 'text' | 'rating' | 'multiple_choice' | 'checkbox';
   question: string;
   required: boolean;
   options?: string[];
