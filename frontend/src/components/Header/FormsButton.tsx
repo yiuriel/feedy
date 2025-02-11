@@ -4,7 +4,7 @@ import { queryKeys } from "../../lib/queryKeys";
 import { api } from "../../services/api";
 import { useCallback } from "react";
 
-export const ProfileButton = () => {
+export const FormsButton = () => {
   const navigate = useNavigate();
 
   const { data: user } = useQuery({
@@ -12,8 +12,8 @@ export const ProfileButton = () => {
     queryFn: api.user.getCurrentUser,
   });
 
-  const goToProfile = useCallback(() => {
-    navigate("/app/profile");
+  const goToForms = useCallback(() => {
+    navigate("/app/forms");
   }, [navigate]);
 
   if (!user) return null;
@@ -21,9 +21,9 @@ export const ProfileButton = () => {
   return (
     <button
       className="hover:text-indigo-700 text-indigo-500 px-2 py-2"
-      onClick={goToProfile}
+      onClick={goToForms}
     >
-      Profile
+      Forms
     </button>
   );
 };

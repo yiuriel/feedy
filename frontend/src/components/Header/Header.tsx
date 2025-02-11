@@ -1,3 +1,4 @@
+import { FormsButton } from "./FormsButton";
 import { LogoutButton } from "./LogoutButton";
 import { ProfileButton } from "./ProfileButton";
 import { useNavigate } from "react-router";
@@ -15,6 +16,7 @@ export const Header = () => {
           Feedy
         </h1>
         <div className="flex items-center gap-x-2">
+          <FormsButton />
           <ProfileButton />
           <LogoutButton />
         </div>

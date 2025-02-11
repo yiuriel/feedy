@@ -13,5 +13,7 @@ export const queryKeys = {
   },
   form: {
     answers: ["form", "answers"] as const,
+    list: ["form", "list"] as const,
+    one: ["form", "one"] as const,
   },
 } as const;

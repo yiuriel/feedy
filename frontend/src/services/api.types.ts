@@ -82,6 +82,7 @@ export interface FeedbackFormQuestion {
 export interface FeedbackForm {
   id: string;
   title: string;
+  accessToken: string;
   description?: string;
   questions: FeedbackFormQuestion[];
   customThankYouPage?: string;

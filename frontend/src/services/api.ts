@@ -55,7 +55,7 @@ export const api = {
     create: async (data: CreateFeedbackForm) => {
       return axios.post("/feedback-forms", data);
     },
-    getAll: async () => {
+    getAll: async (): Promise<FeedbackForm[]> => {
       return axios.get("/feedback-forms");
     },
     getOne: async (accessToken: string): Promise<FeedbackForm> => {
