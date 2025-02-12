@@ -30,7 +30,6 @@ export class FeedbackForm {
   @Column({ default: true })
   isActive: boolean;
 
-  @Exclude()
   @Column({ default: 0 })
   responseCount: number;
 
@@ -68,11 +67,9 @@ export class FeedbackForm {
   @Column({ unique: true })
   accessToken: string;
 
-  @Exclude()
   @CreateDateColumn()
   createdAt: Date;
 
-  @Exclude()
   @UpdateDateColumn()
   updatedAt: Date;
 }

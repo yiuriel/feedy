@@ -90,4 +90,7 @@ export interface FeedbackForm {
     stepped?: boolean;
     allowMultipleResponses?: boolean;
   };
+  createdAt: string;
+  updatedAt: string;
+  responseCount: number;
 }
