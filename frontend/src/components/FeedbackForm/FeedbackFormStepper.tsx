@@ -1,16 +1,27 @@
-import { FC, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { useFeedbackFormStore } from "../../stores/feedbackFormStore";
 import { Button } from "../Button/Button";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryKeys } from "../../lib/queryKeys";
 import { api } from "../../services/api";
+import {
+  FeedbackResponseAnswer,
+  FeedbackResponseMetadata,
+} from "../../services/api.types";
+import { QuestionType } from "../../types/question";
 
 export const FeedbackFormStepper: FC<{ id: string }> = ({ id }) => {
-  const { setStep, step, maxStep, answers } = useFeedbackFormStore();
+  const { setStep, step, maxStep, answers, resetAnswers } =
+    useFeedbackFormStore();
 
   const { data } = useQuery({
     queryKey: [queryKeys.form.answers, id],
     queryFn: () => api.feedbackForm.getOne(id),
+  });
+
+  const { mutateAsync } = useMutation({
+    mutationKey: [queryKeys.feedbackResponse.create],
+    mutationFn: api.feedbackResponse.create,
   });
 
   const unansweredQuestions = useMemo(() => {
@@ -31,6 +42,40 @@ export const FeedbackFormStepper: FC<{ id: string }> = ({ id }) => {
       : !answers[data?.questions[index].id];
   };
 
+  const handleFormSubmit = useCallback(async () => {
+    const metadata: FeedbackResponseMetadata = {
+      userAgent: navigator.userAgent,
+    };
+
+    const responseAnswers: FeedbackResponseAnswer[] = (
+      data?.questions ?? []
+    ).map((q) => {
+      return {
+        questionId: q.id,
+        textAnswer:
+          q.type === QuestionType.TEXT ||
+          q.type === QuestionType.MULTIPLE_CHOICE
+            ? String(answers[q.id])
+            : undefined,
+        ratingAnswer:
+          q.type === QuestionType.RATING ? Number(answers[q.id]) : undefined,
+        selectedOptions:
+          q.type === QuestionType.CHECKBOX
+            ? (answers[q.id] as string[])
+            : undefined,
+      };
+    });
+
+    await mutateAsync({
+      formId: id,
+      answers: responseAnswers,
+      metadata,
+    });
+
+    setStep(1);
+    resetAnswers();
+  }, [data?.questions, mutateAsync, id, setStep, resetAnswers, answers]);
+
   if (!data) {
     return null;
   }
@@ -38,7 +83,11 @@ export const FeedbackFormStepper: FC<{ id: string }> = ({ id }) => {
   const isStepped = data.formSettings?.stepped;
 
   if (!isStepped) {
-    return <Button disabled={unansweredQuestions}>Submit</Button>;
+    return (
+      <Button disabled={unansweredQuestions} onClick={handleFormSubmit}>
+        Submit
+      </Button>
+    );
   }
 
   return (
@@ -60,7 +109,9 @@ export const FeedbackFormStepper: FC<{ id: string }> = ({ id }) => {
         </>
       )}
       {step === maxStep && (
-        <Button disabled={unansweredQuestions}>Submit</Button>
+        <Button disabled={unansweredQuestions} onClick={handleFormSubmit}>
+          Submit
+        </Button>
       )}
     </div>
   );

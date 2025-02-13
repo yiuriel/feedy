@@ -1,5 +1,6 @@
 import {
   CreateFeedbackForm,
+  CreateFeedbackResponseDto,
   DashboardStats,
   FeedbackForm,
   HealthCheckResponse,
@@ -60,6 +61,11 @@ export const api = {
     },
     getOne: async (accessToken: string): Promise<FeedbackForm> => {
       return axios.get(`/feedback-forms/${accessToken}`);
+    },
+  },
+  feedbackResponse: {
+    create: async (data: CreateFeedbackResponseDto) => {
+      return axios.post("/feedback-responses", data);
     },
   },
 };

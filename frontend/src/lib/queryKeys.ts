@@ -16,4 +16,7 @@ export const queryKeys = {
     list: ["form", "list"] as const,
     one: ["form", "one"] as const,
   },
+  feedbackResponse: {
+    create: ["feedbackResponse", "create"] as const,
+  },
 } as const;

@@ -94,3 +94,20 @@ export interface FeedbackForm {
   updatedAt: string;
   responseCount: number;
 }
+
+export type FeedbackResponseMetadata = {
+  userAgent?: string;
+};
+
+export type FeedbackResponseAnswer = {
+  questionId: string;
+  textAnswer?: string;
+  ratingAnswer?: number;
+  selectedOptions?: string[];
+};
+
+export interface CreateFeedbackResponseDto {
+  formId: string;
+  answers: Array<FeedbackResponseAnswer>;
+  metadata?: FeedbackResponseMetadata;
+}

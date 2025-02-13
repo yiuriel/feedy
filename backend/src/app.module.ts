@@ -12,6 +12,7 @@ import { OrganizationModule } from './organization/organization.module';
 import { QuestionModule } from './question/question.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { UserModule } from './user/user.module';
+import { FeedbackResponseModule } from './feedback-response/feedback-response.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UserModule } from './user/user.module';
     DashboardModule,
     QuestionModule,
     FeedbackFormModule,
+    FeedbackResponseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

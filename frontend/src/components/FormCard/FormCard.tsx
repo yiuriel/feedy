@@ -1,15 +1,12 @@
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { FC } from "react";
 import { FeedbackForm } from "../../services/api.types";
-import { useNavigate } from "react-router";
 import { Menu } from "../Menu/Menu";
 import { MenuItem } from "../Menu/MenuItem";
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 
 export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
-  const navigate = useNavigate();
-
   const handleViewAsUser = () => {
-    navigate(`/form/${form.accessToken}`);
+    window.open(`/form/${form.accessToken}`, "_blank", "noopener,noreferrer");
   };
 
   const handleCopyLink = () => {
