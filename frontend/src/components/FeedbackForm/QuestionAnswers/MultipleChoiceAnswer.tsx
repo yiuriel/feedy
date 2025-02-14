@@ -17,7 +17,7 @@ export const MultipleChoiceAnswer: React.FC<MultipleChoiceAnswerProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      <label className="block text-lg font-medium text-gray-900">
+      <label className="block text-lg font-medium text-indigo-900">
         {question}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
@@ -27,8 +27,8 @@ export const MultipleChoiceAnswer: React.FC<MultipleChoiceAnswerProps> = ({
             key={index}
             className={`relative flex items-center p-4 cursor-pointer rounded-lg border-2 transition-all duration-200 ${
               value === option
-                ? 'border-blue-500 bg-blue-50'
-                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                ? 'border-indigo-500 bg-indigo-50'
+                : 'border-gray-200 hover:border-indigo-200 hover:bg-indigo-50/50'
             }`}
           >
             <input
@@ -41,13 +41,13 @@ export const MultipleChoiceAnswer: React.FC<MultipleChoiceAnswerProps> = ({
             />
             <div className="flex items-center justify-between w-full">
               <span className={`text-base ${
-                value === option ? 'text-blue-900' : 'text-gray-900'
+                value === option ? 'text-indigo-900' : 'text-gray-900'
               }`}>
                 {option}
               </span>
               <div className={`w-5 h-5 border-2 rounded-full flex items-center justify-center transition-colors duration-200 ${
                 value === option
-                  ? 'border-blue-500 bg-blue-500'
+                  ? 'border-indigo-500 bg-indigo-500'
                   : 'border-gray-300'
               }`}>
                 {value === option && (
@@ -59,8 +59,8 @@ export const MultipleChoiceAnswer: React.FC<MultipleChoiceAnswerProps> = ({
         ))}
       </div>
       {value && (
-        <p className="text-sm text-gray-600 animate-fadeIn">
-          Selected: <span className="font-medium text-blue-600">{value}</span>
+        <p className="text-sm text-indigo-600 animate-fadeIn">
+          Selected: <span className="font-medium text-indigo-700">{value}</span>
         </p>
       )}
     </div>

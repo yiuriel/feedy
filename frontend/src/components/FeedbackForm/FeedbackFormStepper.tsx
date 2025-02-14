@@ -96,7 +96,7 @@ export const FeedbackFormStepper: FC<{ accessToken: string }> = ({
       <Button
         disabled={unansweredQuestions}
         onClick={handleFormSubmit}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors duration-200"
+        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition-colors duration-200"
       >
         Submit Feedback
       </Button>
@@ -122,8 +122,8 @@ export const FeedbackFormStepper: FC<{ accessToken: string }> = ({
           onClick={handleFormSubmit}
           className={`flex-1 py-3 rounded-lg transition-all duration-200 ${
             isUnanswered(step - 1) && isQuestionRequired(step - 1)
-              ? 'bg-blue-300 cursor-not-allowed'
-              : 'bg-blue-600 hover:bg-blue-700 text-white'
+              ? 'bg-indigo-300 cursor-not-allowed'
+              : 'bg-indigo-600 hover:bg-indigo-700 text-white'
           }`}
         >
           Submit Feedback
@@ -134,8 +134,8 @@ export const FeedbackFormStepper: FC<{ accessToken: string }> = ({
           onClick={() => setStep(step + 1)}
           className={`flex-1 py-3 rounded-lg transition-all duration-200 ${
             isUnanswered(step - 1) && isQuestionRequired(step - 1)
-              ? 'bg-blue-300 cursor-not-allowed'
-              : 'bg-blue-600 hover:bg-blue-700 text-white'
+              ? 'bg-indigo-300 cursor-not-allowed'
+              : 'bg-indigo-600 hover:bg-indigo-700 text-white'
           }`}
         >
           Next

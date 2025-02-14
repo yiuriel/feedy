@@ -166,7 +166,7 @@ export class FeedbackFormService {
     });
 
     if (!form) {
-      throw new UnauthorizedException('Feedback form not found');
+      throw new UnauthorizedException('Invalid password');
     }
 
     return true;

@@ -24,15 +24,15 @@ export const RatingAnswer: React.FC<RatingAnswerProps> = ({
 
   return (
     <div className="space-y-4">
-      <label className="block text-lg font-medium text-gray-900">
+      <label className="block text-lg font-medium text-indigo-900">
         {question}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       <div className="flex flex-col space-y-4">
         <div className="flex justify-between items-center">
-          <span className="text-sm font-medium text-gray-600 flex items-center">
+          <span className="text-sm font-medium text-indigo-600 flex items-center">
             <svg
-              className="w-4 h-4 mr-1 text-gray-400"
+              className="w-4 h-4 mr-1 text-indigo-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -56,7 +56,7 @@ export const RatingAnswer: React.FC<RatingAnswerProps> = ({
                   const stars = document.querySelectorAll(".star-rating");
                   stars.forEach((star, index) => {
                     if (index < rating) {
-                      star.classList.add("text-yellow-400");
+                      star.classList.add("text-purple-400");
                     }
                   });
                 }}
@@ -64,16 +64,16 @@ export const RatingAnswer: React.FC<RatingAnswerProps> = ({
                   const stars = document.querySelectorAll(".star-rating");
                   stars.forEach((star, index) => {
                     if (index >= (value || 0)) {
-                      star.classList.remove("text-yellow-400");
+                      star.classList.remove("text-purple-400");
                     }
                   });
                 }}
-                className="p-1 rounded-full transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="p-1 rounded-full transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 aria-label={`Rate ${rating} out of ${maxRating}`}
               >
                 <svg
                   className={`w-8 h-8 transition-colors duration-200 star-rating ${
-                    rating <= (value || 0) ? "text-yellow-400" : "text-gray-300"
+                    rating <= (value || 0) ? "text-purple-400" : "text-gray-300"
                   }`}
                   fill="currentColor"
                   viewBox="0 0 20 20"
@@ -83,10 +83,10 @@ export const RatingAnswer: React.FC<RatingAnswerProps> = ({
               </button>
             ))}
           </div>
-          <span className="text-sm font-medium text-gray-600 flex items-center">
+          <span className="text-sm font-medium text-indigo-600 flex items-center">
             Very satisfied
             <svg
-              className="w-4 h-4 ml-1 text-gray-400"
+              className="w-4 h-4 ml-1 text-indigo-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -100,11 +100,11 @@ export const RatingAnswer: React.FC<RatingAnswerProps> = ({
             </svg>
           </span>
         </div>
-        {value && (
-          <p className="text-md text-gray-600 text-center animate-fadeIn">
+        {value ? (
+          <p className="text-sm text-indigo-600 text-center animate-fadeIn">
             You rated:{" "}
             <span
-              className={`font-bold ${
+              className={`font-medium ${
                 value === 1
                   ? "text-red-600"
                   : value === 2
@@ -112,7 +112,7 @@ export const RatingAnswer: React.FC<RatingAnswerProps> = ({
                   : value === 3
                   ? "text-yellow-500"
                   : value === 4
-                  ? "text-lime-500"
+                  ? "text-lime-600"
                   : "text-green-600"
               }`}
             >
@@ -120,7 +120,7 @@ export const RatingAnswer: React.FC<RatingAnswerProps> = ({
             </span>{" "}
             out of {maxRating}
           </p>
-        )}
+        ) : null}
       </div>
     </div>
   );

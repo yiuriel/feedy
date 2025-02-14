@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { FeedbackFormQuestion } from "../../services/api.types";
-import { MultipleChoiceAnswer } from "../QuestionAnswers/MultipleChoiceAnswer";
-import { RatingAnswer } from "../QuestionAnswers/RatingAnswer";
-import { TextAnswer } from "../QuestionAnswers/TextAnswer";
-import { CheckboxAnswer } from "../QuestionAnswers/CheckboxAnswer";
+import { MultipleChoiceAnswer } from "./QuestionAnswers/MultipleChoiceAnswer";
+import { RatingAnswer } from "./QuestionAnswers/RatingAnswer";
+import { TextAnswer } from "./QuestionAnswers/TextAnswer";
+import { CheckboxAnswer } from "./QuestionAnswers/CheckboxAnswer";
 import { useFeedbackFormStore } from "../../stores/feedbackFormStore";
 
 export const FormQuestion: FC<{ question: FeedbackFormQuestion }> = ({
