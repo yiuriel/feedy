@@ -62,6 +62,17 @@ export const api = {
     getOne: async (accessToken: string): Promise<FeedbackForm> => {
       return axios.get(`/feedback-forms/${accessToken}`);
     },
+    needsPassword: async (accessToken: string): Promise<boolean> => {
+      return axios.get(`/feedback-forms/${accessToken}/password`);
+    },
+    checkPassword: async (
+      accessToken: string,
+      password: string
+    ): Promise<boolean> => {
+      return axios.post(`/feedback-forms/${accessToken}/password`, {
+        password,
+      });
+    },
   },
   feedbackResponse: {
     create: async (data: CreateFeedbackResponseDto) => {

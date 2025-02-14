@@ -47,4 +47,23 @@ export class FeedbackFormController {
       payload.organizationId,
     );
   }
+
+  @Get(':id/password')
+  needsPassword(
+    @Param('id') accessToken: string,
+    @GetUserPayload() payload: Payload,
+  ) {
+    return this.feedbackFormService.formNeedsPassword(
+      accessToken,
+      payload.organizationId,
+    );
+  }
+
+  @Post(':id/password')
+  checkPassword(
+    @Param('id') accessToken: string,
+    @Body() { password }: { password: string },
+  ) {
+    return this.feedbackFormService.checkPassword(accessToken, password);
+  }
 }

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FeedbackFormSettings } from 'src/entities/feedback-form-settings.entity';
 import { FeedbackQuestion } from 'src/entities/feedback-question.entity';
@@ -100,6 +104,32 @@ export class FeedbackFormService {
     }
 
     return form;
+  }
+
+  async formNeedsPassword(accessToken: string, organizationId: string) {
+    const form = await this.feedbackFormRepository.findOne({
+      where: {
+        accessToken,
+        isActive: true,
+        organization: { id: organizationId },
+      },
+      relations: ['questions', 'formSettings'],
+    });
+
+    return !!form.password;
+  }
+
+  async checkPassword(accessToken: string, password: string) {
+    const form = await this.feedbackFormRepository.findOne({
+      where: { accessToken, password },
+      relations: ['questions', 'formSettings'],
+    });
+
+    if (!form) {
+      throw new UnauthorizedException('Feedback form not found');
+    }
+
+    return true;
   }
 
   private createFeedbackFormAccessToken() {

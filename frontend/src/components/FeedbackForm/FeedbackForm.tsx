@@ -7,12 +7,12 @@ import { Loading } from "../Loading";
 import { FormQuestion } from "./FeedbackFormQuestion";
 import { FeedbackFormStepper } from "./FeedbackFormStepper";
 
-export const FeedbackForm: FC<{ id: string }> = ({ id }) => {
+export const FeedbackForm: FC<{ accessToken: string }> = ({ accessToken }) => {
   const { setMaxStep, step } = useFeedbackFormStore();
   const { data, isLoading } = useQuery({
-    queryKey: [queryKeys.form.answers, id],
-    queryFn: () => api.feedbackForm.getOne(id),
-    enabled: !!id,
+    queryKey: [queryKeys.form.answers, accessToken],
+    queryFn: () => api.feedbackForm.getOne(accessToken),
+    enabled: !!accessToken,
   });
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export const FeedbackForm: FC<{ id: string }> = ({ id }) => {
           </div>
         );
       })}
-      <FeedbackFormStepper id={id} />
+      <FeedbackFormStepper accessToken={accessToken} />
     </div>
   );
 };

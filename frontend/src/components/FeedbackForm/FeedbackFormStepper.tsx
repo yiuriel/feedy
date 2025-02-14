@@ -10,13 +10,15 @@ import {
 } from "../../services/api.types";
 import { QuestionType } from "../../types/question";
 
-export const FeedbackFormStepper: FC<{ id: string }> = ({ id }) => {
+export const FeedbackFormStepper: FC<{ accessToken: string }> = ({
+  accessToken,
+}) => {
   const { setStep, step, maxStep, answers, resetAnswers } =
     useFeedbackFormStore();
 
   const { data } = useQuery({
-    queryKey: [queryKeys.form.answers, id],
-    queryFn: () => api.feedbackForm.getOne(id),
+    queryKey: [queryKeys.form.answers, accessToken],
+    queryFn: () => api.feedbackForm.getOne(accessToken),
   });
 
   const { mutateAsync } = useMutation({
@@ -67,14 +69,21 @@ export const FeedbackFormStepper: FC<{ id: string }> = ({ id }) => {
     });
 
     await mutateAsync({
-      formId: id,
+      formId: accessToken,
       answers: responseAnswers,
       metadata,
     });
 
     setStep(1);
     resetAnswers();
-  }, [data?.questions, mutateAsync, id, setStep, resetAnswers, answers]);
+  }, [
+    data?.questions,
+    mutateAsync,
+    accessToken,
+    setStep,
+    resetAnswers,
+    answers,
+  ]);
 
   if (!data) {
     return null;

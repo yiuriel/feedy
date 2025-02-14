@@ -14,7 +14,7 @@ export const useAuthUser = () => {
 
   useEffect(() => {
     if (!isLoadingUser && !data) {
-      // navigate("/");
+      navigate("/login");
     }
   }, [data, isLoadingUser, navigate]);
 

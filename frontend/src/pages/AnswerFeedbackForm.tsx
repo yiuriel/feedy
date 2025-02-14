@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { FeedbackForm } from "../components/FeedbackForm/FeedbackForm";
+import { FeedbackFormPasswordCheck } from "../components/FeedbackForm/FeedbackFormPasswordCheck";
 
 export const AnswerFeedbackForm = () => {
   const params = useParams<{ id: string }>();
@@ -9,8 +9,8 @@ export const AnswerFeedbackForm = () => {
   }
 
   return (
-    <div>
-      <FeedbackForm id={params.id} />
+    <div className="container mx-auto">
+      <FeedbackFormPasswordCheck accessToken={params.id} />
     </div>
   );
 };
