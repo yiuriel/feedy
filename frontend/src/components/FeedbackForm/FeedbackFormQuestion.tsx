@@ -22,45 +22,53 @@ export const FormQuestion: FC<{ question: FeedbackFormQuestion }> = ({
 
   if (questionType === "text") {
     return (
-      <TextAnswer
-        question={question.question}
-        onChange={handleAnswerChange}
-        required={question.required}
-        value={String(value)}
-      />
+      <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+        <TextAnswer
+          question={question.question}
+          onChange={handleAnswerChange}
+          required={question.required}
+          value={String(value)}
+        />
+      </div>
     );
   } else if (questionType === "rating") {
     return (
-      <RatingAnswer
-        question={question.question}
-        onChange={handleAnswerChange}
-        minRating={question.minRating}
-        maxRating={question.maxRating}
-        required={question.required}
-        value={Number(value)}
-      />
+      <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+        <RatingAnswer
+          question={question.question}
+          onChange={handleAnswerChange}
+          minRating={question.minRating}
+          maxRating={question.maxRating}
+          required={question.required}
+          value={Number(value)}
+        />
+      </div>
     );
   } else if (questionType === "multiple_choice" && question.options) {
     return (
-      <MultipleChoiceAnswer
-        question={question.question}
-        options={question.options}
-        onChange={handleAnswerChange}
-        required={question.required}
-        value={String(value)}
-      />
+      <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+        <MultipleChoiceAnswer
+          question={question.question}
+          options={question.options}
+          onChange={handleAnswerChange}
+          required={question.required}
+          value={String(value)}
+        />
+      </div>
     );
   } else if (questionType === "checkbox" && question.options) {
     return (
-      <CheckboxAnswer
-        question={question.question}
-        options={question.options}
-        onChange={handleAnswerChange}
-        required={question.required}
-        value={
-          typeof value === "string" ? (value ? value.split(",") : []) : value
-        }
-      />
+      <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+        <CheckboxAnswer
+          question={question.question}
+          options={question.options}
+          onChange={handleAnswerChange}
+          required={question.required}
+          value={
+            typeof value === "string" ? (value ? value.split(",") : []) : value
+          }
+        />
+      </div>
     );
   }
 

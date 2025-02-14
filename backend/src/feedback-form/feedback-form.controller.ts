@@ -48,6 +48,17 @@ export class FeedbackFormController {
     );
   }
 
+  @Get(':id/evaluate')
+  evaluate(
+    @Param('id') accessToken: string,
+    @GetUserPayload() payload: Payload,
+  ) {
+    return this.feedbackFormService.getFormWithResponses(
+      accessToken,
+      payload.organizationId,
+    );
+  }
+
   @Get(':id/password')
   needsPassword(
     @Param('id') accessToken: string,

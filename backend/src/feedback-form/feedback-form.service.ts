@@ -106,6 +106,46 @@ export class FeedbackFormService {
     return form;
   }
 
+  async getFormWithResponses(accessToken: string, organizationId: string) {
+    const form = await this.feedbackFormRepository.findOne({
+      where: {
+        accessToken,
+        isActive: true,
+        organization: { id: organizationId },
+      },
+      relations: [
+        'questions',
+        'responses',
+        'responses.answers',
+        'responses.answers.question',
+      ],
+    });
+
+    if (!form) {
+      throw new NotFoundException('Feedback form not found');
+    }
+
+    const questionAnswers = form.questions.map((question) => {
+      const answers = form.responses.flatMap((response) => {
+        return response.answers
+          .filter((answer) => answer.question.id === question.id)
+          .map(({ id, textAnswer, ratingAnswer, selectedOptions }) => ({
+            id,
+            textAnswer,
+            ratingAnswer,
+            selectedOptions,
+          }));
+      });
+      return { question, answers };
+    });
+
+    return {
+      id: form.id,
+      accessToken: form.accessToken,
+      questionAnswers,
+    };
+  }
+
   async formNeedsPassword(accessToken: string, organizationId: string) {
     const form = await this.feedbackFormRepository.findOne({
       where: {
