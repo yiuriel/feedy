@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FeedbackForm } from '../entities/feedback-form.entity';
 import { FeedbackResponseAnswer } from '../entities/feedback-response-answer.entity';
 import { FeedbackResponseMetadata } from '../entities/feedback-response-metadata.entity';
 import { FeedbackResponse } from '../entities/feedback-response.entity';
+import { HONEY_POT_FIELD_NAME } from './feedback-response.constants';
 
 interface CreateFeedbackResponseDto {
   formId: string;
@@ -30,6 +31,14 @@ export class FeedbackResponseService {
     createDto: CreateFeedbackResponseDto,
     ipAddress: string,
   ): Promise<FeedbackResponse> {
+    const firstAnswer = createDto.answers[0];
+    if (
+      firstAnswer.questionId === HONEY_POT_FIELD_NAME &&
+      firstAnswer.textAnswer !== ''
+    ) {
+      throw new UnauthorizedException('There was a problem with your request');
+    }
+
     const queryRunner =
       this.responseRepository.manager.connection.createQueryRunner();
     await queryRunner.connect();
@@ -40,11 +49,13 @@ export class FeedbackResponseService {
         where: { accessToken: createDto.formId },
       });
 
+      const answersWithoutHoneyPot = createDto.answers.slice(1);
+
       const response = new FeedbackResponse();
       response.form = form;
       response.submittedAt = new Date();
 
-      const answers = createDto.answers.map((answer) => {
+      const answers = answersWithoutHoneyPot.map((answer) => {
         const responseAnswer = new FeedbackResponseAnswer();
         responseAnswer.question = { id: answer.questionId } as any;
         responseAnswer.textAnswer = answer.textAnswer;
