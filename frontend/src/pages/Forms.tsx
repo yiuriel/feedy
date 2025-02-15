@@ -24,12 +24,12 @@ export const Forms = () => {
   }
 
   return (
-    <div className="container mx-auto py-10 gap-4 flex flex-col">
+    <div className="py-10 gap-4 flex flex-col container">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Forms</h1>
         <Button onClick={goToForm}>Create new form</Button>
       </div>
-      <div className="grid grid-cols-2 mt-8 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {data?.map((form) => (
           <FormCard key={form.id} form={form} />
         ))}
