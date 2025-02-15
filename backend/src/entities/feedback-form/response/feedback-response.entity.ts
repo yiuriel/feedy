@@ -6,7 +6,7 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
-import { FeedbackForm } from './feedback-form.entity';
+import { FeedbackForm } from '../feedback-form.entity';
 import { FeedbackResponseAnswer } from './feedback-response-answer.entity';
 import { FeedbackResponseMetadata } from './feedback-response-metadata.entity';
 

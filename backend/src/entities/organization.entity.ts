@@ -8,8 +8,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
-import { FeedbackForm } from './feedback-form.entity';
 import { Subscription } from './subscription.entity';
+import { FeedbackForm } from './feedback-form/feedback-form.entity';
 
 @Entity()
 export class Organization {

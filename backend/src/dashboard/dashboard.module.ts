@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DashboardController } from './dashboard.controller';
 import { DashboardService } from './dashboard.service';
-import { FeedbackForm } from '../entities/feedback-form.entity';
-import { FeedbackResponse } from '../entities/feedback-response.entity';
+import { FeedbackForm } from '../entities/feedback-form/feedback-form.entity';
+import { FeedbackResponse } from '../entities/feedback-form/response/feedback-response.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([FeedbackForm, FeedbackResponse])],

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FeedbackResponse } from '../entities/feedback-response.entity';
 import { FeedbackResponseService } from './feedback-response.service';
 import { FeedbackResponseController } from './feedback-response.controller';
-import { FeedbackForm } from '../entities/feedback-form.entity';
-import { FeedbackResponseAnswer } from '../entities/feedback-response-answer.entity';
-import { FeedbackResponseMetadata } from '../entities/feedback-response-metadata.entity';
+import { FeedbackResponseAnswer } from 'src/entities/feedback-form/response/feedback-response-answer.entity';
+import { FeedbackResponseMetadata } from 'src/entities/feedback-form/response/feedback-response-metadata.entity';
+import { FeedbackResponse } from 'src/entities/feedback-form/response/feedback-response.entity';
+import { FeedbackForm } from 'src/entities/feedback-form/feedback-form.entity';
 
 @Module({
   imports: [

@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { FeedbackResponseService } from './feedback-response.service';
-import { FeedbackResponse } from '../entities/feedback-response.entity';
+import { FeedbackResponse } from 'src/entities/feedback-form/response/feedback-response.entity';
 
 interface CreateFeedbackResponseDto {
   formId: string;

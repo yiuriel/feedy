@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FeedbackResponse } from 'src/entities/feedback-form/response/feedback-response.entity';
+import { FeedbackForm } from 'src/entities/feedback-form/feedback-form.entity';
 import { Repository } from 'typeorm';
-import { FeedbackForm } from '../entities/feedback-form.entity';
-import { FeedbackResponse } from '../entities/feedback-response.entity';
 
 @Injectable()
 export class DashboardService {
