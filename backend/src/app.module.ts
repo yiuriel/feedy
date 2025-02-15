@@ -15,6 +15,8 @@ import { QuestionModule } from './question/question.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { TokenModule } from './token/token.module';
 import { UserModule } from './user/user.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -23,6 +25,13 @@ import { UserModule } from './user/user.module';
       delimiter: '.',
       verboseMemoryLeak: true,
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 30,
+        blockDuration: 20000,
+      },
+    ]),
     SubscriptionModule,
     AuthModule,
     LLMModule,
@@ -36,6 +45,12 @@ import { UserModule } from './user/user.module';
     MemoryUsageModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}

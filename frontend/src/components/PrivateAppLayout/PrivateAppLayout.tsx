@@ -13,8 +13,10 @@ export const PrivateAppLayout = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       <Header />
-      <div className="flex flex-grow container mx-auto">
-        <Outlet />
+      <div className="flex flex-grow overflow-auto">
+        <div className="container mx-auto">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

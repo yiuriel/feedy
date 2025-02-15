@@ -2,6 +2,7 @@ import { Controller, Post, Body, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { FeedbackResponseService } from './feedback-response.service';
 import { FeedbackResponse } from 'src/entities/feedback-form/response/feedback-response.entity';
+import { Throttle } from '@nestjs/throttler';
 
 interface CreateFeedbackResponseDto {
   formId: string;
@@ -16,6 +17,12 @@ interface CreateFeedbackResponseDto {
   };
 }
 
+@Throttle({
+  default: {
+    limit: 15,
+    ttl: 60000, // 1 minute
+  },
+})
 @Controller('feedback-responses')
 export class FeedbackResponseController {
   constructor(private readonly responseService: FeedbackResponseService) {}

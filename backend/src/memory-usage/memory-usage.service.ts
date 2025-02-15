@@ -3,7 +3,7 @@ import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 @Injectable()
 export class MemoryUsageService implements OnModuleInit, OnModuleDestroy {
   private cleanupInterval: NodeJS.Timeout;
-  private cleanupTime = 15000; // 15 seconds in milliseconds
+  private cleanupTime = 30000; // 30 seconds in milliseconds
 
   onModuleInit() {
     console.log('MemoryUsageService initialized');

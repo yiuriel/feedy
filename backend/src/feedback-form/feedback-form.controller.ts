@@ -14,7 +14,14 @@ import { FeedbackFormService } from './feedback-form.service';
 import { GetUserPayload } from 'src/auth/decorators/get.user.payload';
 import { Payload } from 'src/auth/types/payload.type';
 import { Response } from 'express';
+import { Throttle } from '@nestjs/throttler';
 
+@Throttle({
+  default: {
+    limit: 15,
+    ttl: 60000, // 1 minute
+  },
+})
 @Controller('feedback-forms')
 @UseGuards(AuthGuard)
 export class FeedbackFormController {

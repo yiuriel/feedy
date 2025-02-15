@@ -5,7 +5,7 @@ import { randomBytes } from 'crypto';
 export class TokenService implements OnModuleInit, OnModuleDestroy {
   private tokens: Map<string, number> = new Map();
   private cleanupInterval: NodeJS.Timeout;
-  private cleanupTime = 900000;
+  private cleanupTime = 30000;
 
   constructor() {}
 
