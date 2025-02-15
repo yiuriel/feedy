@@ -5,7 +5,7 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-import { FeedbackForm } from './feedback-form.entity';
+import { FeedbackForm } from '../../feedback-form/entities/feedback-form.entity';
 import { Exclude } from 'class-transformer';
 
 @Entity()

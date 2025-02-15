@@ -1,11 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FeedbackForm } from '../entities/feedback-form.entity';
-import { FeedbackResponseAnswer } from '../entities/feedback-response-answer.entity';
-import { FeedbackResponseMetadata } from '../entities/feedback-response-metadata.entity';
-import { FeedbackResponse } from '../entities/feedback-response.entity';
+import { FeedbackForm } from '../entities/feedback-form/feedback-form.entity';
 import { HONEY_POT_FIELD_NAME } from './feedback-response.constants';
+import { FeedbackResponseAnswer } from 'src/entities/feedback-form/response/feedback-response-answer.entity';
+import { FeedbackResponseMetadata } from 'src/entities/feedback-form/response/feedback-response-metadata.entity';
+import { FeedbackResponse } from 'src/entities/feedback-form/response/feedback-response.entity';
 
 interface CreateFeedbackResponseDto {
   formId: string;

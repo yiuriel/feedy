@@ -8,12 +8,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Organization } from './organization.entity';
-import { FeedbackResponse } from './feedback-response.entity';
-import { User } from './user.entity';
+import { Organization } from '../organization.entity';
+import { User } from '../user.entity';
 import { FeedbackQuestion } from './feedback-question.entity';
 import { FeedbackFormSettings } from './feedback-form-settings.entity';
 import { Exclude } from 'class-transformer';
+import { FeedbackResponse } from './response/feedback-response.entity';
 
 @Entity()
 export class FeedbackForm {

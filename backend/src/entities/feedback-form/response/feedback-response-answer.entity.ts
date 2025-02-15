@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { FeedbackQuestion } from '../feedback-question.entity';
 import { FeedbackResponse } from './feedback-response.entity';
-import { FeedbackQuestion } from './feedback-question.entity';
 
 @Entity()
 export class FeedbackResponseAnswer {

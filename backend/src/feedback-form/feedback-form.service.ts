@@ -4,10 +4,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FeedbackFormSettings } from 'src/entities/feedback-form-settings.entity';
-import { FeedbackQuestion } from 'src/entities/feedback-question.entity';
+import { FeedbackFormSettings } from 'src/entities/feedback-form/feedback-form-settings.entity';
+import { FeedbackQuestion } from 'src/entities/feedback-form/feedback-question.entity';
 import { DataSource, Repository } from 'typeorm';
-import { FeedbackForm } from '../entities/feedback-form.entity';
+import { FeedbackForm } from '../entities/feedback-form/feedback-form.entity';
 import { Organization } from '../entities/organization.entity';
 import { CreateFeedbackFormDto } from './dto/create-feedback-form.dto';
 
