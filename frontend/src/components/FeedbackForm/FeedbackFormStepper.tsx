@@ -56,6 +56,7 @@ export const FeedbackFormStepper: FC<{ accessToken: string }> = ({
       <Button
         disabled={step === 1}
         onClick={() => setStep(step - 1)}
+        type="button"
         className={`flex-1 py-3 rounded-lg transition-all duration-200 ${
           step === 1
             ? "bg-gray-100 text-gray-400"
@@ -80,6 +81,7 @@ export const FeedbackFormStepper: FC<{ accessToken: string }> = ({
         <Button
           disabled={isUnanswered(step - 1) && isQuestionRequired(step - 1)}
           onClick={() => setStep(step + 1)}
+          type="button"
           className={`flex-1 py-3 rounded-lg transition-all duration-200 ${
             isUnanswered(step - 1) && isQuestionRequired(step - 1)
               ? "bg-indigo-300 cursor-not-allowed"

@@ -38,7 +38,7 @@ export class FeedbackResponseService {
   ): Promise<FeedbackResponse> {
     const token = request.cookies.formToken;
     if (!token) {
-      throw new UnauthorizedException('There was a problem with your request');
+      throw new UnauthorizedException('No token provided');
     }
 
     if (!this.tokenService.validate(token)) {
