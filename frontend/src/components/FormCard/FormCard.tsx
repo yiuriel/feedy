@@ -39,7 +39,7 @@ export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
 
         <div className="mt-4 bg-gray-50 rounded-lg py-2 px-4">
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
+            <span className="text-3xl font-bold bg-gradient-to-tr from-blue-700 to-indigo-300 bg-clip-text text-transparent">
               {form.responseCount}
             </span>
             <span className="text-gray-600 text-md">
