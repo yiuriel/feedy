@@ -55,7 +55,10 @@ export const FeedbackFormStepper: FC<{ accessToken: string }> = ({
     <div className="flex justify-between items-center gap-4">
       <Button
         disabled={step === 1}
-        onClick={() => setStep(step - 1)}
+        onClick={(e) => {
+          e.preventDefault();
+          setStep(step - 1);
+        }}
         type="button"
         className={`flex-1 py-3 rounded-lg transition-all duration-200 ${
           step === 1
@@ -80,7 +83,10 @@ export const FeedbackFormStepper: FC<{ accessToken: string }> = ({
       ) : (
         <Button
           disabled={isUnanswered(step - 1) && isQuestionRequired(step - 1)}
-          onClick={() => setStep(step + 1)}
+          onClick={(e) => {
+            e.preventDefault();
+            setStep(step + 1);
+          }}
           type="button"
           className={`flex-1 py-3 rounded-lg transition-all duration-200 ${
             isUnanswered(step - 1) && isQuestionRequired(step - 1)
