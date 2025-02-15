@@ -93,7 +93,7 @@ export const FeedbackForm: FC<{ accessToken: string }> = ({ accessToken }) => {
   const isStepped = data.formSettings?.stepped;
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-8">
         <div className="space-y-6">
           <h1 className="text-4xl font-bold text-center text-indigo-900 mb-2">

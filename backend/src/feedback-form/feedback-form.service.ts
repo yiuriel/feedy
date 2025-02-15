@@ -1,6 +1,7 @@
 import {
   Injectable,
   NotFoundException,
+  Res,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,6 +11,8 @@ import { DataSource, Repository } from 'typeorm';
 import { FeedbackForm } from '../entities/feedback-form/feedback-form.entity';
 import { Organization } from '../entities/organization.entity';
 import { CreateFeedbackFormDto } from './dto/create-feedback-form.dto';
+import { Response } from 'express';
+import { TokenService } from '../token/token.service';
 
 @Injectable()
 export class FeedbackFormService {
@@ -17,6 +20,7 @@ export class FeedbackFormService {
     @InjectRepository(FeedbackForm)
     private feedbackFormRepository: Repository<FeedbackForm>,
     private readonly dataSource: DataSource,
+    private readonly tokenService: TokenService,
   ) {}
 
   async create(organizationId: string, data: CreateFeedbackFormDto) {
@@ -89,7 +93,11 @@ export class FeedbackFormService {
     });
   }
 
-  async findOne(accessToken: string, organizationId: string) {
+  async findOne(
+    accessToken: string,
+    organizationId: string,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const form = await this.feedbackFormRepository.findOne({
       where: {
         accessToken,
@@ -102,6 +110,11 @@ export class FeedbackFormService {
     if (!form) {
       throw new NotFoundException('Feedback form not found');
     }
+
+    res.cookie('formToken', this.tokenService.create(), {
+      httpOnly: true,
+      maxAge: 5 * 60 * 1000,
+    });
 
     return form;
   }

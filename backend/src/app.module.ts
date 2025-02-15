@@ -7,12 +7,13 @@ import { AuthModule } from './auth/auth.module';
 import { databaseConfig } from './config/database.config';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { FeedbackFormModule } from './feedback-form/feedback-form.module';
+import { FeedbackResponseModule } from './feedback-response/feedback-response.module';
 import { LLMModule } from './llm/llm.module';
 import { OrganizationModule } from './organization/organization.module';
 import { QuestionModule } from './question/question.module';
 import { SubscriptionModule } from './subscription/subscription.module';
+import { TokenModule } from './token/token.module';
 import { UserModule } from './user/user.module';
-import { FeedbackResponseModule } from './feedback-response/feedback-response.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { FeedbackResponseModule } from './feedback-response/feedback-response.mo
     QuestionModule,
     FeedbackFormModule,
     FeedbackResponseModule,
+    TokenModule,
   ],
   controllers: [AppController],
   providers: [AppService],

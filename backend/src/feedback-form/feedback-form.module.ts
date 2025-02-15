@@ -4,9 +4,13 @@ import { FeedbackFormService } from './feedback-form.service';
 import { FeedbackFormController } from './feedback-form.controller';
 import { Organization } from '../entities/organization.entity';
 import { FeedbackForm } from 'src/entities/feedback-form/feedback-form.entity';
+import { TokenModule } from 'src/token/token.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([FeedbackForm, Organization])],
+  imports: [
+    TypeOrmModule.forFeature([FeedbackForm, Organization]),
+    TokenModule,
+  ],
   controllers: [FeedbackFormController],
   providers: [FeedbackFormService],
   exports: [FeedbackFormService],

@@ -1,5 +1,5 @@
-import { Controller, Post, Body, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Post, Body, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { FeedbackResponseService } from './feedback-response.service';
 import { FeedbackResponse } from 'src/entities/feedback-form/response/feedback-response.entity';
 
@@ -24,9 +24,11 @@ export class FeedbackResponseController {
   async create(
     @Body() createDto: CreateFeedbackResponseDto,
     @Req() request: Request,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<FeedbackResponse> {
     const ip =
       request.headers['x-forwarded-for'] || request.socket.remoteAddress;
-    return this.responseService.create(createDto, ip as string);
+
+    return this.responseService.create(createDto, ip as string, request, res);
   }
 }

@@ -5,6 +5,7 @@ import {
   Param,
   Post,
   Request,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -12,6 +13,7 @@ import { CreateFeedbackFormDto } from './dto/create-feedback-form.dto';
 import { FeedbackFormService } from './feedback-form.service';
 import { GetUserPayload } from 'src/auth/decorators/get.user.payload';
 import { Payload } from 'src/auth/types/payload.type';
+import { Response } from 'express';
 
 @Controller('feedback-forms')
 @UseGuards(AuthGuard)
@@ -41,10 +43,12 @@ export class FeedbackFormController {
   findOne(
     @Param('id') accessToken: string,
     @GetUserPayload() payload: Payload,
+    @Res({ passthrough: true }) res: Response,
   ) {
     return this.feedbackFormService.findOne(
       accessToken,
       payload.organizationId,
+      res,
     );
   }
 

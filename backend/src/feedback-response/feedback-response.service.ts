@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FeedbackForm } from '../entities/feedback-form/feedback-form.entity';
@@ -6,6 +6,8 @@ import { HONEY_POT_FIELD_NAME } from './feedback-response.constants';
 import { FeedbackResponseAnswer } from 'src/entities/feedback-form/response/feedback-response-answer.entity';
 import { FeedbackResponseMetadata } from 'src/entities/feedback-form/response/feedback-response-metadata.entity';
 import { FeedbackResponse } from 'src/entities/feedback-form/response/feedback-response.entity';
+import { TokenService } from 'src/token/token.service';
+import { Response, Request } from 'express';
 
 interface CreateFeedbackResponseDto {
   formId: string;
@@ -25,12 +27,26 @@ export class FeedbackResponseService {
   constructor(
     @InjectRepository(FeedbackResponse)
     private readonly responseRepository: Repository<FeedbackResponse>,
+    private readonly tokenService: TokenService,
   ) {}
 
   async create(
     createDto: CreateFeedbackResponseDto,
     ipAddress: string,
+    @Req() request: Request,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<FeedbackResponse> {
+    const token = request.cookies.formToken;
+    if (!token) {
+      throw new UnauthorizedException('There was a problem with your request');
+    }
+
+    if (!this.tokenService.validate(token)) {
+      throw new UnauthorizedException(
+        'There was a problem with your request token',
+      );
+    }
+
     const firstAnswer = createDto.answers[0];
     if (
       firstAnswer.questionId === HONEY_POT_FIELD_NAME &&
@@ -90,6 +106,8 @@ export class FeedbackResponseService {
       throw error;
     } finally {
       await queryRunner.release();
+
+      res.clearCookie('formToken');
     }
   }
 }
