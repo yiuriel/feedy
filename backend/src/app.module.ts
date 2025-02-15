@@ -9,6 +9,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { FeedbackFormModule } from './feedback-form/feedback-form.module';
 import { FeedbackResponseModule } from './feedback-response/feedback-response.module';
 import { LLMModule } from './llm/llm.module';
+import { MemoryUsageModule } from './memory-usage/memory-usage.module';
 import { OrganizationModule } from './organization/organization.module';
 import { QuestionModule } from './question/question.module';
 import { SubscriptionModule } from './subscription/subscription.module';
@@ -32,6 +33,7 @@ import { UserModule } from './user/user.module';
     FeedbackFormModule,
     FeedbackResponseModule,
     TokenModule,
+    MemoryUsageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

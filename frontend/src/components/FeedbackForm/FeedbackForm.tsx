@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FC, FormEvent, useCallback, useEffect, useRef } from "react";
 import { queryKeys } from "../../lib/queryKeys";
 import { api } from "../../services/api";
@@ -18,6 +18,9 @@ export const FeedbackForm: FC<{ accessToken: string }> = ({ accessToken }) => {
   const formRef = useRef<HTMLFormElement>(null);
   const { setMaxStep, step, answers, resetAnswers, setStep } =
     useFeedbackFormStore();
+
+  const queryClient = useQueryClient();
+
   const { data, isLoading } = useQuery({
     queryKey: [queryKeys.form.answers, accessToken],
     queryFn: () => api.feedbackForm.getOne(accessToken),
@@ -27,6 +30,11 @@ export const FeedbackForm: FC<{ accessToken: string }> = ({ accessToken }) => {
   const { mutateAsync } = useMutation({
     mutationKey: [queryKeys.feedbackResponse.create],
     mutationFn: api.feedbackResponse.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.form.answers, accessToken],
+      });
+    },
   });
 
   useEffect(() => {
