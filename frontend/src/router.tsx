@@ -7,6 +7,7 @@ import { PrivateAppLayout } from "./components/PrivateAppLayout/PrivateAppLayout
 import { CreateFeedbackForm } from "./pages/CreateFeedbackForm";
 import { AnswerFeedbackForm } from "./pages/AnswerFeedbackForm";
 import { Forms } from "./pages/Forms";
+import { Analytics } from "./pages/Analytics";
 
 export function AppRouter() {
   return (
@@ -17,6 +18,7 @@ export function AppRouter() {
       <Route path="/form/:id" element={<AnswerFeedbackForm />} />
       <Route path="app" element={<PrivateAppLayout />}>
         <Route path="dashboard" element={<Dashboard />} />
+        <Route path="analytics" element={<Analytics />} />
         <Route path="forms" element={<Forms />} />
         <Route path="profile" element={<div>profile</div>} />
         <Route path="create-feedback-form" element={<CreateFeedbackForm />} />
