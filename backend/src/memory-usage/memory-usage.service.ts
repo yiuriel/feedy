@@ -3,10 +3,9 @@ import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 @Injectable()
 export class MemoryUsageService implements OnModuleInit, OnModuleDestroy {
   private cleanupInterval: NodeJS.Timeout;
-  private cleanupTime = 30000; // 30 seconds in milliseconds
+  private cleanupTime = 60000; // 1 minute in milliseconds
 
   onModuleInit() {
-    console.log('MemoryUsageService initialized');
     if (this.cleanupInterval) {
       clearInterval(this.cleanupInterval);
       this.cleanupInterval = undefined;
@@ -18,7 +17,6 @@ export class MemoryUsageService implements OnModuleInit, OnModuleDestroy {
   }
 
   onModuleDestroy() {
-    console.log('MemoryUsageService destroyed');
     clearInterval(this.cleanupInterval);
     this.cleanupInterval = undefined;
   }
@@ -28,24 +26,15 @@ export class MemoryUsageService implements OnModuleInit, OnModuleDestroy {
     console.log('Memory usage:');
     console.log('  RSS:', (memoryUsage.rss / 1024 / 1024).toFixed(2), 'MB');
     console.log(
-      '  Heap Total:',
+      ' --> Heap Total:',
       (memoryUsage.heapTotal / 1024 / 1024).toFixed(2),
       'MB',
     );
     console.log(
-      '  Heap Used:',
+      ' --> Heap Used:',
       (memoryUsage.heapUsed / 1024 / 1024).toFixed(2),
       'MB',
     );
-    console.log(
-      '  External:',
-      (memoryUsage.external / 1024 / 1024).toFixed(2),
-      'MB',
-    );
-    console.log(
-      '  Buffers:',
-      (memoryUsage.arrayBuffers / 1024 / 1024).toFixed(2),
-      'MB',
-    );
+    console.log('------------------ ** ------------------');
   }
 }

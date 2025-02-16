@@ -5,13 +5,11 @@ import { randomBytes } from 'crypto';
 export class TokenService implements OnModuleInit, OnModuleDestroy {
   private tokens: Map<string, number> = new Map();
   private cleanupInterval: NodeJS.Timeout;
-  private cleanupTime = 30000;
+  private cleanupTime = 60000;
 
   constructor() {}
 
   onModuleInit() {
-    console.log('TokenService initialized');
-
     if (this.cleanupInterval) {
       clearInterval(this.cleanupInterval);
       this.cleanupInterval = undefined;
@@ -30,7 +28,6 @@ export class TokenService implements OnModuleInit, OnModuleDestroy {
   }
 
   private cleanup() {
-    console.log('Cleaning up expired tokens...');
     const now = Date.now();
     for (const [token, timestamp] of this.tokens.entries()) {
       if (now - timestamp > this.cleanupTime) {
@@ -40,7 +37,6 @@ export class TokenService implements OnModuleInit, OnModuleDestroy {
   }
 
   onModuleDestroy() {
-    console.log('TokenService destroyed');
     clearInterval(this.cleanupInterval);
     this.cleanupInterval = undefined;
   }
