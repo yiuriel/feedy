@@ -3,8 +3,10 @@ import { useNavigate } from "react-router";
 import { queryKeys } from "../../lib/queryKeys";
 import { api } from "../../services/api";
 import { useCallback } from "react";
+import { useLocation } from "react-router";
 
 export const ProfileButton = () => {
+  const location = useLocation();
   const navigate = useNavigate();
 
   const { data: user } = useQuery({
@@ -20,7 +22,9 @@ export const ProfileButton = () => {
 
   return (
     <button
-      className="hover:text-indigo-700 text-indigo-500 px-2 py-2"
+      className={`hover:text-indigo-700 text-indigo-500 px-2 py-2 ${
+        location.pathname === "/app/profile" && "font-bold text-indigo-600"
+      }`}
       onClick={goToProfile}
     >
       Profile
