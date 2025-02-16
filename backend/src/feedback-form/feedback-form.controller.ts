@@ -4,7 +4,7 @@ import {
   Get,
   Param,
   Post,
-  Request,
+  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -13,7 +13,7 @@ import { CreateFeedbackFormDto } from './dto/create-feedback-form.dto';
 import { FeedbackFormService } from './feedback-form.service';
 import { GetUserPayload } from 'src/auth/decorators/get.user.payload';
 import { Payload } from 'src/auth/types/payload.type';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { Throttle } from '@nestjs/throttler';
 
 @Throttle({
@@ -29,12 +29,12 @@ export class FeedbackFormController {
 
   @Post()
   create(
-    @Request() req,
+    @GetUserPayload() payload: Payload,
     @Body()
     createFeedbackFormDto: CreateFeedbackFormDto,
   ) {
     return this.feedbackFormService.create(
-      req.user.organizationId,
+      payload.organizationId,
       createFeedbackFormDto,
     );
   }
@@ -74,10 +74,12 @@ export class FeedbackFormController {
   needsPassword(
     @Param('id') accessToken: string,
     @GetUserPayload() payload: Payload,
+    @Req() req: Request,
   ) {
     return this.feedbackFormService.formNeedsPassword(
       accessToken,
       payload.organizationId,
+      req.ip,
     );
   }
 
@@ -85,7 +87,12 @@ export class FeedbackFormController {
   checkPassword(
     @Param('id') accessToken: string,
     @Body() { password }: { password: string },
+    @Req() req: Request,
   ) {
-    return this.feedbackFormService.checkPassword(accessToken, password);
+    return this.feedbackFormService.checkPassword(
+      accessToken,
+      password,
+      req.ip,
+    );
   }
 }

@@ -13,6 +13,7 @@ import { Organization } from '../entities/organization.entity';
 import { CreateFeedbackFormDto } from './dto/create-feedback-form.dto';
 import { Response } from 'express';
 import { TokenService } from '../token/token.service';
+import { FeedbackFormPasswordService } from './feedback-form.password-service';
 
 @Injectable()
 export class FeedbackFormService {
@@ -21,6 +22,7 @@ export class FeedbackFormService {
     private feedbackFormRepository: Repository<FeedbackForm>,
     private readonly dataSource: DataSource,
     private readonly tokenService: TokenService,
+    private readonly passwordService: FeedbackFormPasswordService,
   ) {}
 
   async create(organizationId: string, data: CreateFeedbackFormDto) {
@@ -159,7 +161,18 @@ export class FeedbackFormService {
     };
   }
 
-  async formNeedsPassword(accessToken: string, organizationId: string) {
+  async formNeedsPassword(
+    accessToken: string,
+    organizationId: string,
+    userIp: string,
+  ) {
+    const isValid = this.passwordService.getPasswordValidity(
+      accessToken,
+      userIp,
+    );
+
+    if (isValid !== null) return !isValid;
+
     const form = await this.feedbackFormRepository.findOne({
       where: {
         accessToken,
@@ -172,7 +185,7 @@ export class FeedbackFormService {
     return !!form.password;
   }
 
-  async checkPassword(accessToken: string, password: string) {
+  async checkPassword(accessToken: string, password: string, userIp: string) {
     const form = await this.feedbackFormRepository.findOne({
       where: { accessToken, password },
       relations: ['questions', 'formSettings'],
@@ -181,6 +194,8 @@ export class FeedbackFormService {
     if (!form) {
       throw new UnauthorizedException('Invalid password');
     }
+
+    this.passwordService.setPasswordValidity(accessToken, userIp, true);
 
     return true;
   }
