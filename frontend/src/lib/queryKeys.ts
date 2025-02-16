@@ -1,25 +1,28 @@
 export const queryKeys = {
   auth: {
-    verify: ["auth", "verify"] as const,
+    verify: "authVerify",
   },
   user: {
-    me: ["user", "me"] as const,
+    me: "userMe",
   },
   organization: {
-    needsDetails: ["organization", "needsDetails"] as const,
+    needsDetails: "organizationNeedsDetails",
   },
   dashboard: {
-    stats: ["dashboard", "stats"] as const,
+    stats: "dashboardStats",
+  },
+  analytics: {
+    responsesOverTime: "analyticsResponsesOverTime",
+    questionTypesDistribution: "analyticsQuestionTypesDistribution",
+    ratingQuestionsAverage: "analyticsRatingQuestionsAverage",
   },
   form: {
-    answers: ["form", "answers"] as const,
-    getAll: ["form", "getAll"] as const,
-    one: ["form", "one"] as const,
-    password: ["form", "password"] as const,
-    checkPassword: ["form", "checkPassword"] as const,
-    remove: ["form", "remove"] as const,
+    answers: "formAnswers",
+    getAll: "formGetAll",
+    password: "formPassword",
+    checkPassword: "formCheckPassword",
   },
   feedbackResponse: {
-    create: ["feedbackResponse", "create"] as const,
+    create: "feedbackResponseCreate",
   },
 } as const;

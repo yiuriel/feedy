@@ -10,17 +10,17 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   const { data: user } = useQuery({
-    queryKey: queryKeys.auth.verify,
+    queryKey: [queryKeys.auth.verify],
     queryFn: api.auth.verify,
   });
 
   const { data: needsDetails, isLoading: isLoadingNeedsDetails } = useQuery({
-    queryKey: queryKeys.organization.needsDetails,
+    queryKey: [queryKeys.organization.needsDetails],
     queryFn: api.organization.orgNeedsDetails,
   });
 
   const { data: stats, isLoading: isLoadingStats } = useQuery({
-    queryKey: queryKeys.dashboard.stats,
+    queryKey: [queryKeys.dashboard.stats],
     queryFn: api.dashboard.getStats,
     enabled: !isLoadingNeedsDetails && !needsDetails,
   });

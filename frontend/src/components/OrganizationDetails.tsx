@@ -31,10 +31,7 @@ export function OrganizationDetails() {
     mutationFn: api.organization.submitDetails,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: [
-          ...queryKeys.organization.needsDetails,
-          ...queryKeys.auth.verify,
-        ],
+        queryKey: [queryKeys.organization.needsDetails, queryKeys.auth.verify],
       });
       location.reload();
     },

@@ -8,7 +8,7 @@ export const useAuthUser = () => {
   const navigate = useNavigate();
 
   const { data, isLoading: isLoadingUser } = useQuery({
-    queryKey: queryKeys.auth.verify,
+    queryKey: [queryKeys.auth.verify],
     queryFn: api.auth.verify,
   });
 

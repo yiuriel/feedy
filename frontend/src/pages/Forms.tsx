@@ -9,7 +9,7 @@ import { useCallback } from "react";
 
 export const Forms = () => {
   const { data, isLoading } = useQuery({
-    queryKey: queryKeys.form.getAll,
+    queryKey: [queryKeys.form.getAll],
     queryFn: api.feedbackForm.getAll,
   });
 

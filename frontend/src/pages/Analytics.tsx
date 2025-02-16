@@ -7,18 +7,24 @@ import { queryKeys } from "../lib/queryKeys";
 
 export const Analytics = () => {
   const { data: responsesData, isLoading: isLoadingResponses } = useQuery({
-    queryKey: [...queryKeys.form.getAll, "responses-over-time"],
+    queryKey: [queryKeys.form.getAll, queryKeys.analytics.responsesOverTime],
     queryFn: api.feedbackForm.getResponsesOverTime,
   });
 
   const { data: questionTypesData, isLoading: isLoadingQuestionTypes } =
     useQuery({
-      queryKey: [...queryKeys.form.getAll, "question-types-distribution"],
+      queryKey: [
+        queryKeys.form.getAll,
+        queryKeys.analytics.questionTypesDistribution,
+      ],
       queryFn: api.feedbackForm.getQuestionTypesDistribution,
     });
 
   const { data: ratingData, isLoading: isLoadingRating } = useQuery({
-    queryKey: [...queryKeys.form.getAll, "rating-questions-average"],
+    queryKey: [
+      queryKeys.form.getAll,
+      queryKeys.analytics.ratingQuestionsAverage,
+    ],
     queryFn: api.feedbackForm.getRatingQuestionsAverage,
   });
 

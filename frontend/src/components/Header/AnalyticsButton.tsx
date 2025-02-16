@@ -8,7 +8,7 @@ export const AnalyticsButton = () => {
   const navigate = useNavigate();
 
   const { data: user } = useQuery({
-    queryKey: queryKeys.user.me,
+    queryKey: [queryKeys.user.me],
     queryFn: api.user.getCurrentUser,
   });
 
