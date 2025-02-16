@@ -12,7 +12,12 @@ interface Props {
   data: QuestionTypeDistribution[];
 }
 
-const COLORS = ["#6366f1", "#22c55e", "#f59e0b", "#ec4899"];
+const COLORS = [
+  "#312e81", // indigo-900
+  "#4338ca", // indigo-700
+  "#6366f1", // indigo-500
+  "#818cf8", // indigo-400
+];
 const RADIAN = Math.PI / 180;
 
 const renderCustomizedLabel = ({

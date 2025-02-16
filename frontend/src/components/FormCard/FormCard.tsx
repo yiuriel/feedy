@@ -1,10 +1,20 @@
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FC } from "react";
+import { api } from "../../services/api";
 import { FeedbackForm } from "../../services/api.types";
 import { Menu } from "../Menu/Menu";
 import { MenuItem } from "../Menu/MenuItem";
 
 export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
+  const queryClient = useQueryClient();
+  const { mutate: remove } = useMutation({
+    mutationFn: () => api.feedbackForm.remove(form.accessToken),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
+  });
+
   const handleViewAsUser = () => {
     window.open(`/form/${form.accessToken}`, "_blank", "noopener,noreferrer");
   };
@@ -13,6 +23,10 @@ export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
     navigator.clipboard.writeText(
       `http://localhost:5173/form/${form.accessToken}`
     );
+  };
+
+  const handleRemoveForm = async () => {
+    await remove();
   };
 
   return (
@@ -34,6 +48,12 @@ export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
           >
             <MenuItem onClick={handleViewAsUser}>View as user</MenuItem>
             <MenuItem onClick={handleCopyLink}>Copy link</MenuItem>
+            <MenuItem
+              onClick={handleRemoveForm}
+              className="text-red-500 hover:bg-red-50 hover:text-red-700"
+            >
+              Remove form
+            </MenuItem>
           </Menu>
         </div>
 

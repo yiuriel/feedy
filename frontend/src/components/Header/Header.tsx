@@ -1,3 +1,4 @@
+import { AnalyticsButton } from "./AnalyticsButton";
 import { FormsButton } from "./FormsButton";
 import { LogoutButton } from "./LogoutButton";
 import { ProfileButton } from "./ProfileButton";
@@ -17,6 +18,7 @@ export const Header = () => {
         </h1>
         <div className="flex items-center gap-x-2">
           <FormsButton />
+          <AnalyticsButton />
           <ProfileButton />
           <LogoutButton />
         </div>

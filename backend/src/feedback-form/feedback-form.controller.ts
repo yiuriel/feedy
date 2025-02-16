@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -78,6 +79,11 @@ export class FeedbackFormController {
       payload.organizationId,
       res,
     );
+  }
+
+  @Delete(':id')
+  remove(@Param('id') accessToken: string, @GetUserPayload() payload: Payload) {
+    return this.feedbackFormService.remove(accessToken, payload.organizationId);
   }
 
   @Get(':id/evaluate')

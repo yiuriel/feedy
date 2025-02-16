@@ -38,7 +38,16 @@ export const ResponsesChart = ({ data }: Props) => {
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, [data]);
 
-  const colors = ["#6366f1", "#22c55e", "#f59e0b", "#ec4899", "#8b5cf6"];
+  const colors = [
+    "#312e81", // indigo-900
+    "#4338ca", // indigo-700
+    "#6366f1", // indigo-500
+    "#818cf8", // indigo-400
+    "#5b21b6", // purple-800
+    "#7c3aed", // purple-600
+    "#a855f7", // purple-500
+    "#c084fc", // purple-400
+  ];
 
   return (
     <div className="w-full h-[400px]">

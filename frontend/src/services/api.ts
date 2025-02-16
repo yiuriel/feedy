@@ -76,10 +76,15 @@ export const api = {
         password,
       });
     },
+    remove: async (accessToken: string): Promise<void> => {
+      return axios.delete(`/feedback-forms/${accessToken}`);
+    },
     getResponsesOverTime: async (): Promise<FormResponsesOverTime[]> => {
       return axios.get("/feedback-forms/responses-over-time");
     },
-    getQuestionTypesDistribution: async (): Promise<QuestionTypeDistribution[]> => {
+    getQuestionTypesDistribution: async (): Promise<
+      QuestionTypeDistribution[]
+    > => {
       return axios.get("/feedback-forms/question-types-distribution");
     },
     getRatingQuestionsAverage: async (): Promise<RatingQuestionAverage[]> => {

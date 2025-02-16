@@ -161,6 +161,21 @@ export class FeedbackFormService {
     };
   }
 
+  async remove(accessToken: string, organizationId: string) {
+    const form = await this.feedbackFormRepository.findOne({
+      where: {
+        accessToken,
+        organization: { id: organizationId },
+      },
+    });
+
+    if (!form) {
+      throw new NotFoundException('Feedback form not found');
+    }
+
+    await this.feedbackFormRepository.remove(form);
+  }
+
   async formNeedsPassword(
     accessToken: string,
     organizationId: string,

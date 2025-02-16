@@ -13,10 +13,11 @@ export const queryKeys = {
   },
   form: {
     answers: ["form", "answers"] as const,
-    list: ["form", "list"] as const,
+    getAll: ["form", "getAll"] as const,
     one: ["form", "one"] as const,
     password: ["form", "password"] as const,
     checkPassword: ["form", "checkPassword"] as const,
+    remove: ["form", "remove"] as const,
   },
   feedbackResponse: {
     create: ["feedbackResponse", "create"] as const,

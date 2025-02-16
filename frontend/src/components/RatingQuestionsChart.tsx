@@ -40,7 +40,7 @@ export const RatingQuestionsChart = ({ data }: Props) => {
             fontSize={12}
             tickLine={false}
             axisLine={{ stroke: "#e2e8f0" }}
-            height={60}
+            height={20}
             interval={0}
             tick={({ x, y, payload }) => (
               <g transform={`translate(${x},${y})`}>
@@ -75,7 +75,7 @@ export const RatingQuestionsChart = ({ data }: Props) => {
           <YAxis
             yAxisId="right"
             orientation="right"
-            stroke="#22c55e"
+            stroke="#7c3aed"
             fontSize={12}
             tickLine={false}
             axisLine={{ stroke: "#e2e8f0" }}
@@ -83,7 +83,7 @@ export const RatingQuestionsChart = ({ data }: Props) => {
               value: "Total Responses",
               angle: 90,
               position: "insideRight",
-              style: { fill: "#22c55e" },
+              style: { fill: "#7c3aed" },
             }}
           />
           <Tooltip
@@ -112,7 +112,7 @@ export const RatingQuestionsChart = ({ data }: Props) => {
           <Bar
             yAxisId="right"
             dataKey="responses"
-            fill="#22c55e"
+            fill="#7c3aed"
             name="Total Responses"
             radius={[4, 4, 0, 0]}
           />
