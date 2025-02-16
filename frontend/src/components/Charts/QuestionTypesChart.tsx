@@ -6,7 +6,7 @@ import {
   Legend,
   Tooltip,
 } from "recharts";
-import { QuestionTypeDistribution } from "../services/api.types";
+import { QuestionTypeDistribution } from "../../services/api.types";
 
 interface Props {
   data: QuestionTypeDistribution[];

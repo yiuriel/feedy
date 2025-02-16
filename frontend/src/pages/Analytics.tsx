@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../services/api";
-import { ResponsesChart } from "../components/ResponsesChart";
-import { QuestionTypesChart } from "../components/QuestionTypesChart";
-import { RatingQuestionsChart } from "../components/RatingQuestionsChart";
+import { ResponsesChart } from "../components/Charts/ResponsesChart";
+import { QuestionTypesChart } from "../components/Charts/QuestionTypesChart";
+import { RatingQuestionsChart } from "../components/Charts/RatingQuestionsChart";
 import { queryKeys } from "../lib/queryKeys";
 
 export const Analytics = () => {

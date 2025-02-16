@@ -8,7 +8,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { RatingQuestionAverage } from "../services/api.types";
+import { RatingQuestionAverage } from "../../services/api.types";
 
 interface Props {
   data: RatingQuestionAverage[];
