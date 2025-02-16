@@ -104,7 +104,10 @@ export const QuestionTypesChart = ({ data }: Props) => {
               paddingTop: "20px",
             }}
             formatter={(value) =>
-              value.charAt(0).toUpperCase() + value.slice(1).replace("_", " ")
+              value
+                ? value.charAt(0).toUpperCase() +
+                  value.slice(1).replace("_", " ")
+                : ""
             }
           />
         </PieChart>
