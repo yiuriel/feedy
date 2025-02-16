@@ -194,7 +194,12 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
                 type="number"
                 label="Min Rating"
                 value={minRating}
-                onChange={(e) => setMinRating(Number(e.target.value))}
+                onChange={(e) => {
+                  const newValue = Number(e.target.value);
+                  if (newValue > 0 && newValue <= maxRating) {
+                    setMinRating(newValue);
+                  }
+                }}
                 min={1}
                 max={maxRating}
                 className="w-full bg-gray-50 border-gray-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
@@ -207,11 +212,12 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
                 value={maxRating}
                 onChange={(e) => {
                   const newValue = Number(e.target.value);
-                  if (newValue > minRating) {
+                  if (newValue > minRating && newValue <= 10) {
                     setMaxRating(newValue);
                   }
                 }}
                 min={minRating + 1}
+                max={10}
                 className="w-full bg-gray-50 border-gray-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
