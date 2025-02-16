@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { QuestionType } from "../types/question";
 import { Input } from "./Input/Input";
 import { Select } from "./Select/Select";
 
 interface QuestionBuilderProps {
-  onSave: (question: {
+  onQuestionAdded: (question: {
     type: QuestionType;
     text: string;
     required: boolean;
@@ -14,7 +14,9 @@ interface QuestionBuilderProps {
   }) => void;
 }
 
-export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({ onSave }) => {
+export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
+  onQuestionAdded,
+}) => {
   const [type, setType] = useState<QuestionType>(QuestionType.TEXT);
   const [text, setText] = useState("");
   const [required, setRequired] = useState(false);
@@ -40,21 +42,41 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({ onSave }) => {
   const hasOptions =
     type === QuestionType.MULTIPLE_CHOICE || type === QuestionType.CHECKBOX;
 
-  const handleSave = () => {
-    const questionData = {
+  const handleAddQuestion = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      const questionData = {
+        type,
+        text,
+        required,
+        ...(hasOptions && {
+          options: options.filter(Boolean),
+        }),
+        ...(type === QuestionType.RATING && { minRating, maxRating }),
+      };
+      onQuestionAdded(questionData);
+      setText("");
+      setOptions([""]);
+      setRequired(false);
+    },
+    [
       type,
       text,
       required,
-      ...(hasOptions && {
-        options: options.filter(Boolean),
-      }),
-      ...(type === QuestionType.RATING && { minRating, maxRating }),
-    };
-    onSave(questionData);
-    setText("");
-    setOptions([""]);
-    setRequired(false);
-  };
+      hasOptions,
+      options,
+      minRating,
+      maxRating,
+      onQuestionAdded,
+    ]
+  );
+
+  const cantAddQuestion = useMemo(() => {
+    return (
+      !text.trim() ||
+      (hasOptions && (options.length < 2 || options.some((o) => o === "")))
+    );
+  }, [text, options, hasOptions]);
 
   return (
     <div className="bg-white shadow-lg rounded-xl p-6 transition-all duration-200 hover:shadow-xl border border-gray-100">
@@ -98,6 +120,12 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({ onSave }) => {
             label="Question Text"
             value={text}
             onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => {
+              e.stopPropagation();
+              if (e.key === "Enter" && !cantAddQuestion) {
+                handleAddQuestion(e);
+              }
+            }}
             placeholder="Enter your question"
             className="w-full bg-gray-50 border-gray-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
           />
@@ -117,6 +145,12 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({ onSave }) => {
                       onChange={(e) =>
                         handleOptionChange(index, e.target.value)
                       }
+                      onKeyDown={(e) => {
+                        e.stopPropagation();
+                        if (e.key === "Enter" && !cantAddQuestion) {
+                          handleAddQuestion(e);
+                        }
+                      }}
                       placeholder={`Option ${index + 1}`}
                       className="w-full bg-gray-50 border-gray-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
                     />
@@ -187,12 +221,8 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({ onSave }) => {
         <div className="pt-4">
           <button
             type="button"
-            onClick={handleSave}
-            disabled={
-              !text.trim() ||
-              (hasOptions &&
-                (options.length < 2 || options.some((o) => o === "")))
-            }
+            onClick={handleAddQuestion}
+            disabled={cantAddQuestion}
             className="w-full inline-flex justify-center items-center py-3 px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
           >
             <svg

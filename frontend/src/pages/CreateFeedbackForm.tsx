@@ -348,7 +348,7 @@ export const CreateFeedbackForm: React.FC = () => {
                   ))}
                 </div>
 
-                <QuestionBuilder onSave={handleAddQuestion} />
+                <QuestionBuilder onQuestionAdded={handleAddQuestion} />
               </div>
             </div>
           </div>
