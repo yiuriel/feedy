@@ -111,3 +111,11 @@ export interface CreateFeedbackResponseDto {
   answers: Array<FeedbackResponseAnswer>;
   metadata?: FeedbackResponseMetadata;
 }
+
+export interface FormResponsesOverTime {
+  id: string;
+  title: string;
+  responses: {
+    date: string;
+  }[];
+}

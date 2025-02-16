@@ -200,6 +200,26 @@ export class FeedbackFormService {
     return true;
   }
 
+  async getResponsesOverTime() {
+    const forms = await this.feedbackFormRepository
+      .createQueryBuilder('form')
+      .leftJoinAndSelect('form.responses', 'response')
+      .select(['form.id', 'form.title', 'response.submittedAt'])
+      .getMany();
+
+    const responseData = forms.map((form) => ({
+      id: form.id,
+      title: form.title,
+      responses: form.responses
+        .map((response) => ({
+          date: response.submittedAt,
+        }))
+        .sort((a, b) => a.date.getTime() - b.date.getTime()),
+    }));
+
+    return responseData;
+  }
+
   private createFeedbackFormAccessToken() {
     const token = crypto.randomUUID();
     return token;

@@ -3,6 +3,7 @@ import {
   CreateFeedbackResponseDto,
   DashboardStats,
   FeedbackForm,
+  FormResponsesOverTime,
   HealthCheckResponse,
   Organization,
   OrganizationDetailsForm,
@@ -72,6 +73,9 @@ export const api = {
       return axios.post(`/feedback-forms/${accessToken}/password`, {
         password,
       });
+    },
+    getResponsesOverTime: async (): Promise<FormResponsesOverTime[]> => {
+      return axios.get("/feedback-forms/responses-over-time");
     },
   },
   feedbackResponse: {

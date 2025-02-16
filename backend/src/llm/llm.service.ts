@@ -18,9 +18,9 @@ export class LLMService implements OnModuleInit {
   }
 
   private async pullModel() {
-    await this.httpService.axiosRef.post(`${this.apiUrl}/pull`, {
-      name: this.model,
-    });
+    // await this.httpService.axiosRef.post(`${this.apiUrl}/pull`, {
+    //   name: this.model,
+    // });
   }
 
   /**

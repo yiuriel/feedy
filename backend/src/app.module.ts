@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -8,15 +10,12 @@ import { databaseConfig } from './config/database.config';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { FeedbackFormModule } from './feedback-form/feedback-form.module';
 import { FeedbackResponseModule } from './feedback-response/feedback-response.module';
-import { LLMModule } from './llm/llm.module';
 import { MemoryUsageModule } from './memory-usage/memory-usage.module';
 import { OrganizationModule } from './organization/organization.module';
 import { QuestionModule } from './question/question.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { TokenModule } from './token/token.module';
 import { UserModule } from './user/user.module';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -34,7 +33,7 @@ import { APP_GUARD } from '@nestjs/core';
     ]),
     SubscriptionModule,
     AuthModule,
-    LLMModule,
+    // LLMModule,
     UserModule,
     OrganizationModule,
     DashboardModule,

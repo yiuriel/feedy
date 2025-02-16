@@ -39,6 +39,11 @@ export class FeedbackFormController {
     );
   }
 
+  @Get('responses-over-time')
+  async getResponsesOverTime() {
+    return this.feedbackFormService.getResponsesOverTime();
+  }
+
   @Get()
   findAll(@GetUserPayload() payload: Payload) {
     return this.feedbackFormService.findAllByOrganization(
