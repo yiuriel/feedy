@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { QuestionType } from "../types/question";
 import { Input } from "./Input/Input";
 import { Select } from "./Select/Select";
+import { Switch } from "./Switch/Switch";
 
 interface QuestionBuilderProps {
   onQuestionAdded: (question: {
@@ -21,7 +22,6 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
   const [text, setText] = useState("");
   const [required, setRequired] = useState(false);
   const [options, setOptions] = useState<string[]>([""]);
-  const [minRating, setMinRating] = useState(1);
   const [maxRating, setMaxRating] = useState(5);
 
   const handleAddOption = () => {
@@ -52,23 +52,14 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
         ...(hasOptions && {
           options: options.filter(Boolean),
         }),
-        ...(type === QuestionType.RATING && { minRating, maxRating }),
+        ...(type === QuestionType.RATING && { minRating: 1, maxRating }),
       };
       onQuestionAdded(questionData);
       setText("");
       setOptions([""]);
       setRequired(false);
     },
-    [
-      type,
-      text,
-      required,
-      hasOptions,
-      options,
-      minRating,
-      maxRating,
-      onQuestionAdded,
-    ]
+    [type, text, required, hasOptions, options, maxRating, onQuestionAdded]
   );
 
   const cantAddQuestion = useMemo(() => {
@@ -99,18 +90,11 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
           </div>
           <div className="flex items-center space-x-2">
             <div className="flex-grow">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={required}
-                  onChange={(e) => setRequired(e.target.checked)}
-                  className="sr-only peer"
-                />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-                <span className="ml-3 text-sm font-medium text-gray-700">
-                  Required
-                </span>
-              </label>
+              <Switch
+                checked={required}
+                onChange={(checked) => setRequired(checked)}
+                label="Required"
+              />
             </div>
           </div>
         </div>
@@ -193,15 +177,10 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
               <Input
                 type="number"
                 label="Min Rating"
-                value={minRating}
-                onChange={(e) => {
-                  const newValue = Number(e.target.value);
-                  if (newValue > 0 && newValue <= maxRating) {
-                    setMinRating(newValue);
-                  }
-                }}
+                defaultValue={1}
+                disabled
                 min={1}
-                max={maxRating}
+                max={1}
                 className="w-full bg-gray-50 border-gray-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
@@ -212,11 +191,11 @@ export const QuestionBuilder: React.FC<QuestionBuilderProps> = ({
                 value={maxRating}
                 onChange={(e) => {
                   const newValue = Number(e.target.value);
-                  if (newValue > minRating && newValue <= 10) {
+                  if (newValue > 1 && newValue <= 10) {
                     setMaxRating(newValue);
                   }
                 }}
-                min={minRating + 1}
+                min={2}
                 max={10}
                 className="w-full bg-gray-50 border-gray-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
               />

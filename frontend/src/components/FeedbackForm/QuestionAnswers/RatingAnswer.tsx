@@ -17,13 +17,23 @@ export const RatingAnswer: React.FC<RatingAnswerProps> = ({
   minRating = 1,
   maxRating = 5,
 }) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+
   const ratings = Array.from(
     { length: maxRating - minRating + 1 },
     (_, i) => i + minRating
   );
 
+  const getColorClass = (rating: number) => {
+    const percentage = ((rating - minRating) / (maxRating - minRating)) * 100;
+    if (percentage <= 25) return "text-red-500";
+    if (percentage <= 50) return "text-yellow-500";
+    if (percentage <= 75) return "text-blue-500";
+    return "text-green-500";
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" ref={ref}>
       <label className="block text-lg font-medium text-indigo-900">
         {question}
         {required && <span className="text-red-500 ml-1">*</span>}
@@ -53,7 +63,9 @@ export const RatingAnswer: React.FC<RatingAnswerProps> = ({
                 type="button"
                 onClick={() => onChange(rating)}
                 onMouseEnter={() => {
-                  const stars = document.querySelectorAll(".star-rating");
+                  if (!ref.current) return;
+
+                  const stars = ref.current.querySelectorAll(".star-rating");
                   stars.forEach((star, index) => {
                     if (index < rating) {
                       star.classList.add("text-purple-400");
@@ -61,7 +73,9 @@ export const RatingAnswer: React.FC<RatingAnswerProps> = ({
                   });
                 }}
                 onMouseLeave={() => {
-                  const stars = document.querySelectorAll(".star-rating");
+                  if (!ref.current) return;
+
+                  const stars = ref.current.querySelectorAll(".star-rating");
                   stars.forEach((star, index) => {
                     if (index >= (value || 0)) {
                       star.classList.remove("text-purple-400");
@@ -103,19 +117,7 @@ export const RatingAnswer: React.FC<RatingAnswerProps> = ({
         {value ? (
           <p className="text-sm text-indigo-600 text-center animate-fadeIn">
             You rated:{" "}
-            <span
-              className={`font-medium ${
-                value === 1
-                  ? "text-red-600"
-                  : value === 2
-                  ? "text-orange-500"
-                  : value === 3
-                  ? "text-yellow-500"
-                  : value === 4
-                  ? "text-lime-600"
-                  : "text-green-600"
-              }`}
-            >
+            <span className={`font-medium ${getColorClass(value)}`}>
               {value}
             </span>{" "}
             out of {maxRating}

@@ -50,7 +50,7 @@ export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
             <MenuItem onClick={handleCopyLink}>Copy link</MenuItem>
             <MenuItem
               onClick={handleRemoveForm}
-              className="text-red-500 hover:bg-red-50 hover:text-red-700"
+              className="text-red-500 hover:bg-red-50 hover:!text-red-700"
             >
               Remove form
             </MenuItem>

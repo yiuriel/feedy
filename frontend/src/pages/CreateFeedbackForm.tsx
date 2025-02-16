@@ -97,7 +97,7 @@ export const CreateFeedbackForm: React.FC = () => {
         </p>
       </header>
 
-      <form onSubmit={handleSubmit} className="space-y-8 pb-8">
+      <div className="space-y-8 pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Form Settings Panel */}
           <div className="lg:col-span-1 space-y-6">
@@ -211,7 +211,7 @@ export const CreateFeedbackForm: React.FC = () => {
                 </div>
               </div>
               <button
-                type="submit"
+                onClick={handleSubmit}
                 disabled={isPending || form.questions.length === 0}
                 className="w-full  mx-auto flex justify-center items-center py-3 px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
               >
@@ -353,7 +353,7 @@ export const CreateFeedbackForm: React.FC = () => {
             </div>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
