@@ -200,11 +200,12 @@ export class FeedbackFormService {
     return true;
   }
 
-  async getResponsesOverTime() {
+  async getResponsesOverTime(organizationId: string) {
     const forms = await this.feedbackFormRepository
       .createQueryBuilder('form')
       .leftJoinAndSelect('form.responses', 'response')
       .select(['form.id', 'form.title', 'response.submittedAt'])
+      .where('form.organization.id = :organizationId', { organizationId })
       .getMany();
 
     const responseData = forms.map((form) => ({
@@ -218,6 +219,70 @@ export class FeedbackFormService {
     }));
 
     return responseData;
+  }
+
+  async getQuestionTypesDistribution(organizationId: string) {
+    const forms = await this.feedbackFormRepository
+      .createQueryBuilder('form')
+      .leftJoinAndSelect('form.questions', 'question')
+      .where('form.organization.id = :organizationId', { organizationId })
+      .getMany();
+
+    const distribution = {
+      text: 0,
+      rating: 0,
+      multiple_choice: 0,
+      checkbox: 0,
+    };
+
+    forms.forEach((form) => {
+      form.questions.forEach((question) => {
+        distribution[question.type]++;
+      });
+    });
+
+    return Object.entries(distribution).map(([type, count]) => ({
+      type,
+      count,
+    }));
+  }
+
+  async getRatingQuestionsAverage(organizationId: string) {
+    const forms = await this.feedbackFormRepository
+      .createQueryBuilder('form')
+      .leftJoinAndSelect('form.questions', 'questions')
+      .leftJoinAndSelect('form.responses', 'response')
+      .leftJoinAndSelect('response.answers', 'answer')
+      .leftJoinAndSelect('answer.question', 'question')
+      .where('form.organization.id = :organizationId', { organizationId })
+      .andWhere('question.type = :type', { type: 'rating' })
+      .getMany();
+
+    const ratingAverages = [];
+
+    forms.forEach((form) => {
+      form.questions.forEach((question) => {
+        const answers = form.responses
+          .flatMap((response) => response.answers)
+          .filter((answer) => answer.question.id === question.id);
+
+        if (answers.length > 0) {
+          const sum = answers.reduce(
+            (acc, answer) => acc + answer.ratingAnswer,
+            0,
+          );
+          const average = sum / answers.length;
+          ratingAverages.push({
+            formTitle: form.title,
+            question: question.question,
+            average: Number(average.toFixed(2)),
+            totalResponses: answers.length,
+          });
+        }
+      });
+    });
+
+    return ratingAverages;
   }
 
   private createFeedbackFormAccessToken() {

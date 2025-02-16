@@ -7,6 +7,8 @@ import {
   HealthCheckResponse,
   Organization,
   OrganizationDetailsForm,
+  QuestionTypeDistribution,
+  RatingQuestionAverage,
   RegisterData,
   User,
 } from "./api.types";
@@ -76,6 +78,12 @@ export const api = {
     },
     getResponsesOverTime: async (): Promise<FormResponsesOverTime[]> => {
       return axios.get("/feedback-forms/responses-over-time");
+    },
+    getQuestionTypesDistribution: async (): Promise<QuestionTypeDistribution[]> => {
+      return axios.get("/feedback-forms/question-types-distribution");
+    },
+    getRatingQuestionsAverage: async (): Promise<RatingQuestionAverage[]> => {
+      return axios.get("/feedback-forms/rating-questions-average");
     },
   },
   feedbackResponse: {

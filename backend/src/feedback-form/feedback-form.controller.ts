@@ -40,8 +40,24 @@ export class FeedbackFormController {
   }
 
   @Get('responses-over-time')
-  async getResponsesOverTime() {
-    return this.feedbackFormService.getResponsesOverTime();
+  async getResponsesOverTime(@GetUserPayload() payload: Payload) {
+    return this.feedbackFormService.getResponsesOverTime(
+      payload.organizationId,
+    );
+  }
+
+  @Get('question-types-distribution')
+  async getQuestionTypesDistribution(@GetUserPayload() payload: Payload) {
+    return this.feedbackFormService.getQuestionTypesDistribution(
+      payload.organizationId,
+    );
+  }
+
+  @Get('rating-questions-average')
+  async getRatingQuestionsAverage(@GetUserPayload() payload: Payload) {
+    return this.feedbackFormService.getRatingQuestionsAverage(
+      payload.organizationId,
+    );
   }
 
   @Get()

@@ -119,3 +119,15 @@ export interface FormResponsesOverTime {
     date: string;
   }[];
 }
+
+export interface QuestionTypeDistribution {
+  type: string;
+  count: number;
+}
+
+export interface RatingQuestionAverage {
+  formTitle: string;
+  question: string;
+  average: number;
+  totalResponses: number;
+}

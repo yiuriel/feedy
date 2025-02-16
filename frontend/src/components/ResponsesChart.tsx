@@ -38,24 +38,51 @@ export const ResponsesChart = ({ data }: Props) => {
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, [data]);
 
-  const colors = ["#8884d8", "#82ca9d", "#ffc658", "#ff7300", "#a4de6c"];
+  const colors = ["#6366f1", "#22c55e", "#f59e0b", "#ec4899", "#8b5cf6"];
 
   return (
     <div className="w-full h-[400px]">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
+          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+          <XAxis 
+            dataKey="date" 
+            stroke="#64748b"
+            fontSize={12}
+            tickLine={false}
+            axisLine={{ stroke: '#e2e8f0' }}
+          />
+          <YAxis 
+            stroke="#64748b"
+            fontSize={12}
+            tickLine={false}
+            axisLine={{ stroke: '#e2e8f0' }}
+          />
+          <Tooltip 
+            contentStyle={{ 
+              backgroundColor: 'white',
+              border: '1px solid #e2e8f0',
+              borderRadius: '0.5rem',
+              boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)'
+            }}
+          />
+          <Legend 
+            verticalAlign="top"
+            height={36}
+            iconType="circle"
+            wrapperStyle={{
+              paddingBottom: '20px'
+            }}
+          />
           {data.map((form, index) => (
             <Line
               key={form.id}
               type="monotone"
               dataKey={form.title}
               stroke={colors[index % colors.length]}
-              activeDot={{ r: 8 }}
+              strokeWidth={2}
+              dot={{ r: 4, strokeWidth: 2 }}
+              activeDot={{ r: 6, strokeWidth: 2 }}
             />
           ))}
         </LineChart>
