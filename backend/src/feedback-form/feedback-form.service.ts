@@ -5,16 +5,16 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Response } from 'express';
 import { FeedbackFormSettings } from 'src/entities/feedback-form/feedback-form-settings.entity';
 import { FeedbackQuestion } from 'src/entities/feedback-form/feedback-question.entity';
 import { DataSource, Repository } from 'typeorm';
 import { FeedbackForm } from '../entities/feedback-form/feedback-form.entity';
 import { Organization } from '../entities/organization.entity';
-import { CreateFeedbackFormDto } from './dto/create-feedback-form.dto';
-import { UpdateFeedbackFormDto } from './dto/update-feedback-form.dto';
-import { UpdateFeedbackFormPasswordDto } from './dto/update-feedback-form-password.dto';
-import { Response } from 'express';
 import { TokenService } from '../token/token.service';
+import { CreateFeedbackFormDto } from './dto/create-feedback-form.dto';
+import { UpdateFeedbackFormPasswordDto } from './dto/update-feedback-form-password.dto';
+import { UpdateFeedbackFormDto } from './dto/update-feedback-form.dto';
 import { FeedbackFormPasswordService } from './feedback-form.password-service';
 
 @Injectable()
@@ -22,8 +22,6 @@ export class FeedbackFormService {
   constructor(
     @InjectRepository(FeedbackForm)
     private feedbackFormRepository: Repository<FeedbackForm>,
-    @InjectRepository(FeedbackFormSettings)
-    private formSettingsRepository: Repository<FeedbackFormSettings>,
     private readonly dataSource: DataSource,
     private readonly tokenService: TokenService,
     private readonly passwordService: FeedbackFormPasswordService,
@@ -96,6 +94,9 @@ export class FeedbackFormService {
     return this.feedbackFormRepository.find({
       where: { organization: { id: organizationId }, isActive: true },
       relations: ['questions', 'formSettings'],
+      order: {
+        createdAt: 'ASC',
+      },
     });
   }
 
@@ -229,6 +230,9 @@ export class FeedbackFormService {
         'responses.answers',
         'responses.answers.question',
       ],
+      order: {
+        createdAt: 'ASC',
+      },
     });
 
     if (!form) {
