@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../services/api";
 import { FeedbackForm } from "../../services/api.types";
 import { queryKeys } from "../../lib/queryKeys";
+import { Switch } from "../Switch/Switch";
 
 interface FormEditProps {
   form: FeedbackForm;
@@ -137,44 +138,39 @@ export const FormEdit: FC<FormEditProps> = ({ form, isOpen, onClose }) => {
             />
           </div>
 
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="stepped"
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-medium text-gray-700">
+                  Show one question at a time
+                </h4>
+                <p className="text-sm text-gray-500">
+                  Display questions in a stepped format
+                </p>
+              </div>
+              <Switch
                 checked={settings.stepped}
-                onChange={(e) =>
-                  setSettings({ ...settings, stepped: e.target.checked })
+                onChange={(enabled) =>
+                  setSettings({ ...settings, stepped: enabled })
                 }
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
-              <label
-                htmlFor="stepped"
-                className="ml-2 block text-sm text-gray-700"
-              >
-                Show one question at a time
-              </label>
             </div>
 
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="multipleResponses"
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-medium text-gray-700">
+                  Allow multiple responses
+                </h4>
+                <p className="text-sm text-gray-500">
+                  Let users submit the form multiple times
+                </p>
+              </div>
+              <Switch
                 checked={settings.allowMultipleResponses}
-                onChange={(e) =>
-                  setSettings({
-                    ...settings,
-                    allowMultipleResponses: e.target.checked,
-                  })
+                onChange={(enabled) =>
+                  setSettings({ ...settings, allowMultipleResponses: enabled })
                 }
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
-              <label
-                htmlFor="multipleResponses"
-                className="ml-2 block text-sm text-gray-700"
-              >
-                Allow multiple responses from the same user
-              </label>
             </div>
           </div>
 
