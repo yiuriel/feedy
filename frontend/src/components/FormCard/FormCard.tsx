@@ -7,11 +7,13 @@ import { Menu } from "../Menu/Menu";
 import { MenuItem } from "../Menu/MenuItem";
 import { queryKeys } from "../../lib/queryKeys";
 import { FormEdit } from "./FormEdit";
+import { FormPasswordEdit } from "./FormPasswordEdit";
 
 export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isPasswordEditOpen, setIsPasswordEditOpen] = useState(false);
   const queryClient = useQueryClient();
-  
+
   const { mutate: remove } = useMutation({
     mutationFn: () => api.feedbackForm.remove(form.accessToken),
     onSuccess: () => {
@@ -21,6 +23,14 @@ export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
       queryClient.invalidateQueries({
         queryKey: [queryKeys.dashboard.stats],
       });
+    },
+  });
+
+  const { mutate: removePassword } = useMutation({
+    mutationFn: () =>
+      api.feedbackForm.updatePassword(form.accessToken, { password: null }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.form.getAll] });
     },
   });
 
@@ -36,6 +46,12 @@ export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
 
   const handleRemoveForm = async () => {
     await remove();
+  };
+
+  const handleRemovePassword = () => {
+    if (confirm("Are you sure you want to remove the password protection?")) {
+      removePassword();
+    }
   };
 
   return (
@@ -58,7 +74,20 @@ export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
             >
               <MenuItem onClick={handleViewAsUser}>View as user</MenuItem>
               <MenuItem onClick={handleCopyLink}>Copy link</MenuItem>
-              <MenuItem onClick={() => setIsEditModalOpen(true)}>Edit form</MenuItem>
+              <MenuItem onClick={() => setIsEditModalOpen(true)}>
+                Edit form
+              </MenuItem>
+              <MenuItem onClick={() => setIsPasswordEditOpen(true)}>
+                {form.hasPassword ? "Change Password" : "Set Password"}
+              </MenuItem>
+              {form.hasPassword && (
+                <MenuItem
+                  onClick={handleRemovePassword}
+                  className="text-yellow-600 hover:bg-yellow-50 hover:!text-yellow-700"
+                >
+                  Remove Password
+                </MenuItem>
+              )}
               <MenuItem
                 onClick={handleRemoveForm}
                 className="text-red-500 hover:bg-red-50 hover:!text-red-700"
@@ -108,6 +137,11 @@ export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
         form={form}
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
+      />
+      <FormPasswordEdit
+        form={form}
+        isOpen={isPasswordEditOpen}
+        onClose={() => setIsPasswordEditOpen(false)}
       />
     </>
   );

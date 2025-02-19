@@ -93,7 +93,7 @@ export interface FeedbackForm {
   title: string;
   accessToken: string;
   description?: string;
-  password?: string;
+  hasPassword: boolean;
   questions: FeedbackFormQuestion[];
   customThankYouPage?: string;
   formSettings?: {
@@ -120,6 +120,16 @@ export interface CreateFeedbackResponseDto {
   formId: string;
   answers: Array<FeedbackResponseAnswer>;
   metadata?: FeedbackResponseMetadata;
+}
+
+export interface UpdateFeedbackFormDto {
+  title: string;
+  description?: string;
+  customThankYouPage?: string;
+  settings?: {
+    stepped?: boolean;
+    allowMultipleResponses?: boolean;
+  };
 }
 
 export interface FormResponsesOverTime {

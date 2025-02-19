@@ -10,6 +10,7 @@ import {
   QuestionTypeDistribution,
   RatingQuestionAverage,
   RegisterData,
+  UpdateFeedbackFormDto,
   User,
 } from "./api.types";
 import axios from "./axios";
@@ -62,17 +63,14 @@ export const api = {
     create: async (data: CreateFeedbackForm) => {
       return axios.post("/feedback-forms", data);
     },
-    update: async (accessToken: string, data: {
-      title: string;
-      description?: string;
-      password?: string;
-      customThankYouPage?: string;
-      settings?: {
-        stepped?: boolean;
-        allowMultipleResponses?: boolean;
-      };
-    }) => {
+    update: async (accessToken: string, data: UpdateFeedbackFormDto) => {
       return axios.patch(`/feedback-forms/${accessToken}`, data);
+    },
+    updatePassword: async (
+      accessToken: string,
+      data: { password: string | null }
+    ) => {
+      return axios.patch(`/feedback-forms/${accessToken}/password`, data);
     },
     getAll: async (): Promise<FeedbackForm[]> => {
       return axios.get("/feedback-forms");

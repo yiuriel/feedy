@@ -7,12 +7,13 @@ import {
   OneToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 import { Organization } from '../organization.entity';
 import { User } from '../user.entity';
 import { FeedbackQuestion } from './feedback-question.entity';
 import { FeedbackFormSettings } from './feedback-form-settings.entity';
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { FeedbackResponse } from './response/feedback-response.entity';
 
 @Entity()
@@ -36,6 +37,11 @@ export class FeedbackForm {
   @Exclude()
   @Column({ nullable: true })
   password: string;
+
+  @Expose()
+  get hasPassword(): boolean {
+    return !!this.password;
+  }
 
   @Column({ nullable: true })
   customThankYouPage: string;
@@ -63,7 +69,7 @@ export class FeedbackForm {
   @OneToOne(() => FeedbackFormSettings, (settings) => settings.form)
   formSettings: FeedbackFormSettings;
 
-  // @Exclude()
+  @Index()
   @Column({ unique: true })
   accessToken: string;
 

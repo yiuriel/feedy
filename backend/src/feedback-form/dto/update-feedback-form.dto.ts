@@ -20,10 +20,6 @@ export class UpdateFeedbackFormDto {
 
   @IsOptional()
   @IsString()
-  password?: string;
-
-  @IsOptional()
-  @IsString()
   customThankYouPage?: string;
 
   @IsOptional()

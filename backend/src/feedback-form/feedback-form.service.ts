@@ -12,6 +12,7 @@ import { FeedbackForm } from '../entities/feedback-form/feedback-form.entity';
 import { Organization } from '../entities/organization.entity';
 import { CreateFeedbackFormDto } from './dto/create-feedback-form.dto';
 import { UpdateFeedbackFormDto } from './dto/update-feedback-form.dto';
+import { UpdateFeedbackFormPasswordDto } from './dto/update-feedback-form-password.dto';
 import { Response } from 'express';
 import { TokenService } from '../token/token.service';
 import { FeedbackFormPasswordService } from './feedback-form.password-service';
@@ -150,7 +151,6 @@ export class FeedbackFormService {
       // Update basic form fields
       form.title = updateFeedbackFormDto.title;
       form.description = updateFeedbackFormDto.description;
-      form.password = updateFeedbackFormDto.password;
       form.customThankYouPage = updateFeedbackFormDto.customThankYouPage;
 
       // Update form settings
@@ -165,6 +165,43 @@ export class FeedbackFormService {
           form.formSettings.allowMultipleResponses;
         await queryRunner.manager.save(form.formSettings);
       }
+
+      const updatedForm = await queryRunner.manager.save(form);
+
+      await queryRunner.commitTransaction();
+
+      return updatedForm;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async updatePassword(
+    accessToken: string,
+    organizationId: string,
+    updateFeedbackFormPasswordDto: UpdateFeedbackFormPasswordDto,
+  ) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const form = await queryRunner.manager.findOne(FeedbackForm, {
+        where: {
+          accessToken,
+          isActive: true,
+          organization: { id: organizationId },
+        },
+      });
+
+      if (!form) {
+        throw new NotFoundException('Feedback form not found');
+      }
+
+      form.password = updateFeedbackFormPasswordDto.password ?? null;
 
       const updatedForm = await queryRunner.manager.save(form);
 

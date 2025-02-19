@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { CreateFeedbackFormDto } from './dto/create-feedback-form.dto';
 import { UpdateFeedbackFormDto } from './dto/update-feedback-form.dto';
+import { UpdateFeedbackFormPasswordDto } from './dto/update-feedback-form-password.dto';
 import { FeedbackFormService } from './feedback-form.service';
 import { Response, Request } from 'express';
 import { Throttle } from '@nestjs/throttler';
@@ -70,9 +71,9 @@ export class FeedbackFormController {
     );
   }
 
-  @Get(':id')
+  @Get(':accessToken')
   findOne(
-    @Param('id') accessToken: string,
+    @Param('accessToken') accessToken: string,
     @GetUserPayload() payload: Payload,
     @Res({ passthrough: true }) res: Response,
   ) {
@@ -83,9 +84,9 @@ export class FeedbackFormController {
     );
   }
 
-  @Patch(':id')
+  @Patch(':accessToken')
   update(
-    @Param('id') accessToken: string,
+    @Param('accessToken') accessToken: string,
     @GetUserPayload() payload: Payload,
     @Body() updateFeedbackFormDto: UpdateFeedbackFormDto,
   ) {
@@ -96,14 +97,31 @@ export class FeedbackFormController {
     );
   }
 
-  @Delete(':id')
-  remove(@Param('id') accessToken: string, @GetUserPayload() payload: Payload) {
+  @Patch(':accessToken/password')
+  @UseGuards(AuthGuard)
+  async updatePassword(
+    @Param('accessToken') accessToken: string,
+    @Body() updateFeedbackFormPasswordDto: UpdateFeedbackFormPasswordDto,
+    @GetUserPayload() { organizationId }: Payload,
+  ) {
+    return this.feedbackFormService.updatePassword(
+      accessToken,
+      organizationId,
+      updateFeedbackFormPasswordDto,
+    );
+  }
+
+  @Delete(':accessToken')
+  remove(
+    @Param('accessToken') accessToken: string,
+    @GetUserPayload() payload: Payload,
+  ) {
     return this.feedbackFormService.remove(accessToken, payload.organizationId);
   }
 
-  @Get(':id/evaluate')
+  @Get(':accessToken/evaluate')
   evaluate(
-    @Param('id') accessToken: string,
+    @Param('accessToken') accessToken: string,
     @GetUserPayload() payload: Payload,
   ) {
     return this.feedbackFormService.getFormWithResponses(
@@ -112,9 +130,9 @@ export class FeedbackFormController {
     );
   }
 
-  @Get(':id/password')
+  @Get(':accessToken/password')
   needsPassword(
-    @Param('id') accessToken: string,
+    @Param('accessToken') accessToken: string,
     @GetUserPayload() payload: Payload,
     @Req() req: Request,
   ) {
@@ -125,9 +143,9 @@ export class FeedbackFormController {
     );
   }
 
-  @Post(':id/password')
+  @Post(':accessToken/password')
   checkPassword(
-    @Param('id') accessToken: string,
+    @Param('accessToken') accessToken: string,
     @Body() { password }: { password: string },
     @Req() req: Request,
   ) {
