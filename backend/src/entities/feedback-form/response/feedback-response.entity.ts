@@ -5,12 +5,14 @@ import {
   CreateDateColumn,
   OneToMany,
   OneToOne,
+  Index,
 } from 'typeorm';
 import { FeedbackForm } from '../feedback-form.entity';
 import { FeedbackResponseAnswer } from './feedback-response-answer.entity';
 import { FeedbackResponseMetadata } from './feedback-response-metadata.entity';
 
 @Entity()
+@Index(['form', 'submittedAt'])
 export class FeedbackResponse {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -30,6 +32,7 @@ export class FeedbackResponse {
   })
   metadata: FeedbackResponseMetadata;
 
+  @Index()
   @CreateDateColumn()
   submittedAt: Date;
 }

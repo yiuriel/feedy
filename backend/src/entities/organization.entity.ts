@@ -6,6 +6,7 @@ import {
   OneToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Subscription } from './subscription.entity';
@@ -17,15 +18,18 @@ export class Organization {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Index()
   @Column()
   name: string;
 
+  @Index({ unique: true })
   @Column({ unique: true })
   slug: string;
 
   @Column({ nullable: true })
   description: string;
 
+  @Index()
   @Column({ nullable: true })
   industry: string;
 

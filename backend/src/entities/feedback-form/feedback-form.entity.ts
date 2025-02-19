@@ -17,20 +17,25 @@ import { Exclude, Expose } from 'class-transformer';
 import { FeedbackResponse } from './response/feedback-response.entity';
 
 @Entity()
+@Index(['isActive', 'organization'])
+@Index(['accessToken', 'isActive'])
 export class FeedbackForm {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Index()
   @Column()
   title: string;
 
   @Column({ nullable: true })
   description: string;
 
+  @Index()
   @Exclude()
   @Column({ default: true })
   isActive: boolean;
 
+  @Index()
   @Column({ default: 0 })
   responseCount: number;
 
