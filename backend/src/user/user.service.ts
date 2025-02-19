@@ -21,6 +21,7 @@ export class UserService {
 
     return await this.userRepository.findOne({
       where: { id },
+      relations: ['organization'],
     });
   }
 

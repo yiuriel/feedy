@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Question, QuestionType } from '../entities/question.entity';
+import { Question } from '../entities/question.entity';
 import { LLMService } from '../llm/llm.service';
 import { Organization } from '../entities/organization.entity';
 
@@ -22,32 +22,34 @@ export class QuestionService {
       where: { id: organizationId },
     });
 
-    if (!organization) {
-      throw new Error(`Organization with id ${organizationId} not found`);
-    }
+    console.log('this will generate questions for', { organization });
 
-    const generateAndSaveQuestion = async () => {
-      const responses = await this.llmService.generateFeedbackQuestions(
-        organization.industry,
-        `to gather anonymous feedback from employees, which is a ${organization.industry} company with ${organization.size} employees.`,
-      );
+    // if (!organization) {
+    //   throw new Error(`Organization with id ${organizationId} not found`);
+    // }
 
-      // Assuming the LLM service returns a structured response
-      responses.forEach(async (response) => {
-        const question = this.questionRepository.create({
-          text: response.question,
-          type: response.type as QuestionType,
-          options: response.options,
-          organization,
-        });
-        console.log({ question });
+    // const generateAndSaveQuestion = async () => {
+    //   const responses = await this.llmService.generateFeedbackQuestions(
+    //     organization.industry,
+    //     `to gather anonymous feedback from employees, which is a ${organization.industry} company with ${organization.size} employees.`,
+    //   );
 
-        await this.questionRepository.save(question);
-      });
-    };
+    //   // Assuming the LLM service returns a structured response
+    //   responses.forEach(async (response) => {
+    //     const question = this.questionRepository.create({
+    //       text: response.question,
+    //       type: response.type as QuestionType,
+    //       options: response.options,
+    //       organization,
+    //     });
+    //     console.log({ question });
 
-    // Fire 2 parallel requests to generate questions (2 questions per request)
-    await Promise.all([generateAndSaveQuestion(), generateAndSaveQuestion()]);
+    //     await this.questionRepository.save(question);
+    //   });
+    // };
+
+    // // Fire 2 parallel requests to generate questions (2 questions per request)
+    // await Promise.all([generateAndSaveQuestion(), generateAndSaveQuestion()]);
   }
 
   async getQuestionsByOrganization(

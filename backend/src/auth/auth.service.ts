@@ -106,7 +106,7 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new UnauthorizedException('Email already exists');
+      throw new UnauthorizedException('An error ocurred');
     }
 
     // Create the organization first
@@ -143,7 +143,7 @@ export class AuthService {
       hashedPassword,
       name: userDto.name,
       organization,
-      role: 'admin', // First user is always admin
+      role: 'owner', // First user is always owner
     });
     organization.users = [user];
     user.organization = organization;

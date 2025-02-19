@@ -4,6 +4,15 @@ export interface User {
   id: string;
   email: string;
   name: string;
+  role: "owner" | "admin" | "viewer";
+  organization: {
+    description: string;
+    id: string;
+    industry: string;
+    name: string;
+    size: string;
+    slug: string;
+  };
 }
 
 export interface Organization {

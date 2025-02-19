@@ -10,6 +10,7 @@ import {
 import { User } from './user.entity';
 import { Subscription } from './subscription.entity';
 import { FeedbackForm } from './feedback-form/feedback-form.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Organization {
@@ -41,9 +42,11 @@ export class Organization {
   @OneToMany(() => FeedbackForm, (form) => form.organization)
   feedbackForms: FeedbackForm[];
 
+  @Exclude()
   @CreateDateColumn()
   createdAt: Date;
 
+  @Exclude()
   @UpdateDateColumn()
   updatedAt: Date;
 }

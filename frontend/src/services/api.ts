@@ -38,6 +38,9 @@ export const api = {
     getCurrentUser: async (): Promise<User> => {
       return axios.get("/user/me");
     },
+    invite: async (data: { email: string; role: "admin" | "viewer" }) => {
+      return axios.post("/user/invite", data);
+    },
   },
   organization: {
     orgNeedsDetails: async (): Promise<boolean> => {

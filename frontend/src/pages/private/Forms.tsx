@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { queryKeys } from "../lib/queryKeys";
-import { api } from "../services/api";
-import { Loading } from "../components/Loading";
-import { FormCard } from "../components/FormCard/FormCard";
-import { Button } from "../components/Button/Button";
+import { queryKeys } from "../../lib/queryKeys";
+import { api } from "../../services/api";
+import { Loading } from "../../components/Loading";
+import { FormCard } from "../../components/FormCard/FormCard";
+import { Button } from "../../components/Button/Button";
 import { useNavigate } from "react-router";
 import { useCallback } from "react";
 

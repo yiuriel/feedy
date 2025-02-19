@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { OrganizationDetails } from "../components/OrganizationDetails";
-import { api } from "../services/api";
-import { Loading } from "../components/Loading";
-import { StatsCard } from "../components/Card/StatsCard";
+import { OrganizationDetails } from "../../components/OrganizationDetails";
+import { api } from "../../services/api";
+import { Loading } from "../../components/Loading";
+import { StatsCard } from "../../components/Card/StatsCard";
 import { Navigate, useNavigate } from "react-router";
-import { queryKeys } from "../lib/queryKeys";
+import { queryKeys } from "../../lib/queryKeys";
 
 export default function Dashboard() {
   const navigate = useNavigate();

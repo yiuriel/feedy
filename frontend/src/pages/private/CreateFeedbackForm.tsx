@@ -1,18 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import { Input } from "../components/Input/Input";
-import { QuestionBuilder } from "../components/QuestionBuilder";
-import { Textarea } from "../components/Textarea/Textarea";
-import { queryKeys } from "../lib/queryKeys";
-import { api } from "../services/api";
-import { CreateFeedbackFormQuestion } from "../services/api.types";
+import { Input } from "../../components/Input/Input";
+import { QuestionBuilder } from "../../components/QuestionBuilder";
+import { Textarea } from "../../components/Textarea/Textarea";
+import { queryKeys } from "../../lib/queryKeys";
+import { api } from "../../services/api";
+import { CreateFeedbackFormQuestion } from "../../services/api.types";
 import {
   FeedbackFormQuestionState,
   FeedbackFormState,
   QuestionType,
-} from "../types/question";
-import { Switch } from "../components/Switch/Switch";
+} from "../../types/question";
+import { Switch } from "../../components/Switch/Switch";
 
 export const CreateFeedbackForm: React.FC = () => {
   const navigate = useNavigate();

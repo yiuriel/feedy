@@ -24,17 +24,19 @@ export class User {
   @Exclude()
   hashedPassword: string;
 
-  @Column({ default: 'admin' })
-  role: 'admin' | 'viewer';
+  @Column({ default: 'owner' })
+  role: 'owner' | 'admin' | 'viewer';
 
   @ManyToOne(() => Organization, (org) => org.users, {
     onDelete: 'CASCADE',
   })
   organization: Organization;
 
+  @Exclude()
   @CreateDateColumn()
   createdAt: Date;
 
+  @Exclude()
   @UpdateDateColumn()
   updatedAt: Date;
 }
