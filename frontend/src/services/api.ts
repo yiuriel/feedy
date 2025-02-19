@@ -62,6 +62,18 @@ export const api = {
     create: async (data: CreateFeedbackForm) => {
       return axios.post("/feedback-forms", data);
     },
+    update: async (accessToken: string, data: {
+      title: string;
+      description?: string;
+      password?: string;
+      customThankYouPage?: string;
+      settings?: {
+        stepped?: boolean;
+        allowMultipleResponses?: boolean;
+      };
+    }) => {
+      return axios.patch(`/feedback-forms/${accessToken}`, data);
+    },
     getAll: async (): Promise<FeedbackForm[]> => {
       return axios.get("/feedback-forms");
     },

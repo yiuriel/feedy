@@ -6,10 +6,15 @@ import { Organization } from '../entities/organization.entity';
 import { FeedbackForm } from 'src/entities/feedback-form/feedback-form.entity';
 import { TokenModule } from 'src/token/token.module';
 import { FeedbackFormPasswordService } from './feedback-form.password-service';
+import { FeedbackFormSettings } from 'src/entities/feedback-form/feedback-form-settings.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([FeedbackForm, Organization]),
+    TypeOrmModule.forFeature([
+      FeedbackForm,
+      Organization,
+      FeedbackFormSettings,
+    ]),
     TokenModule,
   ],
   controllers: [FeedbackFormController],

@@ -37,6 +37,7 @@ export const CreateFeedbackForm: React.FC = () => {
     mutationFn: api.feedbackForm.create,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.dashboard.stats] });
+      queryClient.invalidateQueries({ queryKey: [queryKeys.form.getAll] });
       navigate("/app/dashboard");
     },
   });

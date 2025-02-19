@@ -11,6 +11,7 @@ import { DataSource, Repository } from 'typeorm';
 import { FeedbackForm } from '../entities/feedback-form/feedback-form.entity';
 import { Organization } from '../entities/organization.entity';
 import { CreateFeedbackFormDto } from './dto/create-feedback-form.dto';
+import { UpdateFeedbackFormDto } from './dto/update-feedback-form.dto';
 import { Response } from 'express';
 import { TokenService } from '../token/token.service';
 import { FeedbackFormPasswordService } from './feedback-form.password-service';
@@ -20,6 +21,8 @@ export class FeedbackFormService {
   constructor(
     @InjectRepository(FeedbackForm)
     private feedbackFormRepository: Repository<FeedbackForm>,
+    @InjectRepository(FeedbackFormSettings)
+    private formSettingsRepository: Repository<FeedbackFormSettings>,
     private readonly dataSource: DataSource,
     private readonly tokenService: TokenService,
     private readonly passwordService: FeedbackFormPasswordService,
@@ -119,6 +122,61 @@ export class FeedbackFormService {
     });
 
     return form;
+  }
+
+  async update(
+    accessToken: string,
+    organizationId: string,
+    updateFeedbackFormDto: UpdateFeedbackFormDto,
+  ) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const form = await queryRunner.manager.findOne(FeedbackForm, {
+        where: {
+          accessToken,
+          isActive: true,
+          organization: { id: organizationId },
+        },
+        relations: ['questions', 'formSettings'],
+      });
+
+      if (!form) {
+        throw new NotFoundException('Feedback form not found');
+      }
+
+      // Update basic form fields
+      form.title = updateFeedbackFormDto.title;
+      form.description = updateFeedbackFormDto.description;
+      form.password = updateFeedbackFormDto.password;
+      form.customThankYouPage = updateFeedbackFormDto.customThankYouPage;
+
+      // Update form settings
+      if (updateFeedbackFormDto.settings) {
+        if (!form.formSettings) {
+          form.formSettings = queryRunner.manager.create(FeedbackFormSettings);
+        }
+        form.formSettings.stepped =
+          updateFeedbackFormDto.settings.stepped ?? form.formSettings.stepped;
+        form.formSettings.allowMultipleResponses =
+          updateFeedbackFormDto.settings.allowMultipleResponses ??
+          form.formSettings.allowMultipleResponses;
+        await queryRunner.manager.save(form.formSettings);
+      }
+
+      const updatedForm = await queryRunner.manager.save(form);
+
+      await queryRunner.commitTransaction();
+
+      return updatedForm;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async getFormWithResponses(accessToken: string, organizationId: string) {

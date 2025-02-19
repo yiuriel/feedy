@@ -4,18 +4,20 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateFeedbackFormDto } from './dto/create-feedback-form.dto';
+import { UpdateFeedbackFormDto } from './dto/update-feedback-form.dto';
 import { FeedbackFormService } from './feedback-form.service';
-import { GetUserPayload } from 'src/auth/decorators/get.user.payload';
-import { Payload } from 'src/auth/types/payload.type';
 import { Response, Request } from 'express';
 import { Throttle } from '@nestjs/throttler';
+import { AuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { GetUserPayload } from 'src/auth/decorators/get.user.payload';
+import { Payload } from 'src/auth/types/payload.type';
 
 @Throttle({
   default: {
@@ -78,6 +80,19 @@ export class FeedbackFormController {
       accessToken,
       payload.organizationId,
       res,
+    );
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id') accessToken: string,
+    @GetUserPayload() payload: Payload,
+    @Body() updateFeedbackFormDto: UpdateFeedbackFormDto,
+  ) {
+    return this.feedbackFormService.update(
+      accessToken,
+      payload.organizationId,
+      updateFeedbackFormDto,
     );
   }
 

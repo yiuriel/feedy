@@ -93,6 +93,7 @@ export interface FeedbackForm {
   title: string;
   accessToken: string;
   description?: string;
+  password?: string;
   questions: FeedbackFormQuestion[];
   customThankYouPage?: string;
   formSettings?: {
