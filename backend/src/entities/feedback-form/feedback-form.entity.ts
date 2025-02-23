@@ -24,7 +24,7 @@ export class FeedbackForm {
   id: string;
 
   @Index()
-  @Column()
+  @Column({ length: 30 })
   title: string;
 
   @Column({ nullable: true })

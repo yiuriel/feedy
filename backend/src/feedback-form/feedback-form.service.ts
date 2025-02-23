@@ -84,6 +84,7 @@ export class FeedbackFormService {
       return savedForm;
     } catch (error) {
       await queryRunner.rollbackTransaction();
+      // @TODO: Add proper error handling
       throw error;
     } finally {
       await queryRunner.release();

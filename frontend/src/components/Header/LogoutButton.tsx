@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
-import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/16/solid";
+import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/solid";
 import { api } from "../../services/api";
+import { Tooltip } from "../Tooltip/Tooltip";
 
 export const LogoutButton = () => {
   const navigate = useNavigate();
@@ -16,11 +17,13 @@ export const LogoutButton = () => {
   });
 
   return (
-    <button
-      onClick={() => logout()}
-      className="border border-solid border-indigo-600 text-indigo-600 px-2 py-2 rounded-full"
-    >
-      <ArrowLeftStartOnRectangleIcon className="h-5 w-5" />
-    </button>
+    <Tooltip content="Logout" position="bottom">
+      <button
+        onClick={() => logout()}
+        className="border border-solid border-indigo-600 text-indigo-600 px-1 py-1 rounded-full"
+      >
+        <ArrowLeftStartOnRectangleIcon className="h-5 w-5" />
+      </button>
+    </Tooltip>
   );
 };

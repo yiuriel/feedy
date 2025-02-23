@@ -1,11 +1,9 @@
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
-import { api } from "../services/api";
-import { useAuthUser } from "../hooks/useAuthUser";
-import { Loading } from "../components/Loading";
-import { useMutation } from "@tanstack/react-query";
-import { SubscriptionPlan } from "../services/api.types";
 import { Input } from "../components/Input/Input";
+import { api } from "../services/api";
+import { SubscriptionPlan } from "../services/api.types";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -15,7 +13,6 @@ export default function Register() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { isLoadingUser } = useAuthUser();
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -49,10 +46,6 @@ export default function Register() {
       },
     });
   };
-
-  if (isLoadingUser) {
-    return <Loading />;
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
