@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Organization } from 'src/entities/organization.entity';
-import { Subscription } from '../entities/subscription.entity';
-import { User } from '../entities/user.entity';
+import { Organization } from '../organization/entities/organization.entity';
+import { Subscription } from '../subscription/entities/subscription.entity';
+import { User } from './entities/user.entity';
 import { SubscriptionService } from '../subscription/subscription.service';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';

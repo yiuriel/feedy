@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FeedbackResponse } from 'src/entities/feedback-form/response/feedback-response.entity';
-import { FeedbackForm } from 'src/entities/feedback-form/feedback-form.entity';
+import { FeedbackForm } from 'src/feedback-form/entities/feedback-form.entity';
+import { FeedbackResponse } from 'src/feedback-form/entities/response/feedback-response.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

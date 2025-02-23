@@ -1,20 +1,20 @@
 import { Injectable, Res, UnauthorizedException } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
-import { Organization } from '../entities/organization.entity';
-import { SubscriptionService } from '../subscription/subscription.service';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import * as argon2 from 'argon2';
-import { generateUniqueSlug } from '../utils/slug.utils';
-import { Response, Request } from 'express';
-import { Payload } from './types/payload.type';
-import { RegisterUserDto } from '../dtos/register-user.dto';
-import { RegisterOrgDto } from '../dtos/register-org.dto';
-import { RegisterSubscriptionDto } from '../dtos/register-subscription.dto';
-import { noop } from 'src/utils/noop';
+import { Request, Response } from 'express';
+import { RegisterOrgDto } from 'src/organization/dto/register-org.dto';
+import { Organization } from 'src/organization/entities/organization.entity';
 import { OrganizationCreatedEvent } from 'src/organization/events/organization.created';
+import { RegisterSubscriptionDto } from 'src/subscription/dto/register-subscription.dto';
+import { RegisterUserDto } from 'src/user/dto/register-user.dto';
+import { User } from 'src/user/entities/user.entity';
+import { noop } from 'src/utils/noop';
+import { Repository } from 'typeorm';
+import { SubscriptionService } from '../subscription/subscription.service';
+import { generateUniqueSlug } from '../utils/slug.utils';
+import { Payload } from './types/payload.type';
 
 @Injectable()
 export class AuthService {

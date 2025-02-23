@@ -1,3 +1,4 @@
+import { Organization } from 'src/organization/entities/organization.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,7 +8,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Organization } from './organization.entity';
 
 // Define the available subscription plans
 export type SubscriptionPlan = 'free' | 'pro';

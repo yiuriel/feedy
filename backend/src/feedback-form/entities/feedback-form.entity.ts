@@ -9,12 +9,12 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
-import { Organization } from '../organization.entity';
-import { User } from '../user.entity';
 import { FeedbackQuestion } from './feedback-question.entity';
 import { FeedbackFormSettings } from './feedback-form-settings.entity';
 import { Exclude, Expose } from 'class-transformer';
 import { FeedbackResponse } from './response/feedback-response.entity';
+import { Organization } from 'src/organization/entities/organization.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Entity()
 @Index(['isActive', 'organization'])

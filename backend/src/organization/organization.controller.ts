@@ -3,7 +3,7 @@ import { Payload } from 'src/auth/types/payload.type';
 import { GetUserPayload } from 'src/auth/decorators/get.user.payload';
 import { AuthGuard } from '../auth/guards/jwt-auth.guard';
 import { OrganizationService } from './organization.service';
-import { UpdateOrganizationDto } from '../dtos/update-organization.dto';
+import { UpdateOrganizationDto } from './dto/update-organization.dto';
 
 @Controller('organization')
 @UseGuards(AuthGuard)

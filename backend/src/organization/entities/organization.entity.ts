@@ -8,10 +8,10 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
-import { User } from './user.entity';
-import { Subscription } from './subscription.entity';
-import { FeedbackForm } from './feedback-form/feedback-form.entity';
 import { Exclude } from 'class-transformer';
+import { Subscription } from 'src/subscription/entities/subscription.entity';
+import { User } from 'src/user/entities/user.entity';
+import { FeedbackForm } from 'src/feedback-form/entities/feedback-form.entity';
 
 @Entity()
 export class Organization {

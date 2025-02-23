@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Question } from '../entities/question.entity';
 import { LLMService } from '../llm/llm.service';
-import { Organization } from '../entities/organization.entity';
+import { Question } from './entities/question.entity';
+import { Organization } from 'src/organization/entities/organization.entity';
 
 @Injectable()
 export class QuestionService {

@@ -6,11 +6,11 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Response } from 'express';
-import { FeedbackFormSettings } from 'src/entities/feedback-form/feedback-form-settings.entity';
-import { FeedbackQuestion } from 'src/entities/feedback-form/feedback-question.entity';
+import { FeedbackFormSettings } from './entities/feedback-form-settings.entity';
+import { FeedbackQuestion } from './entities/feedback-question.entity';
+import { FeedbackForm } from './entities/feedback-form.entity';
+import { Organization } from '../organization/entities/organization.entity';
 import { DataSource, Repository } from 'typeorm';
-import { FeedbackForm } from '../entities/feedback-form/feedback-form.entity';
-import { Organization } from '../entities/organization.entity';
 import { TokenService } from '../token/token.service';
 import { CreateFeedbackFormDto } from './dto/create-feedback-form.dto';
 import { UpdateFeedbackFormPasswordDto } from './dto/update-feedback-form-password.dto';

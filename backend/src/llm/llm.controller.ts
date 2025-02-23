@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { LLMService } from './llm.service';
-import { GenerateQuestionsDto } from '../dtos/generate-questions.dto';
 import { GenerateThankYouDto } from '../dtos/generate-thank-you.dto';
+import { GenerateQuestionsDto } from 'src/question/dto/generate-questions.dto';
 
 @Controller('llm')
 // @UseGuards(JwtAuthGuard) // Protect all endpoints with JWT auth

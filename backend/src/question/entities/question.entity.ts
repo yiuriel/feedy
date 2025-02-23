@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Organization } from './organization.entity';
+import { Organization } from 'src/organization/entities/organization.entity';
 
 export enum QuestionType {
   TEXT = 'text',

@@ -1,8 +1,8 @@
 import { Controller, Post, Body, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { FeedbackResponseService } from './feedback-response.service';
-import { FeedbackResponse } from 'src/entities/feedback-form/response/feedback-response.entity';
 import { Throttle } from '@nestjs/throttler';
+import { FeedbackResponse } from 'src/feedback-form/entities/response/feedback-response.entity';
 
 interface CreateFeedbackResponseDto {
   formId: string;

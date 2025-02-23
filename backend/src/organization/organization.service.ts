@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Organization } from '../entities/organization.entity';
-import { UpdateOrganizationDto } from '../dtos/update-organization.dto';
+import { Organization } from '../organization/entities/organization.entity';
+import { UpdateOrganizationDto } from './dto/update-organization.dto';
 
 @Injectable()
 export class OrganizationService {

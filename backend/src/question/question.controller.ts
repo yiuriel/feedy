@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { GetUserPayload } from 'src/auth/decorators/get.user.payload';
 import { Payload } from 'src/auth/types/payload.type';
-import { Question } from 'src/entities/question.entity';
+import { Question } from 'src/question/entities/question.entity';
 import { QuestionService } from './question.service';
 
 @Controller('questions')

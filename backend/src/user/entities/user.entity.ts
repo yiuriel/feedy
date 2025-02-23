@@ -1,14 +1,15 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { Organization } from './organization.entity';
+
 import { Exclude } from 'class-transformer';
+import { Organization } from 'src/organization/entities/organization.entity';
 
 @Entity()
 @Index(['email', 'organization'])
