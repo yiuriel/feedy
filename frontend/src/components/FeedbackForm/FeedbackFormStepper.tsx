@@ -53,21 +53,23 @@ export const FeedbackFormStepper: FC<{ accessToken: string }> = ({
 
   return (
     <div className="flex justify-between items-center gap-4">
-      <Button
-        disabled={step === 1}
-        onClick={(e) => {
-          e.preventDefault();
-          setStep(step - 1);
-        }}
-        type="button"
-        className={`flex-1 py-3 rounded-lg transition-all duration-200 ${
-          step === 1
-            ? "bg-gray-100 text-gray-400"
-            : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-        }`}
-      >
-        Previous
-      </Button>
+      {step > 1 && (
+        <Button
+          disabled={step === 1}
+          onClick={(e) => {
+            e.preventDefault();
+            setStep(step - 1);
+          }}
+          type="button"
+          className={`flex-1 py-3 rounded-lg transition-all duration-200 ${
+            step === 1
+              ? "bg-gray-100 text-gray-400"
+              : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+          }`}
+        >
+          Previous
+        </Button>
+      )}
       {step === maxStep ? (
         <Button
           disabled={isUnanswered(step - 1) && isQuestionRequired(step - 1)}

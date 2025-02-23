@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { FC, FormEvent, useCallback, useEffect, useRef } from "react";
+import { FC, FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { queryKeys } from "../../lib/queryKeys";
 import { api } from "../../services/api";
 import { useFeedbackFormStore } from "../../stores/feedbackFormStore";
@@ -7,6 +7,7 @@ import { Loading } from "../Loading";
 import { FormQuestion } from "./FeedbackFormQuestion";
 import { FeedbackFormStepper } from "./FeedbackFormStepper";
 import { HoneyPotField } from "../HoneyPotField/HoneyPotField";
+import { FeedbackFormThankYou } from "./FeedbackFormThankYou";
 import {
   FeedbackResponseMetadata,
   FeedbackResponseAnswer,
@@ -16,6 +17,7 @@ import { HONEY_POT_FIELD_NAME } from "../HoneyPotField/HoneyPotField.constants";
 
 export const FeedbackForm: FC<{ accessToken: string }> = ({ accessToken }) => {
   const formRef = useRef<HTMLFormElement>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const { setMaxStep, step, answers, resetAnswers, setStep } =
     useFeedbackFormStore();
 
@@ -34,6 +36,7 @@ export const FeedbackForm: FC<{ accessToken: string }> = ({ accessToken }) => {
       queryClient.invalidateQueries({
         queryKey: [queryKeys.form.answers, accessToken],
       });
+      setIsSubmitted(true);
     },
   });
 
@@ -89,6 +92,10 @@ export const FeedbackForm: FC<{ accessToken: string }> = ({ accessToken }) => {
     },
     [data?.questions, mutateAsync, accessToken, resetAnswers, answers, setStep]
   );
+
+  if (isSubmitted) {
+    return <FeedbackFormThankYou customThankYouPage={data?.customThankYouPage} />;
+  }
 
   if (isLoading) {
     return <Loading />;
