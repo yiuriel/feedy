@@ -6,6 +6,7 @@ import {
   Index,
 } from 'typeorm';
 import { FeedbackForm } from './feedback-form.entity';
+import { QuestionType } from '../../common/enums/question-type.enum';
 
 @Entity()
 @Index(['form', 'type'])
@@ -14,8 +15,11 @@ export class FeedbackQuestion {
   id: string;
 
   @Index()
-  @Column()
-  type: 'text' | 'rating' | 'multiple_choice' | 'checkbox';
+  @Column({
+    type: 'enum',
+    enum: QuestionType,
+  })
+  type: QuestionType;
 
   @Column()
   question: string;

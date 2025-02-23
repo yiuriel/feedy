@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, OnModuleInit } from '@nestjs/common';
+import { QuestionType } from '../common/enums/question-type.enum';
 
 @Injectable()
 export class LLMService implements OnModuleInit {
@@ -89,9 +90,9 @@ export class LLMService implements OnModuleInit {
       const question = lines[1].trim();
       const required = lines[2].trim().toLowerCase() === 'yes';
       const options =
-        (type === 'rating' ||
-          type === 'multiple_choice' ||
-          type === 'checkbox') &&
+        (type === QuestionType.RATING ||
+          type === QuestionType.MULTIPLE_CHOICE ||
+          type === QuestionType.CHECKBOX) &&
         lines[3]
           ? lines[3].split(',').map((opt) => opt.trim())
           : undefined;

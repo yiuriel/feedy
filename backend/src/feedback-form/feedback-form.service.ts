@@ -16,6 +16,7 @@ import { CreateFeedbackFormDto } from './dto/create-feedback-form.dto';
 import { UpdateFeedbackFormPasswordDto } from './dto/update-feedback-form-password.dto';
 import { UpdateFeedbackFormDto } from './dto/update-feedback-form.dto';
 import { FeedbackFormPasswordService } from './feedback-form.password-service';
+import { QuestionType } from '../common/enums/question-type.enum';
 
 @Injectable()
 export class FeedbackFormService {
@@ -370,7 +371,7 @@ export class FeedbackFormService {
       .leftJoinAndSelect('response.answers', 'answer')
       .leftJoinAndSelect('answer.question', 'question')
       .where('form.organization.id = :organizationId', { organizationId })
-      .andWhere('question.type = :type', { type: 'rating' })
+      .andWhere('question.type = :type', { type: QuestionType.RATING })
       .getMany();
 
     const ratingAverages = [];
