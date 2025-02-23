@@ -24,5 +24,6 @@ export const queryKeys = {
   },
   feedbackResponse: {
     create: "feedbackResponseCreate",
+    exportCsv: "feedbackResponseExportCsv",
   },
 } as const;

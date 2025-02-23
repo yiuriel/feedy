@@ -110,4 +110,50 @@ export class FeedbackResponseService {
       res.clearCookie('formToken');
     }
   }
+
+  async exportResponsesAsCsv(organizationId: string): Promise<string> {
+    const responses = await this.responseRepository.find({
+      where: { form: { organization: { id: organizationId } } },
+      relations: ['answers', 'answers.question'],
+      order: { submittedAt: 'DESC' },
+    });
+
+    if (!responses.length) {
+      return 'No responses found';
+    }
+
+    // Get all unique questions to create headers
+    const questions = responses[0].answers.map(
+      (answer) => answer.question.question,
+    );
+    const headers = ['Submitted At', ...questions];
+
+    // Create CSV rows
+    const rows = responses.map((response) => {
+      const answerMap = new Map(
+        response.answers.map((answer) => [
+          answer.question.question,
+          answer.textAnswer ||
+            answer.ratingAnswer ||
+            answer.selectedOptions?.join(', ') ||
+            '',
+        ]),
+      );
+
+      return [
+        response.submittedAt.toLocaleString('en-US', { timeZone: 'UTC' }),
+        ...questions.map((q) => answerMap.get(q) || ''),
+      ];
+    });
+
+    // Convert to CSV format
+    const csvContent = [
+      headers.join(','),
+      ...rows.map((row) =>
+        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','),
+      ),
+    ].join('\n');
+
+    return csvContent;
+  }
 }

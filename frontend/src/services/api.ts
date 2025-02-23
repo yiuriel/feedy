@@ -108,5 +108,29 @@ export const api = {
     create: async (data: CreateFeedbackResponseDto) => {
       return axios.post("/feedback-responses", data);
     },
+    exportCsv: async () => {
+      const response = await axios.post<Blob>(
+        `/feedback-responses/export`,
+        null,
+        {
+          responseType: "blob",
+          headers: {
+            "Content-Type": "text/csv",
+          },
+        }
+      );
+
+      if (!response) {
+        throw new Error("Failed to export responses");
+      }
+
+      const url = window.URL.createObjectURL(response as unknown as Blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "data.csv");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    },
   },
 };

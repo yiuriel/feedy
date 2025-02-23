@@ -213,7 +213,9 @@ export const CreateFeedbackForm: React.FC = () => {
               </div>
               <button
                 onClick={handleSubmit}
-                disabled={isPending || form.questions.length === 0}
+                disabled={
+                  isPending || form.questions.length === 0 || !form.title
+                }
                 className="w-full  mx-auto flex justify-center items-center py-3 px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
               >
                 {isPending ? (

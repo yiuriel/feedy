@@ -1,8 +1,19 @@
-import { Controller, Post, Body, Req, Res } from '@nestjs/common';
-import { Request, Response } from 'express';
-import { FeedbackResponseService } from './feedback-response.service';
+import {
+  Body,
+  Controller,
+  Header,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
+import { Request, Response } from 'express';
+import { GetUserPayload } from 'src/auth/decorators/get.user.payload';
+import { Payload } from 'src/auth/types/payload.type';
 import { FeedbackResponse } from 'src/feedback-form/entities/response/feedback-response.entity';
+import { FeedbackResponseService } from './feedback-response.service';
+import { AuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 interface CreateFeedbackResponseDto {
   formId: string;
@@ -37,5 +48,13 @@ export class FeedbackResponseController {
       request.headers['x-forwarded-for'] || request.socket.remoteAddress;
 
     return this.responseService.create(createDto, ip as string, request, res);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('export')
+  @Header('Content-Type', 'text/csv')
+  @Header('Content-Disposition', 'attachment; filename=responses.csv')
+  async exportResponses(@GetUserPayload() user: Payload): Promise<string> {
+    return this.responseService.exportResponsesAsCsv(user.organizationId);
   }
 }

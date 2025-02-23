@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../services/api";
 import { ResponsesChart } from "../../components/Charts/ResponsesChart";
 import { QuestionTypesChart } from "../../components/Charts/QuestionTypesChart";
@@ -28,6 +28,11 @@ export const Analytics = () => {
     queryFn: api.feedbackForm.getRatingQuestionsAverage,
   });
 
+  const { mutate } = useMutation({
+    mutationKey: [queryKeys.feedbackResponse.exportCsv],
+    mutationFn: api.feedbackResponse.exportCsv,
+  });
+
   const hasNoData =
     !responsesData?.length &&
     (!questionTypesData?.length ||
@@ -40,9 +45,11 @@ export const Analytics = () => {
     return (
       <main className="w-full py-10">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900 mb-8">
-            Analytics
-          </h1>
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-bold leading-tight text-gray-900">
+              Analytics
+            </h1>
+          </div>
           <div className="flex items-center justify-center h-[400px]">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
           </div>
@@ -55,9 +62,11 @@ export const Analytics = () => {
     return (
       <main className="w-full py-10">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900 mb-8">
-            Analytics
-          </h1>
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-bold leading-tight text-gray-900">
+              Analytics
+            </h1>
+          </div>
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <div className="flex flex-col items-center justify-center h-[400px] text-gray-400">
               <svg
@@ -87,9 +96,17 @@ export const Analytics = () => {
   return (
     <main className="w-full py-10">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold leading-tight text-gray-900 mb-8">
-          Analytics
-        </h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold leading-tight text-gray-900">
+            Analytics
+          </h1>
+          <button
+            onClick={() => mutate()}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Export to CSV
+          </button>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {responsesData && responsesData.length > 0 && (
