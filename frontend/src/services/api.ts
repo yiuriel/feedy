@@ -1,3 +1,4 @@
+import { downloadCsv } from "../lib/downloadCsv";
 import {
   CreateFeedbackForm,
   CreateFeedbackResponseDto,
@@ -124,15 +125,9 @@ export const api = {
         throw new Error("Failed to export responses");
       }
 
-      const url = window.URL.createObjectURL(response as unknown as Blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "responses.csv");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      downloadCsv(response as unknown as Blob, `responses.csv`);
     },
-    exportFormAsCsv: async (accessToken: string) => {
+    exportFormAsCsv: async (accessToken: string, formTitle: string) => {
       const response = await axios.post<Blob>(
         `/feedback-responses/export/${accessToken}`,
         null,
@@ -148,13 +143,10 @@ export const api = {
         throw new Error("Failed to export responses");
       }
 
-      const url = window.URL.createObjectURL(response as unknown as Blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `responses-${accessToken}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      downloadCsv(
+        response as unknown as Blob,
+        `responses for ${formTitle}.csv`
+      );
     },
   },
 };

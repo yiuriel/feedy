@@ -28,7 +28,8 @@ export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
 
   const { mutate: exportCsv } = useMutation({
     mutationKey: [queryKeys.feedbackResponse.exportCsv],
-    mutationFn: () => api.feedbackResponse.exportFormAsCsv(form.accessToken),
+    mutationFn: () =>
+      api.feedbackResponse.exportFormAsCsv(form.accessToken, form.title),
   });
 
   const { mutate: removePassword } = useMutation({
