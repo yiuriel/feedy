@@ -5,7 +5,6 @@ export const useSSEEventResponses = (callback: (data: string) => void) => {
 
   useEffect(() => {
     if (!eventSourceRef.current) {
-      console.log("Opening SSE connection");
       eventSourceRef.current = new EventSource(
         "http://localhost:3000/events/responses"
       );
@@ -22,7 +21,6 @@ export const useSSEEventResponses = (callback: (data: string) => void) => {
 
     return () => {
       if (eventSourceRef.current) {
-        console.log("Closing SSE connection");
         eventSourceRef.current.close();
         eventSourceRef.current = null;
       }
