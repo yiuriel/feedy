@@ -8,6 +8,7 @@ import { FeedbackResponseAnswer } from 'src/feedback-form/entities/response/feed
 import { FeedbackResponseMetadata } from 'src/feedback-form/entities/response/feedback-response-metadata.entity';
 import { FeedbackResponse } from 'src/feedback-form/entities/response/feedback-response.entity';
 import { FeedbackForm } from 'src/feedback-form/entities/feedback-form.entity';
+import { EventsService } from 'src/events/events.service';
 
 interface CreateFeedbackResponseDto {
   formId: string;
@@ -28,6 +29,7 @@ export class FeedbackResponseService {
     @InjectRepository(FeedbackResponse)
     private readonly responseRepository: Repository<FeedbackResponse>,
     private readonly tokenService: TokenService,
+    private readonly eventsService: EventsService,
   ) {}
 
   async create(
@@ -106,6 +108,7 @@ export class FeedbackResponseService {
       throw error;
     } finally {
       await queryRunner.release();
+      this.eventsService.emitResponses();
 
       res.clearCookie('formToken');
     }

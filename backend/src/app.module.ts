@@ -16,6 +16,7 @@ import { QuestionModule } from './question/question.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { TokenModule } from './token/token.module';
 import { UserModule } from './user/user.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { UserModule } from './user/user.module';
     FeedbackResponseModule,
     TokenModule,
     MemoryUsageModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [

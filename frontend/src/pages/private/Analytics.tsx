@@ -4,12 +4,23 @@ import { ResponsesChart } from "../../components/Charts/ResponsesChart";
 import { QuestionTypesChart } from "../../components/Charts/QuestionTypesChart";
 import { RatingQuestionsChart } from "../../components/Charts/RatingQuestionsChart";
 import { queryKeys } from "../../lib/queryKeys";
+import { useSSEEventResponses } from "../../hooks/useSSEEventResponses";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCallback } from "react";
 
 export const Analytics = () => {
   const { data: responsesData, isLoading: isLoadingResponses } = useQuery({
     queryKey: [queryKeys.form.getAll, queryKeys.analytics.responsesOverTime],
     queryFn: api.feedbackForm.getResponsesOverTime,
   });
+
+  const queryClient = useQueryClient();
+
+  const invalidateQueries = useCallback(() => {
+    queryClient.invalidateQueries();
+  }, [queryClient]);
+
+  useSSEEventResponses(invalidateQueries);
 
   const { data: questionTypesData, isLoading: isLoadingQuestionTypes } =
     useQuery({

@@ -7,6 +7,7 @@ import { FeedbackResponseMetadata } from '../feedback-form/entities/response/fee
 import { FeedbackResponse } from '../feedback-form/entities/response/feedback-response.entity';
 import { FeedbackForm } from '../feedback-form/entities/feedback-form.entity';
 import { TokenModule } from 'src/token/token.module';
+import { EventsModule } from 'src/events/events.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TokenModule } from 'src/token/token.module';
       FeedbackResponseMetadata,
     ]),
     TokenModule,
+    EventsModule,
   ],
   controllers: [FeedbackResponseController],
   providers: [FeedbackResponseService],

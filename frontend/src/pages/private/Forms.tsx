@@ -6,12 +6,22 @@ import { FormCard } from "../../components/FormCard/FormCard";
 import { Button } from "../../components/Button/Button";
 import { useNavigate } from "react-router";
 import { useCallback } from "react";
+import { useSSEEventResponses } from "../../hooks/useSSEEventResponses";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Forms = () => {
+  const queryClient = useQueryClient();
+
   const { data, isLoading } = useQuery({
     queryKey: [queryKeys.form.getAll],
     queryFn: api.feedbackForm.getAll,
   });
+
+  const invalidateQueries = useCallback(() => {
+    queryClient.invalidateQueries();
+  }, [queryClient]);
+
+  useSSEEventResponses(invalidateQueries);
 
   const navigate = useNavigate();
 
