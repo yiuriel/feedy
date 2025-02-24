@@ -127,7 +127,31 @@ export const api = {
       const url = window.URL.createObjectURL(response as unknown as Blob);
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "data.csv");
+      link.setAttribute("download", "responses.csv");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    },
+    exportFormAsCsv: async (accessToken: string) => {
+      const response = await axios.post<Blob>(
+        `/feedback-responses/export/${accessToken}`,
+        null,
+        {
+          responseType: "blob",
+          headers: {
+            "Content-Type": "text/csv",
+          },
+        }
+      );
+
+      if (!response) {
+        throw new Error("Failed to export responses");
+      }
+
+      const url = window.URL.createObjectURL(response as unknown as Blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `responses-${accessToken}.csv`);
       document.body.appendChild(link);
       link.click();
       link.remove();

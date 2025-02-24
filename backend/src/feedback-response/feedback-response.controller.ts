@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Header,
+  Param,
   Post,
   Req,
   Res,
@@ -56,5 +57,19 @@ export class FeedbackResponseController {
   @Header('Content-Disposition', 'attachment; filename=responses.csv')
   async exportResponses(@GetUserPayload() user: Payload): Promise<string> {
     return this.responseService.exportResponsesAsCsv(user.organizationId);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('export/:accessToken')
+  @Header('Content-Type', 'text/csv')
+  @Header('Content-Disposition', 'attachment; filename=responses.csv')
+  async exportFormResponses(
+    @GetUserPayload() user: Payload,
+    @Param('accessToken') accessToken: string,
+  ): Promise<string> {
+    return this.responseService.exportFormResponsesAsCsv(
+      accessToken,
+      user.organizationId,
+    );
   }
 }

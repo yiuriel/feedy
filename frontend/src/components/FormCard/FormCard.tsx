@@ -26,6 +26,11 @@ export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
     },
   });
 
+  const { mutate: exportCsv } = useMutation({
+    mutationKey: [queryKeys.feedbackResponse.exportCsv],
+    mutationFn: () => api.feedbackResponse.exportFormAsCsv(form.accessToken),
+  });
+
   const { mutate: removePassword } = useMutation({
     mutationFn: () =>
       api.feedbackForm.updatePassword(form.accessToken, { password: null }),
@@ -76,6 +81,9 @@ export const FormCard: FC<{ form: FeedbackForm }> = ({ form }) => {
               <MenuItem onClick={handleCopyLink}>Copy link</MenuItem>
               <MenuItem onClick={() => setIsEditModalOpen(true)}>
                 Edit form
+              </MenuItem>
+              <MenuItem onClick={() => exportCsv()}>
+                Export responses as CSV
               </MenuItem>
               <MenuItem onClick={() => setIsPasswordEditOpen(true)}>
                 {form.hasPassword ? "Change Password" : "Set Password"}

@@ -1,6 +1,6 @@
 import { Injectable, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { HONEY_POT_FIELD_NAME } from './feedback-response.constants';
 import { TokenService } from 'src/token/token.service';
 import { Response, Request } from 'express';
@@ -114,49 +114,71 @@ export class FeedbackResponseService {
     }
   }
 
-  async exportResponsesAsCsv(organizationId: string): Promise<string> {
-    const responses = await this.responseRepository.find({
-      where: { form: { organization: { id: organizationId } } },
-      relations: ['answers', 'answers.question'],
+  private async getResponses(
+    where:
+      | FindOptionsWhere<FeedbackResponse>
+      | FindOptionsWhere<FeedbackResponse>[],
+  ): Promise<FeedbackResponse[]> {
+    return this.responseRepository.find({
+      where,
+      relations: ['answers', 'answers.question', 'form'],
       order: { submittedAt: 'DESC' },
     });
+  }
 
+  private generateCsvContent(responses: FeedbackResponse[]): string {
     if (!responses.length) {
       return 'No responses found';
     }
 
-    // Get all unique questions to create headers
-    const questions = responses[0].answers.map(
-      (answer) => answer.question.question,
+    const questions = Array.from(
+      new Set(
+        responses.flatMap((response) =>
+          response.answers.map((answer) => answer.question.question),
+        ),
+      ),
     );
-    const headers = ['Submitted At', ...questions];
 
-    // Create CSV rows
+    const headers = ['Form Title', 'Submitted At', ...questions];
     const rows = responses.map((response) => {
       const answerMap = new Map(
         response.answers.map((answer) => [
           answer.question.question,
           answer.textAnswer ||
-            answer.ratingAnswer ||
+            answer.ratingAnswer?.toString() ||
             answer.selectedOptions?.join(', ') ||
             '',
         ]),
       );
-
       return [
-        response.submittedAt.toLocaleString('en-US', { timeZone: 'UTC' }),
+        response.form.title,
+        response.submittedAt.toISOString(),
         ...questions.map((q) => answerMap.get(q) || ''),
       ];
     });
 
-    // Convert to CSV format
-    const csvContent = [
-      headers.join(','),
+    return [
+      headers.map((header) => `"${header.replace(/"/g, '""')}"`).join(','),
       ...rows.map((row) =>
         row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','),
       ),
     ].join('\n');
+  }
 
-    return csvContent;
+  async exportResponsesAsCsv(organizationId: string): Promise<string> {
+    const responses = await this.getResponses({
+      form: { organization: { id: organizationId } },
+    });
+    return this.generateCsvContent(responses);
+  }
+
+  async exportFormResponsesAsCsv(
+    accessToken: string,
+    organizationId: string,
+  ): Promise<string> {
+    const responses = await this.getResponses({
+      form: { accessToken, organization: { id: organizationId } },
+    });
+    return this.generateCsvContent(responses);
   }
 }
