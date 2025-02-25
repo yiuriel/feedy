@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../../services/api";
+import { Button } from "../Button/Button";
 
 export const InviteUserButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,9 +38,9 @@ export const InviteUserButton = () => {
 
   return (
     <>
-      <button
+      <Button
         onClick={() => setIsModalOpen(true)}
-        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className="inline-flex items-center"
       >
         <svg
           className="w-4 h-4 mr-2"
@@ -56,7 +57,7 @@ export const InviteUserButton = () => {
           />
         </svg>
         Invite User
-      </button>
+      </Button>
 
       {isModalOpen && (
         <div

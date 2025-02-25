@@ -1,12 +1,11 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { api } from "../../services/api";
-import { ResponsesChart } from "../../components/Charts/ResponsesChart";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useCallback } from "react";
 import { QuestionTypesChart } from "../../components/Charts/QuestionTypesChart";
 import { RatingQuestionsChart } from "../../components/Charts/RatingQuestionsChart";
-import { queryKeys } from "../../lib/queryKeys";
+import { ResponsesChart } from "../../components/Charts/ResponsesChart";
 import { useSSEEventResponses } from "../../hooks/useSSEEventResponses";
-import { useQueryClient } from "@tanstack/react-query";
-import { useCallback } from "react";
+import { queryKeys } from "../../lib/queryKeys";
+import { api } from "../../services/api";
 
 export const Analytics = () => {
   const { data: responsesData, isLoading: isLoadingResponses } = useQuery({
@@ -37,11 +36,6 @@ export const Analytics = () => {
       queryKeys.analytics.ratingQuestionsAverage,
     ],
     queryFn: api.feedbackForm.getRatingQuestionsAverage,
-  });
-
-  const { mutate } = useMutation({
-    mutationKey: [queryKeys.feedbackResponse.exportCsv],
-    mutationFn: api.feedbackResponse.exportCsv,
   });
 
   const hasNoData =
@@ -111,12 +105,6 @@ export const Analytics = () => {
           <h1 className="text-3xl font-bold leading-tight text-gray-900">
             Analytics
           </h1>
-          <button
-            onClick={() => mutate()}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Export responses to CSV
-          </button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

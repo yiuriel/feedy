@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryKeys } from "../../lib/queryKeys";
 import { api } from "../../services/api";
 import { Loading } from "../../components/Loading";
@@ -27,6 +27,11 @@ export const Forms = () => {
 
   const navigate = useNavigate();
 
+  const { mutate } = useMutation({
+    mutationKey: [queryKeys.feedbackResponse.exportCsv],
+    mutationFn: api.feedbackResponse.exportCsv,
+  });
+
   const goToForm = useCallback(() => {
     navigate("/app/create-feedback-form");
   }, [navigate]);
@@ -39,7 +44,12 @@ export const Forms = () => {
     <div className="py-10 gap-4 flex flex-col container">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Forms</h1>
-        <Button onClick={goToForm}>Create new form</Button>
+        <div className="flex items-center gap-x-2">
+          <Button onClick={goToForm}>Create new form</Button>
+          <Button variant="outlined" onClick={() => mutate()}>
+            Export responses to CSV
+          </Button>
+        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {data?.map((form) => (
