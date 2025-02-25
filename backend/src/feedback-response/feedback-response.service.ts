@@ -65,6 +65,7 @@ export class FeedbackResponseService {
     try {
       const form = await queryRunner.manager.findOneOrFail(FeedbackForm, {
         where: { accessToken: createDto.formId },
+        relations: ['organization'],
       });
 
       const answersWithoutHoneyPot = createDto.answers.slice(1);
@@ -102,14 +103,14 @@ export class FeedbackResponseService {
 
       await queryRunner.commitTransaction();
 
+      this.eventsService.emitResponses(form.organization.id);
+
       return savedResponse;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw error;
     } finally {
       await queryRunner.release();
-      this.eventsService.emitResponses();
-
       res.clearCookie('formToken');
     }
   }

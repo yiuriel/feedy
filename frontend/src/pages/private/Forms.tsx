@@ -18,6 +18,8 @@ export const Forms = () => {
   });
 
   const invalidateQueries = useCallback(() => {
+    console.log("invalidating queries");
+
     queryClient.invalidateQueries();
   }, [queryClient]);
 

@@ -6,7 +6,10 @@ export const useSSEEventResponses = (callback: (data: string) => void) => {
   useEffect(() => {
     if (!eventSourceRef.current) {
       eventSourceRef.current = new EventSource(
-        "http://localhost:3000/events/responses"
+        "http://localhost:3000/events/responses",
+        {
+          withCredentials: true,
+        }
       );
 
       eventSourceRef.current.onmessage = (event) => {

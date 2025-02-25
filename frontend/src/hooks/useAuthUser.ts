@@ -7,7 +7,11 @@ import { queryKeys } from "../lib/queryKeys";
 export const useAuthUser = () => {
   const navigate = useNavigate();
 
-  const { data, isLoading: isLoadingUser } = useQuery({
+  const {
+    status,
+    data,
+    isLoading: isLoadingUser,
+  } = useQuery({
     queryKey: [queryKeys.auth.verify],
     queryFn: api.auth.verify,
   });
@@ -16,7 +20,7 @@ export const useAuthUser = () => {
     if (!isLoadingUser && !data) {
       navigate("/login");
     }
-  }, [data, isLoadingUser, navigate]);
+  }, [data, isLoadingUser, navigate, status]);
 
   return { isLoadingUser };
 };
